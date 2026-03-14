@@ -1,7 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
-import { Clock, Calendar, User, Plus } from 'lucide-react-native';
+import { Clock, Calendar, User, Plus, Menu } from 'lucide-react-native';
 import styles from './styles';
 
 export default function App() {
@@ -10,15 +10,7 @@ export default function App() {
       <SafeAreaView style={styles.container}>
         <StatusBar style='dark' />
 
-        <View style={styles.header}>
-          <View style={styles.headerIconBox}>
-            <Calendar color="white" size={20} />
-          </View>
-          <View>
-            <Text style={styles.headerTitle}>Contagem de dias</Text>
-            <Text style={styles.headerSubtitle}>segunda-feira, 9 de março de 2026</Text>
-          </View>
-        </View>
+        <AppHeader title='Contagem de Dias' />
 
         <View style={{ flex: 1 }} />
 
@@ -26,12 +18,7 @@ export default function App() {
           <Plus color="white" size={30} />
         </TouchableOpacity>
 
-        <View style={styles.tabBar}>
-          <TabItem icon={<Clock size={22} color="#AF52DE" />} label="Contadores" />
-          <TabItem icon={<Calendar size={22} color="#777777" />} label="Ofensivas" active />
-          <TabItem icon={<User size={22} color="#777777" />} label="Perfil" />
-        </View>
-
+        <MenuSelector />
 
         <StatusBar style="auto" />
       </SafeAreaView>
@@ -45,3 +32,25 @@ const TabItem = ({ icon, label, active }) => (
     <Text style={[styles.tabText, active && styles.tabActive]}>{label}</Text>
   </TouchableOpacity>
 );
+
+
+const MenuSelector = () => (
+  <View style={styles.tabBar}>
+    <TabItem icon={<Clock style={styles.activeIcon} />} label="Contadores" />
+    <TabItem icon={<Calendar style={styles.inactiveIcon} />} label="Ofensivas" active />
+    <TabItem icon={<User style={styles.inactiveIcon} />} label="Perfil" />
+  </View>
+);
+
+const AppHeader = ({title}) => (
+  <View style={styles.header}>
+    <View style={styles.headerIconBox}>
+      <Calendar color="white" size={20} />
+    </View>
+    <View>
+      <Text style={styles.headerTitle}>{title}</Text>
+      <Text style={styles.headerSubtitle}>segunda-feira, 9 de março de 2026</Text>
+    </View>
+  </View>
+);
+
