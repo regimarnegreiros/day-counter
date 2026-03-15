@@ -1,0 +1,1 @@
+// to set the routes from react-navigator

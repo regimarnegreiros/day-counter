@@ -1,0 +1,1 @@
+//specific styles of counter screen
