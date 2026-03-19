@@ -1,0 +1,41 @@
+{
+  "name": "api",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/regimarnegreiros/day-counter#readme",
+  "bugs": {
+    "url": "https://github.com/regimarnegreiros/day-counter/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/regimarnegreiros/day-counter.git"
+  },
+  "license": "MIT",
+  "contributors":[
+    {
+      "name": "Carlos Eduardo Roseno",
+      "url": "https://github.com/carlosrosen"
+    },
+    {
+      "name": "Dannyel Fontenele Ribeiro",
+      "url": "https://github.com/DanFonR"
+    },
+    {
+      "name": "Davi Roberto Barros Ferreira",
+      "url": "https://github.com/Davi-Robert"
+    },
+    {
+      "name": "Nálbert Barbosa Nascimento Bernardo",
+      "url": "https://github.com/NateInterloper"
+    },
+    {
+      "name": "Regimar de Deus Negreiros",
+      "url": "https://github.com/regimarnegreiros"
+    }
+  ],  
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}

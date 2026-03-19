@@ -1,0 +1,42 @@
+{
+  "name": "day-counter",
+  "version": "1.0.0",
+  "main": "index.js",
+  "contributors":[
+    {
+      "name": "Carlos Eduardo Roseno",
+      "url": "https://github.com/carlosrosen"
+    },
+    {
+      "name": "Dannyel Fontenele Ribeiro",
+      "url": "https://github.com/DanFonR"
+    },
+    {
+      "name": "Davi Roberto Barros Ferreira",
+      "url": "https://github.com/Davi-Robert"
+    },
+    {
+      "name": "Nálbert Barbosa Nascimento Bernardo",
+      "url": "https://github.com/NateInterloper"
+    },
+    {
+      "name": "Regimar de Deus Negreiros",
+      "url": "https://github.com/regimarnegreiros"
+    }
+  ],  
+  "scripts": {
+    "start": "expo start",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "web": "expo start --web"
+  },
+  "dependencies": {
+    "expo": "~55.0.6",
+    "expo-status-bar": "~55.0.4",
+    "lucide-react-native": "^0.577.0",
+    "react": "19.2.0",
+    "react-native": "0.83.2",
+    "react-native-safe-area-context": "^5.7.0"
+  },
+  "private": true
+}
