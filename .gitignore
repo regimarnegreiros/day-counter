@@ -74,3 +74,8 @@ google-services.json
 
 # Android Profiling
 *.hprof
+
+
+# Compiled from TS
+
+src/api/*.js
