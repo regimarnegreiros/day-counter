@@ -2,7 +2,7 @@
   "name": "day-counter",
   "version": "1.0.0",
   "main": "index.js",
-  "contributors":[
+  "contributors": [
     {
       "name": "Carlos Eduardo Roseno",
       "url": "https://github.com/carlosrosen"
@@ -23,11 +23,11 @@
       "name": "Regimar de Deus Negreiros",
       "url": "https://github.com/regimarnegreiros"
     }
-  ],  
+  ],
   "scripts": {
     "start": "expo start",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
+    "android": "expo run:android",
+    "ios": "expo run:ios",
     "web": "expo start --web"
   },
   "dependencies": {
