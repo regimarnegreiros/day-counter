@@ -32,7 +32,7 @@ app.get("/api/health", (res: Response) => {
 app.get("/api/ready", async (req: Request, res: Response) => {
   const dbOK: boolean = await databaseHealthCheck(db);
 
-  if (!dbOK) res.status(HTTPCodes.serviceUnavailable).send({
+  if (!dbOK) return res.status(HTTPCodes.serviceUnavailable).send({
     status: "degraded",
     database: "down"
   });
