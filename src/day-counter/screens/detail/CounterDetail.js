@@ -6,7 +6,7 @@ import DatailsCard from "../../components/detail/DetailsCard";
 import ProgressBar from "../../components/detail/ProgressBar";
 import CircleButton from "../../components/detail/CircleButton";
 import ModalExclusao from "../../components/detail/ModalExclusao";
-import { converterData } from "../../utils/converterData.js";
+import { calcularDiferencaDias } from "../../utils/calcularDiferencaDias.js";
 
 {
   /* Depois substituir por props */
@@ -16,30 +16,13 @@ export default function CounterDetail({
   descricao = "Viagem planejada com a família para a praia. Hotel e passagens já estão compradas",
   data_alvo = "30/12/2026",
   data_criacao = "18/04/2026",
-  tipo = "r",
+  tipo = "p",
   notificacao = "Mensal",
   icone = "⛱️",
   cor = "#ea2500",
 }) {
   const [modalEdicao, setModalEdicao] = useState(false);
   const [modalExclusao, setModalExclusao] = useState(false);
-
-  const calcularDiferencaDias = (data_alvo, data_criacao, tipo) => {
-    const hoje = new Date();
-    hoje.setHours(0, 0, 0, 0);
-    let diferencaMilissegundos = 0;
-    if (tipo === "r") {
-      const dataRef = converterData(data_alvo);
-      dataRef.setHours(0, 0, 0, 0);
-      diferencaMilissegundos = dataRef.getTime() - hoje.getTime();
-    } else {
-      const dataRef = converterData(data_criacao);
-      dataRef.setHours(0, 0, 0, 0);
-      diferencaMilissegundos = hoje.getTime() - dataRef.getTime();
-    }
-    const dias = Math.floor(diferencaMilissegundos / (1000 * 60 * 60 * 24));
-    return dias < 0 ? 0 : dias;
-  };
 
   return (
     <SafeAreaProvider>
