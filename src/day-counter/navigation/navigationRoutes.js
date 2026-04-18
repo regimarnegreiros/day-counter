@@ -25,11 +25,6 @@ export default function AppRoutes() {
         component={CounterScreen}
         options={{ tabBarIcon: Clock }}
       />
-      <Tab.Screen
-        name="Ofensivas"
-        component={Placeholder}
-        options={{ tabBarIcon: Calendar }}
-      />
 
       <Tab.Screen
         name="Perfil"
