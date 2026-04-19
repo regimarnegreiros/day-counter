@@ -1,8 +1,13 @@
 import { registerRootComponent } from 'expo';
+import { NavigationContainer } from '@react-navigation/native';
+import AppRoutes from './navigation/navigationRoutes';
 
-import App from './screens/counter/CounterScreen';
+function App() {
+  return (
+    <NavigationContainer>
+      <AppRoutes />
+    </NavigationContainer>
+  );
+}
 
-// registerRootComponent calls AppRegistry.registerComponent('main', () => App);
-// It also ensures that whether you load the app in Expo Go or in a native build,
-// the environment is set up appropriately
 registerRootComponent(App);

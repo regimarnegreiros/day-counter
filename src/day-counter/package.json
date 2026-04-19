@@ -2,7 +2,7 @@
   "name": "day-counter",
   "version": "1.0.0",
   "main": "index.js",
-  "contributors":[
+  "contributors": [
     {
       "name": "Carlos Eduardo Roseno",
       "url": "https://github.com/carlosrosen"
@@ -23,7 +23,7 @@
       "name": "Regimar de Deus Negreiros",
       "url": "https://github.com/regimarnegreiros"
     }
-  ],  
+  ],
   "scripts": {
     "start": "expo start",
     "android": "expo start --android",
@@ -31,12 +31,15 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@react-navigation/bottom-tabs": "^7.15.9",
+    "@react-navigation/native": "^7.2.2",
     "expo": "~55.0.6",
     "expo-status-bar": "~55.0.4",
     "lucide-react-native": "^0.577.0",
     "react": "19.2.0",
     "react-native": "0.83.2",
-    "react-native-safe-area-context": "^5.7.0"
+    "react-native-safe-area-context": "~5.6.2",
+    "react-native-screens": "~4.23.0"
   },
   "private": true
 }
