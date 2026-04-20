@@ -2,6 +2,7 @@ import React from "react";
 import { View, Text } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import CounterScreen from "../screens/counter/CounterScreen";
+import ProfileScreen from "../screens/userProfile/ProfileScreen"
 import { MenuSelector } from "../components/layout/layoutComponent";
 import { Clock, Calendar, User } from "lucide-react-native";
 
@@ -28,7 +29,7 @@ export default function AppRoutes() {
 
       <Tab.Screen
         name="Perfil"
-        component={Placeholder}
+        component={ProfileScreen}
         options={{ tabBarIcon: User }}
       />
     </Tab.Navigator>
