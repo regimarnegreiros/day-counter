@@ -2,13 +2,13 @@ import React from 'react';
 import { registerRootComponent } from 'expo';
 import { NavigationContainer } from '@react-navigation/native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import AppRoutes from './navigation/navigationRoutes';
+import RootNavigator from './navigation/RootNavigator';
 
 function App() {
   return (
     <SafeAreaProvider>
       <NavigationContainer>
-        <AppRoutes />
+        <RootNavigator />
       </NavigationContainer>
     </SafeAreaProvider>
   );
