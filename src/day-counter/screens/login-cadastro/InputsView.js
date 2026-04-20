@@ -5,13 +5,13 @@ import {
   TextInput,
   Text,
   Pressable,
-  KeyboardAvoidingView,
   Platform,
   ScrollView,
 } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { useState } from "react";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const colors = {
   mainViolet: "#ad46ff",
@@ -218,21 +218,19 @@ function EntryScreen({ screen, onNavigate, onLogin }) {
 export default function InputsView({ screenType, navigation, onLogin }) {
   const isSignin = screenType === "signin";
 
-  const handleNavigate = () => navigation.replace(isSignin? "Signup" : "Signin");
+  const handleNavigate = () => navigation.navigate(isSignin? "Signup" : "Signin");
 
   if (screenType !== "signin" && screenType !== "signup") return <View />;
 
   return (
-    <KeyboardAvoidingView
+    <SafeAreaView
       style={styles.wrapper}
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      edges={["bottom"]}
     >
-      {/* Top violet area */}
       <View style={styles.header}>
         <Text style={styles.title}>Contador de Dias</Text>
       </View>
 
-      {/* White card with rounded top corner based on screen type */}
       <View
         style={[
           styles.cardWrapper,
@@ -242,14 +240,13 @@ export default function InputsView({ screenType, navigation, onLogin }) {
         <EntryScreen screen={screenType} onNavigate={handleNavigate} onLogin={onLogin} />
       </View>
 
-      {/* Bottom violet strip with rounded corner */}
       <View
         style={[
           styles.bottomStrip,
           isSignin ? styles.bottomRoundedLeft : styles.bottomRoundedRight,
         ]}
-      />
-    </KeyboardAvoidingView>
+        />
+    </SafeAreaView>
   );
 }
 
@@ -288,6 +285,7 @@ const styles = StyleSheet.create({
   bottomStrip: {
     height: 48,
     backgroundColor: colors.white,
+    marginTop: -40
   },
   bottomRoundedLeft: {
     borderTopLeftRadius: numerics.viewBorder,
