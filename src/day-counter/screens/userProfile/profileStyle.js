@@ -104,12 +104,12 @@ export default StyleSheet.create({
   },
   logoutContainer: {
     position: 'absolute',
-    bottom: 100,
+    bottom: 20,
     right: 20,
   },
   logoutButton: {
-    width: 70,
-    height: 70,
+    width: 60,
+    height: 60,
     backgroundColor: '#EF4444',
     borderRadius: 35,
     justifyContent: 'center',

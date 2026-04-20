@@ -1,20 +1,17 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { registerRootComponent } from 'expo';
-import ProfileScreen from './screens/userProfile/ProfileScreen';
-import CounterScreen from './screens/counter/CounterScreen';
+import { NavigationContainer } from '@react-navigation/native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import AppRoutes from './navigation/navigationRoutes';
 
 function App() {
-  const [currentScreen, setCurrentScreen] = useState('Contadores');
-
-  const handleNavigation = (screen) => {
-    setCurrentScreen(screen);
-  };
-
-  if (currentScreen === 'Perfil') {
-    return <ProfileScreen activeTab={currentScreen} setActiveTab={handleNavigation} />;
-  }
-
-  return <CounterScreen activeTab={currentScreen} setActiveTab={handleNavigation} />;
+  return (
+    <SafeAreaProvider>
+      <NavigationContainer>
+        <AppRoutes />
+      </NavigationContainer>
+    </SafeAreaProvider>
+  );
 }
 
 registerRootComponent(App);

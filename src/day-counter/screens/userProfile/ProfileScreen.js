@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { View, Text, ScrollView, TouchableOpacity, SafeAreaView, Modal, TextInput } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, Modal, TextInput } from 'react-native';
+import { SafeAreaView } from "react-native-safe-area-context";
 import { 
   User, 
   Mail, 
@@ -180,8 +181,6 @@ const ProfileScreen = (props) => {
           <LogOut size={32} color="#FFFFFF" strokeWidth={2.5} style={{ marginLeft: 4 }} />
         </TouchableOpacity>
       </View>
-
-      <MenuSelector activeTab={activeTab} setActiveTab={setActiveTab} />
     </SafeAreaView>
   );
 };
