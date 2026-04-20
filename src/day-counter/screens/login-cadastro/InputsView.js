@@ -134,6 +134,7 @@ function EntryScreen({ screen, onNavigate, onLogin }) {
       <ScrollView
         showsVerticalScrollIndicator={false}
         keyboardShouldPersistTaps="handled"
+        contentContainerStyle={isSignin? {marginTop: '30%'} : {marginTop: '10%'}}
       >
         {!isSignin &&
           renderInput({
@@ -185,6 +186,8 @@ function EntryScreen({ screen, onNavigate, onLogin }) {
             <Text style={styles.forgotText}>Esqueci minha senha</Text>
           </Pressable>
         )}
+
+        <View style={(isSignin)? {marginTop: "32%"} : {marginTop: "20%"}} />
 
         <TouchableOpacity style={styles.primaryButton} onPress={handleSubmit} activeOpacity={0.85}>
           <Text style={styles.primaryButtonText}>
@@ -398,5 +401,5 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     color: colors.borderGrey,
     fontSize: 13,
-  },
+  }
 });
