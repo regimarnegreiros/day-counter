@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, Text, ScrollView, TouchableOpacity, SafeAreaView } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, ScrollView, TouchableOpacity, SafeAreaView, Modal, TextInput } from 'react-native';
 import { 
   User, 
   Mail, 
@@ -7,6 +7,7 @@ import {
   Bell, 
   LogOut, 
   ChevronRight, 
+  X,
   UserCircle,
   Clock,
   CalendarDays
@@ -17,10 +18,24 @@ import { AppHeader, MenuSelector } from '../../components/layout/layoutComponent
 
 const ProfileScreen = (props) => {
   const { activeTab, setActiveTab } = props;
+  
+  // User data state
+  const [userData, setUserData] = useState({
+    name: 'Pedro Oliveira',
+    email: 'pedro.oliveira@email.com',
+    password: '••••••••',
+    notifications: true
+  });
+
+  // Modal state
+  const [modalVisible, setModalVisible] = useState(false);
+  const [editingField, setEditingField] = useState(null); // 'name', 'email', 'password'
+  const [tempValue, setTempValue] = useState('');
+
   const menuItems = [
-    { id: 'edit-name', label: 'Editar nome', icon: User },
-    { id: 'edit-email', label: 'Alterar email', icon: Mail },
-    { id: 'edit-password', label: 'Alterar senha', icon: Lock },
+    { id: 'name', label: 'Editar nome', icon: User },
+    { id: 'email', label: 'Alterar email', icon: Mail },
+    { id: 'password', label: 'Alterar senha', icon: Lock },
     { id: 'notifications', label: 'Notificações', icon: Bell },
   ];
 
@@ -29,6 +44,30 @@ const ProfileScreen = (props) => {
     { label: 'Total de Ofensivas', value: 12 },
   ];
 
+  const openEditor = (field) => {
+    if (field === 'notifications') {
+      setUserData(prev => ({ ...prev, notifications: !prev.notifications }));
+      return;
+    }
+    setEditingField(field);
+    setTempValue(userData[field]);
+    setModalVisible(true);
+  };
+
+  const saveChanges = () => {
+    setUserData(prev => ({ ...prev, [editingField]: tempValue }));
+    setModalVisible(false);
+  };
+
+  const getModalTitle = () => {
+    switch (editingField) {
+      case 'name': return 'Editar nome';
+      case 'email': return 'Alterar email';
+      case 'password': return 'Alterar senha';
+      default: return '';
+    }
+  };
+
   return (
     <SafeAreaView style={layoutStyles.container}>
       <AppHeader title="Perfil" />
@@ -36,8 +75,8 @@ const ProfileScreen = (props) => {
       <ScrollView style={profileStyles.scrollView} contentContainerStyle={profileStyles.content}>
         {/* User Info Card */}
         <View style={profileStyles.userCard}>
-          <Text style={profileStyles.userName}>Pedro Oliveira</Text>
-          <Text style={profileStyles.userEmail}>pedro.oliveira@email.com</Text>
+          <Text style={profileStyles.userName}>{userData.name}</Text>
+          <Text style={profileStyles.userEmail}>{userData.email}</Text>
         </View>
 
         <View style={profileStyles.divider} />
@@ -57,16 +96,83 @@ const ProfileScreen = (props) => {
         {/* Menu Items */}
         <View style={profileStyles.menuContainer}>
           {menuItems.map((item) => (
-            <TouchableOpacity key={item.id} style={profileStyles.menuItem} activeOpacity={0.7}>
+            <TouchableOpacity 
+              key={item.id} 
+              style={profileStyles.menuItem} 
+              activeOpacity={0.7}
+              onPress={() => openEditor(item.id)}
+            >
               <View style={profileStyles.menuIconContainer}>
-                <item.icon size={22} color="#A855F7" strokeWidth={2.5} />
+                <item.icon 
+                  size={22} 
+                  color={item.id === 'notifications' && !userData.notifications ? '#9CA3AF' : '#A855F7'} 
+                  strokeWidth={2.5} 
+                />
               </View>
-              <Text style={profileStyles.menuItemText}>{item.label}</Text>
-              <ChevronRight size={24} color="#1F2937" strokeWidth={3} />
+              <Text style={[
+                profileStyles.menuItemText,
+                item.id === 'notifications' && !userData.notifications && { color: '#9CA3AF' }
+              ]}>
+                {item.label}
+              </Text>
+              {item.id === 'notifications' ? (
+                <View style={{ 
+                  width: 44, 
+                  height: 24, 
+                  backgroundColor: userData.notifications ? '#AD46FF' : '#E5E7EB',
+                  borderRadius: 12,
+                  justifyContent: 'center',
+                  paddingHorizontal: 2
+                }}>
+                  <View style={{ 
+                    width: 20, 
+                    height: 20, 
+                    backgroundColor: 'white', 
+                    borderRadius: 10,
+                    alignSelf: userData.notifications ? 'flex-end' : 'flex-start'
+                  }} />
+                </View>
+              ) : (
+                <ChevronRight size={24} color="#1F2937" strokeWidth={3} />
+              )}
             </TouchableOpacity>
           ))}
         </View>
       </ScrollView>
+
+      {/* Edit Modal */}
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => setModalVisible(false)}
+      >
+        <View style={profileStyles.modalOverlay}>
+          <View style={profileStyles.modalContent}>
+            <TouchableOpacity 
+              style={profileStyles.modalCloseButton} 
+              onPress={() => setModalVisible(false)}
+            >
+              <X size={20} color="white" strokeWidth={3} />
+            </TouchableOpacity>
+
+            <Text style={profileStyles.modalTitle}>{getModalTitle()}</Text>
+            
+            <TextInput
+              style={profileStyles.modalInput}
+              value={tempValue}
+              onChangeText={setTempValue}
+              autoFocus={true}
+              secureTextEntry={editingField === 'password'}
+              autoCapitalize={editingField === 'email' ? 'none' : 'words'}
+            />
+
+            <TouchableOpacity style={profileStyles.modalSaveButton} onPress={saveChanges}>
+              <Text style={profileStyles.modalSaveButtonText}>Salvar</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
 
       {/* Logout FAB */}
       <View style={profileStyles.logoutContainer}>
@@ -79,6 +185,7 @@ const ProfileScreen = (props) => {
     </SafeAreaView>
   );
 };
+
 
 export default ProfileScreen;
 
