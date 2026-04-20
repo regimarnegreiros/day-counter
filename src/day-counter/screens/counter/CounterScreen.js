@@ -6,7 +6,8 @@ import layoutStyle from '../../components/layout/layoutStyles';
 
 import {AppHeader, MenuSelector} from '../../components/layout/layoutComponent';
 
-export default function CounterScreen() {
+const CounterScreen = (props) => {
+  const { activeTab, setActiveTab } = props;
   return (
     <SafeAreaProvider>
       <SafeAreaView style={layoutStyle.container}>
@@ -20,9 +21,11 @@ export default function CounterScreen() {
           <Plus color="white" size={30} />
         </TouchableOpacity>
 
-        <MenuSelector />
+        <MenuSelector activeTab={activeTab} setActiveTab={setActiveTab} />
 
       </SafeAreaView>
     </SafeAreaProvider>
   );
-}
+};
+
+export default CounterScreen;

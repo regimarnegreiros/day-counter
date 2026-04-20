@@ -1,8 +1,20 @@
+import React, { useState } from 'react';
 import { registerRootComponent } from 'expo';
+import ProfileScreen from './screens/userProfile/ProfileScreen';
+import CounterScreen from './screens/counter/CounterScreen';
 
-import App from './screens/counter/CounterScreen';
+function App() {
+  const [currentScreen, setCurrentScreen] = useState('Contadores');
 
-// registerRootComponent calls AppRegistry.registerComponent('main', () => App);
-// It also ensures that whether you load the app in Expo Go or in a native build,
-// the environment is set up appropriately
+  const handleNavigation = (screen) => {
+    setCurrentScreen(screen);
+  };
+
+  if (currentScreen === 'Perfil') {
+    return <ProfileScreen activeTab={currentScreen} setActiveTab={handleNavigation} />;
+  }
+
+  return <CounterScreen activeTab={currentScreen} setActiveTab={handleNavigation} />;
+}
+
 registerRootComponent(App);

@@ -4,7 +4,7 @@ import styles from './layoutStyles';
 import { useState } from 'react';
 
 function makeIcon(Icon) {
-  return (active) => (<Icon style={active? styles.activeIcon : styles.inactiveIcon}/>);
+  return (active) => (<Icon size={24} color={active? styles.activeIcon.color : styles.inactiveIcon.color}/>);
 }
 
 export const TabItem = ({ icon, label, active, onPress }) => (
@@ -14,9 +14,7 @@ export const TabItem = ({ icon, label, active, onPress }) => (
   </TouchableOpacity>
 );
 
-export const MenuSelector = () => {
-  const [activeTab, setActiveTab] = useState("Contadores");
-
+export const MenuSelector = ({ activeTab, setActiveTab }) => {
   return (
     <View style={styles.tabBar}>
       <TabItem
