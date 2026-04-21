@@ -15,11 +15,11 @@ export default function CounterDetail({
   titulo = "Férias de verão",
   descricao = "Viagem planejada com a família para a praia. Hotel e passagens já estão compradas",
   data_alvo = "30/12/2026",
-  data_criacao = "18/04/2026",
-  tipo = "p",
+  data_inicial = "06/01/2026",
+  tipo = "r",
   notificacao = "Mensal",
   icone = "⛱️",
-  cor = "#ea2500",
+  cor = "hsl(9, 100%, 50%)",
 }) {
   const [modalEdicao, setModalEdicao] = useState(false);
   const [modalExclusao, setModalExclusao] = useState(false);
@@ -49,21 +49,21 @@ export default function CounterDetail({
         <View style={styles.header}>
           <Text style={styles.icon}>{icone}</Text>
           <Text style={styles.days}>
-            {calcularDiferencaDias(data_alvo, data_criacao, tipo)} dias
+            {calcularDiferencaDias(data_alvo, data_inicial, tipo)}
           </Text>
           <Text style={styles.subtitle}>
             {tipo === "r" ? "Dias restantes" : "Se passaram"}
           </Text>
         </View>
         {tipo === "r" && (
-          <ProgressBar data_alvo={data_alvo} data_criacao={data_criacao} />
+          <ProgressBar data_alvo={data_alvo} data_inicial={data_inicial} />
         )}
         <DatailsCard
           tipo={tipo}
           titulo={titulo}
           descricao={descricao}
           data_alvo={data_alvo}
-          data_criacao={data_criacao}
+          data_inicial={data_inicial}
           notificacao={notificacao}
         />
       </SafeAreaView>

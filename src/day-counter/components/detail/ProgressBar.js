@@ -2,10 +2,10 @@ import { View, Text, StyleSheet } from "react-native";
 import { converterData } from "../../utils/converterData.js";
 
 export default function ProgressBar(props) {
-  const progresso = (data_alvo, data_criacao) => {
+  const progresso = (data_alvo, data_inicial) => {
     const hoje = new Date();
     const alvoFormatado = converterData(data_alvo);
-    const criacaoFormatado = converterData(data_criacao);
+    const criacaoFormatado = converterData(data_inicial);
     hoje.setHours(0, 0, 0, 0);
     alvoFormatado.setHours(0, 0, 0, 0);
     criacaoFormatado.setHours(0, 0, 0, 0);
@@ -18,7 +18,7 @@ export default function ProgressBar(props) {
     return Math.floor(porcentagem);
   };
 
-  const porcentagem = progresso(props.data_alvo, props.data_criacao);
+  const porcentagem = progresso(props.data_alvo, props.data_inicial);
 
   return (
     <View style={styles.progressContainer}>

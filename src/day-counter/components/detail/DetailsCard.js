@@ -18,7 +18,7 @@ export default function DatailsCard(props) {
             {props.tipo === "r" ? "DATA ALVO" : "DATA INCIAL"}
           </Text>
           <Text style={styles.valueText}>
-            {props.tipo === "r" ? props.data_alvo : props.data_criacao}
+            {props.tipo === "r" ? props.data_alvo : props.data_inicial}
           </Text>
         </View>
         <View style={styles.column}>
@@ -33,7 +33,7 @@ export default function DatailsCard(props) {
         {props.tipo === "r" && (
           <View style={styles.column}>
             <Text style={styles.labelText}>DATA INICIAL</Text>
-            <Text style={styles.valueText}>{props.data_criacao}</Text>
+            <Text style={styles.valueText}>{props.data_inicial}</Text>
           </View>
         )}
         <View style={styles.column}>
