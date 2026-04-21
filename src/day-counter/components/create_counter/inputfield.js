@@ -9,6 +9,7 @@ export const Input = props => (
         placeholder={props.placeholder}
         onChangeText={text => props.set(text)}
         value={props.text}
+        maxLength={props.maxLength}
         />
     </View>
 );
