@@ -1,153 +1,120 @@
-import { View, Text, StyleSheet } from "react-native";
-import {
-  FontAwesome,
-  Feather,
-  MaterialCommunityIcons,
-} from "@expo/vector-icons";
+import { View, Text, StyleSheet, Pressable } from "react-native";
+import { FontAwesome, Feather } from "@expo/vector-icons";
+import ProgressBar from "../detail/ProgressBar";
 
-export const CounterCards = ({ tipo }) => {
-  const isProgressive = tipo === "p";
+import { calcularDiferencaDias } from "../../utils/calcularDiferencaDias";
+import { gerarPaletaCores } from "../../utils/gerarPaletaCores";
 
+export const CounterCards = (props) => {
+  const { corFundo, corBadge, corBarra } = gerarPaletaCores(props.hue);
+  const dias = calcularDiferencaDias(
+    props.data_alvo,
+    props.data_inicial,
+    props.tipo,
+  );
   return (
-    <View
-      style={[
-        isProgressive
-          ? styles.progressiveContainer
-          : styles.regressiveContainer,
-      ]}
-    >
-      <View style={styles.title}>
-        {/* Icone placeholder */}
-        <MaterialCommunityIcons
-          name="briefcase"
-          size={60}
-          color="#6B4226"
-          style={styles.icon}
-        />
-        <View>
-          <View>
-            {/* Titulo placeholder */}
-            <Text style={styles.titleText}>Reunião</Text>
-          </View>
+    <View style={[styles.cardContainer, { backgroundColor: corFundo }]}>
+      <View style={styles.header}>
+        <Text style={styles.icon}>{props.icone}</Text>
+        <View style={styles.headerText}>
+          <Text style={styles.titleText}>{props.titulo}</Text>
           <View style={styles.eventdate}>
-            <FontAwesome name="calendar-o" size={16} color="#48484A" />
-            {/* Data placeholder */}
-            <Text>01 de Janeiro de 2027</Text>
+            <Feather name="calendar" size={16} color="#1C1C1E" />
+            <Text style={styles.dateText}>
+              {props.tipo === "p" ? props.data_inicial : props.data_alvo}
+            </Text>
           </View>
         </View>
-        <Text style={styles.threePoints}>⋮</Text>
+        <Pressable>
+          <Text style={styles.detailButton}>⋮</Text>
+        </Pressable>
       </View>
 
       <View
         style={[
-          styles.daysmissingContainer,
-          isProgressive ? styles.daysContainer : null,
+          styles.badgeBase,
+          { backgroundColor: corBadge },
+          props.tipo === "p" ? styles.progressiveBadge : styles.regressiveBadge,
         ]}
       >
-        <View style={styles.daysInfo}>
-          <Feather name="clock" size={16} color="#1C1C1E" />
-          {/* Dias placeholder */}
-          <Text>{isProgressive ? "27 dias decorridos" : "Faltam 5 dias"}</Text>
-        </View>
+        <Feather name="clock" size={16} color="#1C1C1E" />
+        <Text style={styles.badgeText}>
+          {props.tipo === "p"
+            ? `${dias} dias decorridos`
+            : `Faltam ${dias} dias`}
+        </Text>
       </View>
 
-      {/* Oculta a progressBar se for progressivo */}
-      {!isProgressive && (
-        <View style={styles.progress}>
-          {/* Porcentagem placeholder */}
-          <Text style={styles.progressPercent}>50%</Text>
-          <View style={styles.progressBarBackgroud}>
-            <View style={styles.progressBar}></View>
-          </View>
-        </View>
+      {props.tipo === "r" && (
+        <ProgressBar
+          data_alvo={props.data_alvo}
+          data_inicial={props.data_inicial}
+          corBarra={corBarra}
+          style="card"
+        />
       )}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  regressiveContainer: {
-    backgroundColor: "#FFE9E9", // Temporario já que o vai receber o valor pelo props
+  cardContainer: {
     width: "100%",
-    height: 180,
-    justifyContent: "space-between",
-    elevation: 3,
     borderRadius: 16,
-    padding: 20,
+    paddingHorizontal: 20,
+    paddingTop: 12,
+    paddingBottom: 24,
     marginBottom: 16,
   },
-  progressiveContainer: {
-    backgroundColor: "#e9edff", // Temporario já que o vai receber o valor pelo props
-    width: "100%",
-    height: 180,
-    justifyContent: "flex-start",
-    elevation: 3,
-    borderRadius: 16,
-    padding: 20,
-    marginBottom: 16,
-  },
-  title: {
+  header: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 20,
+    marginBottom: 5,
+  },
+  icon: {
+    fontSize: 48,
+    marginRight: 16,
+  },
+  headerText: {
+    flex: 1,
+  },
+  detailButton: {
+    fontSize: 30,
   },
   titleText: {
-    fontSize: 20,
+    fontSize: 24,
     fontWeight: "bold",
+    color: "#000",
+    marginBottom: 4,
   },
   eventdate: {
     flexDirection: "row",
+    alignItems: "center",
     gap: 6,
   },
-  threePoints: {
-    fontSize: 30,
-    color: "#333",
-    paddingLeft: 30,
-    paddingBottom: 20,
+  dateText: {
+    fontSize: 16,
+    color: "#1C1C1E",
   },
-  daysmissingContainer: {
-    backgroundColor: "#fa9898", // Temporario já que o vai receber o valor pelo props
+  badgeBase: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+    paddingVertical: 6,
+    paddingHorizontal: 16,
+    borderRadius: 24,
+    marginTop: 10,
+    backgroundColor: "#ffa9b1", // Fundo laranja/amarelo
+  },
+  regressiveBadge: {
     alignSelf: "flex-start",
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 6,
-    paddingVertical: 4,
-    paddingHorizontal: 12,
-    borderRadius: 20,
   },
-  daysContainer: {
-    backgroundColor: "#989efa", // Temporario já que o vai receber o valor pelo props
-    alignSelf: "flex-start",
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 6,
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 20,
-    marginTop: 30,
+  progressiveBadge: {
+    justifyContent: "center",
   },
-  daysInfo: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 6,
-  },
-  progress: {
-    marginTop: -10,
-  },
-  progressPercent: {
-    textAlign: "right",
-    marginBottom: 4,
-  },
-  progressBarBackgroud: {
-    backgroundColor: "#FFF",
-    borderRadius: 20,
-    width: "100%",
-    overflow: "hidden",
-  },
-  progressBar: {
-    backgroundColor: "#fc3f3f", // Temporario já que o vai receber o valor pelo props
-    borderRadius: 20,
-    minHeight: 20,
-    width: "50%", // Temporario já que o vai receber o valor pelo props
+  badgeText: {
+    fontSize: 16,
+    color: "#000000",
+    fontWeight: "400",
   },
 });

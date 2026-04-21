@@ -21,13 +21,24 @@ export default function CounterScreen() {
 
         <View style={{ flex: 1 }}>
           <ScrollView style={{ paddingHorizontal: 20 }}>
-            <CounterCards tipo={"r"} />
-            <CounterCards tipo={"p"} />
-            <CounterCards tipo={"r"} />
-            <CounterCards tipo={"p"} />
-            <CounterCards tipo={"r"} />
-            <CounterCards tipo={"p"} />
-            <CounterCards tipo={"r"} />
+            <CounterCards
+              id={1}
+              titulo="Reunião"
+              icone="💼"
+              tipo="r"
+              data_inicial="10/04/2026"
+              data_alvo="30/04/2026"
+              hue={90}
+            />
+            <CounterCards
+              id={2}
+              titulo="Reunião"
+              icone="💼"
+              tipo="p"
+              data_inicial="10/04/2026"
+              data_alvo="30/04/2026"
+              hue={0}
+            />
           </ScrollView>
         </View>
 
