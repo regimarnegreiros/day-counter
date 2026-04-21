@@ -32,4 +32,6 @@ export default function CounterScreen() {
       </SafeAreaView>
     </SafeAreaProvider>
   );
-}
+};
+
+export default CounterScreen;
