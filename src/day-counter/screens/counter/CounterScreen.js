@@ -1,12 +1,15 @@
 import { StatusBar } from 'expo-status-bar';
-import { View, TouchableOpacity } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { Plus } from 'lucide-react-native';
 import layoutStyle from '../../components/layout/layoutStyles';
 
 import {AppHeader, MenuSelector} from '../../components/layout/layoutComponent';
+import { InsertForm } from '../../components/create_counter/createCounter';
+import { View, TouchableOpacity, Button, Modal } from 'react-native';
+import { useState } from 'react';
 
 export default function CounterScreen() {
+  const [showCreateCount, setShowCreateCount] = useState(false);
   return (
     <SafeAreaProvider>
       <SafeAreaView style={layoutStyle.container}>
@@ -14,9 +17,13 @@ export default function CounterScreen() {
 
         <AppHeader title='Contagem de Dias' />
 
-        <View style={{ flex: 1 }} />
+        <View style={{ flex: 1, justifyContent: 'center'}} >
+          {showCreateCount?(<InsertForm showForm={setShowCreateCount}/>):(null)}
+        </View>
 
-        <TouchableOpacity style={layoutStyle.fab}>
+        <TouchableOpacity style={layoutStyle.fab}
+        onPress={() => setShowCreateCount(!showCreateCount)}
+        >
           <Plus color="white" size={30} />
         </TouchableOpacity>
 
