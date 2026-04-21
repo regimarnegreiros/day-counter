@@ -53,6 +53,7 @@ export default function CounterDetail(props) {
           <ProgressBar
             data_alvo={props.data_alvo}
             data_inicial={props.data_inicial}
+            style="detail"
           />
         )}
         <DatailsCard

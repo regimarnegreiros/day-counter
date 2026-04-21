@@ -21,34 +21,71 @@ export default function ProgressBar(props) {
   const porcentagem = progresso(props.data_alvo, props.data_inicial);
 
   return (
-    <View style={styles.progressContainer}>
-      <View style={styles.progressLabel}>
-        <Text style={styles.progressText}>Progresso</Text>
-        <Text style={styles.progressText}>{porcentagem}%</Text>
+    <View
+      style={[
+        props.style === "card"
+          ? styles.progressContainerCard
+          : styles.progressContainerDetail,
+      ]}
+    >
+      <View
+        style={[
+          props.style === "card"
+            ? styles.progressLabelCard
+            : styles.progressLabelDetail,
+        ]}
+      >
+        {props.style === "detail" && (
+          <Text style={[styles.progressTextDetail]}>Progresso</Text>
+        )}
+        <Text
+          style={[
+            props.style === "card"
+              ? styles.progressTextCard
+              : styles.progressTextDetail,
+          ]}
+        >
+          {porcentagem}%
+        </Text>
       </View>
       <View style={styles.progressBarBackgroud}>
-        <View style={[styles.progressBar, { width: `${porcentagem}%` }]}></View>
+        <View
+          style={[
+            styles.progressBar,
+            { width: `${porcentagem}%`, backgroundColor: props.corBarra },
+          ]}
+        ></View>
       </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  progressContainer: {
+  progressContainerDetail: {
     paddingHorizontal: 20,
     marginBottom: 20,
   },
-
-  progressLabel: {
+  progressContainerCard: {
+    paddingHorizontal: 0,
+    marginTop: -15,
+  },
+  progressLabelDetail: {
     flexDirection: "row",
     justifyContent: "space-between",
     marginBottom: 5,
   },
-  progressText: {
+  progressLabelCard: {
+    flexDirection: "row-reverse",
+    marginBottom: 5,
+  },
+  progressTextDetail: {
     color: "#FFF",
     fontSize: 16,
   },
-
+  progressTextCard: {
+    color: "#000",
+    fontSize: 16,
+  },
   progressBarBackgroud: {
     backgroundColor: "#FFF",
     borderRadius: 20,
@@ -57,7 +94,6 @@ const styles = StyleSheet.create({
     overflow: "hidden",
   },
   progressBar: {
-    backgroundColor: "#fce03f", // Temporario já que o vai receber o valor pelo props
     borderRadius: 20,
     minHeight: 20,
   },
