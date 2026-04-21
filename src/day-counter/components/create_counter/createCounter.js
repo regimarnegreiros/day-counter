@@ -29,7 +29,7 @@ function isSingleEmoji(str) {
 }
 
 export const InsertForm = ({ showForm }) => {
-  const [emote, setEmote] = useState("");
+  const [icon, setIcon] = useState("");
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [typeCounter, setTypeCounter] = useState("progressivo");
@@ -48,7 +48,7 @@ export const InsertForm = ({ showForm }) => {
   const [showEndDatePicker, setShowEndDatePicker] = useState(false);
 
   const [showDateAlert, setShowDateAlert] = useState(false);
-  const [showEmoteAlert, setShowEmoteAlert] = useState(false);
+  const [showIconAlert, setShowIconAlert] = useState(false);
 
   const colorsOptions = [
     "hsl(0, 100%, 64%)",
@@ -110,28 +110,28 @@ export const InsertForm = ({ showForm }) => {
             </View>
             <View>
               <Text>
-                Emote <Text style={{ color: "#FB2C36" }}>*</Text>
+                Ícone <Text style={{ color: "#FB2C36" }}>*</Text>
               </Text>
               <TextInput
                 style={styles.inputField}
-                placeholder="Insira seu emote"
+                placeholder="Insira seu emoji"
                 maxLength={2}
-                value={emote}
+                value={icon}
                 onChangeText={(text) => {
                   if (!isSingleEmoji(text)) {
-                    setShowEmoteAlert(true);
+                    setShowIconAlert(true);
                     setTimeout(() => {
-                      setShowEmoteAlert(false);
+                      setShowIconAlert(false);
                     }, 5000);
-                    setEmote("");
+                    setIcon("");
                   } else {
-                    setEmote(text);
+                    setIcon(text);
                   }
                 }}
               />
-              {showEmoteAlert ? (
+              {showIconAlert ? (
                 <Text style={{ color: "#FB2C36" }}>
-                  Este campo so pode inserir emote e apenas um.
+                  Este campo só pode inserir apenas um emoji
                 </Text>
               ) : null}
             </View>
@@ -206,7 +206,7 @@ export const InsertForm = ({ showForm }) => {
                 </Pressable>
                 {showDateAlert ? (
                   <Text style={{ color: "#FB2C36" }}>
-                    Data fim não pode ser menor que a data inicio
+                    Data fim não pode ser menor que a data início
                   </Text>
                 ) : null}
                 {showEndDatePicker && (
