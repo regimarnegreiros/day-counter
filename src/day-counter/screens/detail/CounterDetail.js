@@ -8,25 +8,15 @@ import CircleButton from "../../components/detail/CircleButton";
 import ModalExclusao from "../../components/detail/ModalExclusao";
 import { calcularDiferencaDias } from "../../utils/calcularDiferencaDias.js";
 
-{
-  /* Depois substituir por props */
-}
-export default function CounterDetail({
-  titulo = "Férias de verão",
-  descricao = "Viagem planejada com a família para a praia. Hotel e passagens já estão compradas",
-  data_alvo = "30/12/2026",
-  data_inicial = "06/01/2026",
-  tipo = "r",
-  notificacao = "Mensal",
-  icone = "⛱️",
-  cor = "hsl(9, 100%, 50%)",
-}) {
+export default function CounterDetail(props) {
   const [modalEdicao, setModalEdicao] = useState(false);
   const [modalExclusao, setModalExclusao] = useState(false);
 
   return (
     <SafeAreaProvider>
-      <SafeAreaView style={[styles.screenBackgroud, { backgroundColor: cor }]}>
+      <SafeAreaView
+        style={[styles.screenBackgroud, { backgroundColor: props.cor }]}
+      >
         <ModalExclusao
           visible={modalExclusao}
           onClose={() => {
@@ -47,24 +37,31 @@ export default function CounterDetail({
           </View>
         </View>
         <View style={styles.header}>
-          <Text style={styles.icon}>{icone}</Text>
+          <Text style={styles.icon}>{props.icone}</Text>
           <Text style={styles.days}>
-            {calcularDiferencaDias(data_alvo, data_inicial, tipo)}
+            {calcularDiferencaDias(
+              props.data_alvo,
+              props.data_inicial,
+              props.tipo,
+            )}
           </Text>
           <Text style={styles.subtitle}>
-            {tipo === "r" ? "Dias restantes" : "Se passaram"}
+            {props.tipo === "r" ? "Dias restantes" : "Se passaram"}
           </Text>
         </View>
-        {tipo === "r" && (
-          <ProgressBar data_alvo={data_alvo} data_inicial={data_inicial} />
+        {props.tipo === "r" && (
+          <ProgressBar
+            data_alvo={props.data_alvo}
+            data_inicial={props.data_inicial}
+          />
         )}
         <DatailsCard
-          tipo={tipo}
-          titulo={titulo}
-          descricao={descricao}
-          data_alvo={data_alvo}
-          data_inicial={data_inicial}
-          notificacao={notificacao}
+          tipo={props.tipo}
+          titulo={props.titulo}
+          descricao={props.descricao}
+          data_alvo={props.data_alvo}
+          data_inicial={props.data_inicial}
+          notificacao={props.notificacao}
         />
       </SafeAreaView>
     </SafeAreaProvider>
