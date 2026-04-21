@@ -1,18 +1,18 @@
 import { StatusBar } from "expo-status-bar";
-import { View, TouchableOpacity, ScrollView } from "react-native";
+import { View, TouchableOpacity, ScrollView, Button, Modal } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { Plus } from "lucide-react-native";
 import layoutStyle from "../../components/layout/layoutStyles";
 
-import {
-  AppHeader,
-  MenuSelector,
-} from "../../components/layout/layoutComponent";
+import {AppHeader, MenuSelector} from '../../components/layout/layoutComponent';
+import { InsertForm } from '../../components/create_counter/createCounter';
+import { useState } from 'react';
 
 import { CounterCards } from "../../components/CounterCards/CounterCards";
 
 const CounterScreen = (props) => {
   const { activeTab, setActiveTab } = props;
+  const [showCreateCount, setShowCreateCount] = useState(false);
   return (
     <SafeAreaView style={layoutStyle.container}>
       <StatusBar style="dark" />
@@ -20,6 +20,7 @@ const CounterScreen = (props) => {
       <AppHeader title="Contagem de Dias" />
 
       <View style={{ flex: 1 }}>
+        {showCreateCount?(<InsertForm showForm={setShowCreateCount}/>):(null)}
         <ScrollView style={{ paddingHorizontal: 20, marginTop: 20 }}>
           <CounterCards
             id={1}
@@ -42,7 +43,8 @@ const CounterScreen = (props) => {
         </ScrollView>
       </View>
 
-      <TouchableOpacity style={layoutStyle.fab}>
+      <TouchableOpacity style={layoutStyle.fab}
+       onPress={() => setShowCreateCount(!showCreateCount)}>
         <Plus color="white" size={30} />
       </TouchableOpacity>
     </SafeAreaView>
