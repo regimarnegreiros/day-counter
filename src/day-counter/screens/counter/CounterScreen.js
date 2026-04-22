@@ -33,7 +33,7 @@ const CounterScreen = (props) => {
 
       <View style={{ flex: 1 }}>
         {showCreateCount ? <InsertForm showForm={setShowCreateCount} /> : null}
-        <ScrollView style={{ paddingHorizontal: 20, paddingTop: 10 }}>
+        <ScrollView style={{ paddingHorizontal: 16, paddingTop: 16 }}>
           <CounterCards
             id={1}
             titulo="Reunião"
