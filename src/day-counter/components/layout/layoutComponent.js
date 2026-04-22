@@ -2,6 +2,7 @@ import { Text, View, TouchableOpacity } from "react-native";
 import { Clock, Calendar, User } from "lucide-react-native";
 import styles from "./layoutStyles";
 import { useState } from "react";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 function makeIcon(Icon) {
   return (active) => (
@@ -17,8 +18,17 @@ export const TabItem = ({ icon, label, active, onPress }) => (
 );
 
 export const MenuSelector = ({ state, descriptors, navigation }) => {
+  const insets = useSafeAreaInsets();
   return (
-    <View style={styles.tabBar}>
+    <View
+      style={[
+        styles.tabBar,
+        {
+          paddingBottom: insets.bottom,
+          height: 60 + insets.bottom,
+        },
+      ]}
+    >
       {state.routes.map((route, index) => {
         const { options } = descriptors[route.key];
         const isFocused = state.index === index;

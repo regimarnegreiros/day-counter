@@ -7,7 +7,7 @@ import CounterDetail from "../screens/detail/CounterDetail";
 const Root = createNativeStackNavigator();
 
 export default function RootNavigator() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false); // troque para true para debug
+  const [isAuthenticated, setIsAuthenticated] = useState(true); // troque para true para debug
 
   return (
     <Root.Navigator screenOptions={{ headerShown: false, animation: "fade" }}>
