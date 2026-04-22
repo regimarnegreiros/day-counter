@@ -51,8 +51,8 @@ export default StyleSheet.create({
 
   fab: {
     position: "absolute",
-    right: 20,
-    bottom: 20,
+    right: 16,
+    bottom: 16,
     backgroundColor: "#AF52DE",
     width: 60,
     height: 60,
