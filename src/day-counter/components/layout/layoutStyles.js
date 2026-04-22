@@ -33,7 +33,6 @@ export default StyleSheet.create({
 
   tabBar: {
     flexDirection: "row",
-    height: 65,
     justifyContent: "space-around",
     alignItems: "center",
   },

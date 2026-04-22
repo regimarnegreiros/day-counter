@@ -6,7 +6,6 @@ import {
   Text,
   Pressable,
   Platform,
-  ScrollView,
 } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
@@ -131,13 +130,7 @@ function EntryScreen({ screen, onNavigate, onLogin }) {
 
   return (
     <View style={styles.card}>
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        keyboardShouldPersistTaps="handled"
-        contentContainerStyle={
-          isSignin ? { marginTop: "30%" } : { marginTop: "10%" }
-        }
-      >
+      <View style={styles.cardContent}>
         {!isSignin &&
           renderInput({
             label: "Nome",
@@ -189,8 +182,6 @@ function EntryScreen({ screen, onNavigate, onLogin }) {
           </Pressable>
         )}
 
-        <View style={isSignin ? { marginTop: "32%" } : { marginTop: "20%" }} />
-
         <TouchableOpacity
           style={styles.primaryButton}
           onPress={handleSubmit}
@@ -216,7 +207,7 @@ function EntryScreen({ screen, onNavigate, onLogin }) {
             {isSignin ? "Criar nova conta" : "Já tem conta? Entrar"}
           </Text>
         </TouchableOpacity>
-      </ScrollView>
+      </View>
     </View>
   );
 }
@@ -289,6 +280,11 @@ const styles = StyleSheet.create({
   },
   card: {
     flex: 1,
+  },
+  cardContent: {
+    flex: 1,
+    justifyContent: "center",
+    paddingBottom: 48,
   },
   bottomStrip: {
     height: 48,
