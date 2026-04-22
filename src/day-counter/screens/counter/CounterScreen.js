@@ -38,16 +38,75 @@ const CounterScreen = (props) => {
             tipo="r"
             data_inicial="10/04/2026"
             data_alvo="30/04/2026"
-            hue={90}
+            hue={0}
+            descricao={"Reunião sobre o debates da empresa"}
+            notificacao={"Mensal"}
           />
           <CounterCards
             id={2}
-            titulo="Reunião"
+            titulo="Dias sem fumar"
             icone="💼"
             tipo="p"
             data_inicial="10/04/2026"
             data_alvo="30/04/2026"
-            hue={0}
+            hue={39}
+            descricao={"Sem fumar"}
+            notificacao={"Mensal"}
+          />
+          <CounterCards
+            id={1}
+            titulo="Reunião"
+            icone="💼"
+            tipo="r"
+            data_inicial="10/04/2026"
+            data_alvo="30/04/2026"
+            hue={126}
+            descricao={"Reunião sobre o debates da empresa"}
+            notificacao={"Mensal"}
+          />
+          <CounterCards
+            id={2}
+            titulo="Dias sem fumar"
+            icone="💼"
+            tipo="p"
+            data_inicial="10/04/2026"
+            data_alvo="30/04/2026"
+            hue={207}
+            descricao={"Sem fumar"}
+            notificacao={"Mensal"}
+          />
+          <CounterCards
+            id={1}
+            titulo="Reunião"
+            icone="💼"
+            tipo="r"
+            data_inicial="10/04/2026"
+            data_alvo="30/04/2026"
+            hue={240}
+            descricao={"Reunião sobre o debates da empresa"}
+            notificacao={"Mensal"}
+          />
+          <CounterCards
+            id={2}
+            titulo="Dias sem fumar"
+            icone="💼"
+            tipo="p"
+            data_inicial="10/04/2026"
+            data_alvo="30/04/2026"
+            hue={296}
+            descricao={"Sem fumar"}
+            notificacao={"Mensal"}
+          />
+          <CounterCards
+            id={2}
+            titulo="Dias sem fumar"
+            icone="💼"
+            tipo="p"
+            data_inicial="10/04/2026"
+            data_alvo="30/04/2026"
+            hue={273}
+            descricao={"Sem fumar"}
+            notificacao={"Mensal"}
           />
         </ScrollView>
       </View>

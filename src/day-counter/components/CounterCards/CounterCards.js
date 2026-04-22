@@ -1,7 +1,8 @@
 import { View, Text, StyleSheet, Pressable } from "react-native";
 import { FontAwesome, Feather } from "@expo/vector-icons";
-import ProgressBar from "../detail/ProgressBar";
+import { useNavigation } from "@react-navigation/native";
 
+import ProgressBar from "../detail/ProgressBar";
 import { calcularDiferencaDias } from "../../utils/calcularDiferencaDias";
 import { gerarPaletaCores } from "../../utils/gerarPaletaCores";
 
@@ -12,8 +13,20 @@ export const CounterCards = (props) => {
     props.data_inicial,
     props.tipo,
   );
+  const navigation = useNavigation();
+  const paginaDetalhes = () => {
+    navigation.navigate("CounterDetail", {
+      ...props,
+      corBadge,
+      corBarra,
+      dias,
+    });
+  };
   return (
-    <View style={[styles.cardContainer, { backgroundColor: corFundo }]}>
+    <Pressable
+      onPress={paginaDetalhes}
+      style={[styles.cardContainer, { backgroundColor: corFundo }]}
+    >
       <View style={styles.header}>
         <Text style={styles.icon}>{props.icone}</Text>
         <View style={styles.headerText}>
@@ -53,7 +66,7 @@ export const CounterCards = (props) => {
           style="card"
         />
       )}
-    </View>
+    </Pressable>
   );
 };
 

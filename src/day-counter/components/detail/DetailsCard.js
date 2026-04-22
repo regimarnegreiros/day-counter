@@ -13,7 +13,7 @@ export default function DatailsCard(props) {
       </View>
       <View style={styles.divider} />
       <View style={styles.row}>
-        <View style={styles.column}>
+        <View>
           <Text style={styles.labelText}>
             {props.tipo === "r" ? "DATA ALVO" : "DATA INCIAL"}
           </Text>
@@ -21,7 +21,7 @@ export default function DatailsCard(props) {
             {props.tipo === "r" ? props.data_alvo : props.data_inicial}
           </Text>
         </View>
-        <View style={styles.column}>
+        <View>
           <Text style={styles.labelText}>TIPO</Text>
           <Text style={styles.valueText}>
             {props.tipo === "r" ? "Regressivo" : "Progressivo"}
@@ -31,12 +31,12 @@ export default function DatailsCard(props) {
       <View style={styles.divider} />
       <View style={styles.row}>
         {props.tipo === "r" && (
-          <View style={styles.column}>
+          <View>
             <Text style={styles.labelText}>DATA INICIAL</Text>
             <Text style={styles.valueText}>{props.data_inicial}</Text>
           </View>
         )}
-        <View style={styles.column}>
+        <View>
           <Text style={styles.labelText}>NOTIFICAÇÃO</Text>
           <Text style={styles.valueText}>{props.notificacao}</Text>
         </View>
@@ -51,34 +51,33 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
     backgroundColor: "#FFF",
+    paddingTop: 10,
+    paddingBottom: 30,
   },
-
   section: {
-    marginTop: 20,
+    flex: 1,
+    justifyContent: "center",
     paddingHorizontal: 20,
   },
-
-  labelText: {
-    color: "#888",
-    fontSize: 16,
-  },
-
-  valueText: {
-    fontSize: 16,
-  },
-
   row: {
+    flex: 1,
     flexDirection: "row",
+    alignItems: "center",
     justifyContent: "space-between",
     paddingHorizontal: 20,
   },
-  column: {
-    width: "30%",
+  labelText: {
+    color: "#888",
+    fontSize: 14,
+    marginBottom: 4,
   },
-
+  valueText: {
+    fontSize: 18,
+    color: "#000000",
+  },
   divider: {
     height: 1,
-    backgroundColor: "#CCC",
-    marginVertical: 16,
+    backgroundColor: "#cccccc",
+    marginHorizontal: 20,
   },
 });

@@ -134,7 +134,9 @@ function EntryScreen({ screen, onNavigate, onLogin }) {
       <ScrollView
         showsVerticalScrollIndicator={false}
         keyboardShouldPersistTaps="handled"
-        contentContainerStyle={isSignin? {marginTop: '30%'} : {marginTop: '10%'}}
+        contentContainerStyle={
+          isSignin ? { marginTop: "30%" } : { marginTop: "10%" }
+        }
       >
         {!isSignin &&
           renderInput({
@@ -177,7 +179,7 @@ function EntryScreen({ screen, onNavigate, onLogin }) {
             secureTextEntry: !showConfirmPass,
             errMsg: err.confirmPass,
             rightElement: eyeButton(showConfirmPass, () =>
-              setShowConfirmPass((v) => !v)
+              setShowConfirmPass((v) => !v),
             ),
           })}
 
@@ -187,9 +189,13 @@ function EntryScreen({ screen, onNavigate, onLogin }) {
           </Pressable>
         )}
 
-        <View style={(isSignin)? {marginTop: "32%"} : {marginTop: "20%"}} />
+        <View style={isSignin ? { marginTop: "32%" } : { marginTop: "20%" }} />
 
-        <TouchableOpacity style={styles.primaryButton} onPress={handleSubmit} activeOpacity={0.85}>
+        <TouchableOpacity
+          style={styles.primaryButton}
+          onPress={handleSubmit}
+          activeOpacity={0.85}
+        >
           <Text style={styles.primaryButtonText}>
             {isSignin ? "Login" : "Cadastrar"}
           </Text>
@@ -207,7 +213,7 @@ function EntryScreen({ screen, onNavigate, onLogin }) {
           activeOpacity={0.85}
         >
           <Text style={styles.secondaryButtonText}>
-            {isSignin? "Criar nova conta" : "Já tem conta? Entrar"}
+            {isSignin ? "Criar nova conta" : "Já tem conta? Entrar"}
           </Text>
         </TouchableOpacity>
       </ScrollView>
@@ -218,15 +224,13 @@ function EntryScreen({ screen, onNavigate, onLogin }) {
 export default function InputsView({ screenType, navigation, onLogin }) {
   const isSignin = screenType === "signin";
 
-  const handleNavigate = () => navigation.navigate(isSignin? "Signup" : "Signin");
+  const handleNavigate = () =>
+    navigation.navigate(isSignin ? "Signup" : "Signin");
 
   if (screenType !== "signin" && screenType !== "signup") return <View />;
 
   return (
-    <SafeAreaView
-      style={styles.wrapper}
-      edges={["bottom"]}
-    >
+    <SafeAreaView style={styles.wrapper} edges={["bottom"]}>
       <View style={styles.header}>
         <Text style={styles.title}>Contador de Dias</Text>
       </View>
@@ -237,7 +241,11 @@ export default function InputsView({ screenType, navigation, onLogin }) {
           isSignin ? styles.cardRoundedLeft : styles.cardRoundedRight,
         ]}
       >
-        <EntryScreen screen={screenType} onNavigate={handleNavigate} onLogin={onLogin} />
+        <EntryScreen
+          screen={screenType}
+          onNavigate={handleNavigate}
+          onLogin={onLogin}
+        />
       </View>
 
       <View
@@ -245,7 +253,7 @@ export default function InputsView({ screenType, navigation, onLogin }) {
           styles.bottomStrip,
           isSignin ? styles.bottomRoundedLeft : styles.bottomRoundedRight,
         ]}
-        />
+      />
     </SafeAreaView>
   );
 }
@@ -285,7 +293,7 @@ const styles = StyleSheet.create({
   bottomStrip: {
     height: 48,
     backgroundColor: colors.white,
-    marginTop: -40
+    marginTop: -40,
   },
   bottomRoundedLeft: {
     borderTopLeftRadius: numerics.viewBorder,
@@ -399,5 +407,5 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     color: colors.borderGrey,
     fontSize: 13,
-  }
+  },
 });
