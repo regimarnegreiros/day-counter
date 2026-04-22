@@ -23,14 +23,17 @@ const CounterScreen = (props) => {
   const { activeTab, setActiveTab } = props;
   const [showCreateCount, setShowCreateCount] = useState(false);
   return (
-    <SafeAreaView style={layoutStyle.container}>
+    <SafeAreaView
+      style={layoutStyle.container}
+      edges={["top", "left", "right"]}
+    >
       <StatusBar style="dark" />
 
       <AppHeader title="Contagem de Dias" />
 
       <View style={{ flex: 1 }}>
         {showCreateCount ? <InsertForm showForm={setShowCreateCount} /> : null}
-        <ScrollView style={{ paddingHorizontal: 20, marginTop: 20 }}>
+        <ScrollView style={{ paddingHorizontal: 20, paddingTop: 10 }}>
           <CounterCards
             id={1}
             titulo="Reunião"
@@ -110,7 +113,6 @@ const CounterScreen = (props) => {
           />
         </ScrollView>
       </View>
-
       <TouchableOpacity
         style={layoutStyle.fab}
         onPress={() => setShowCreateCount(!showCreateCount)}
