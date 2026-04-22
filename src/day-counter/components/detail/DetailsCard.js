@@ -13,7 +13,7 @@ export default function DatailsCard(props) {
       </View>
       <View style={styles.divider} />
       <View style={styles.row}>
-        <View style={styles.column}>
+        <View>
           <Text style={styles.labelText}>
             {props.tipo === "r" ? "DATA ALVO" : "DATA INCIAL"}
           </Text>
@@ -21,7 +21,7 @@ export default function DatailsCard(props) {
             {props.tipo === "r" ? props.data_alvo : props.data_inicial}
           </Text>
         </View>
-        <View style={styles.column}>
+        <View>
           <Text style={styles.labelText}>TIPO</Text>
           <Text style={styles.valueText}>
             {props.tipo === "r" ? "Regressivo" : "Progressivo"}
@@ -31,12 +31,12 @@ export default function DatailsCard(props) {
       <View style={styles.divider} />
       <View style={styles.row}>
         {props.tipo === "r" && (
-          <View style={styles.column}>
+          <View>
             <Text style={styles.labelText}>DATA INICIAL</Text>
             <Text style={styles.valueText}>{props.data_inicial}</Text>
           </View>
         )}
-        <View style={styles.column}>
+        <View>
           <Text style={styles.labelText}>NOTIFICAÇÃO</Text>
           <Text style={styles.valueText}>{props.notificacao}</Text>
         </View>
@@ -65,9 +65,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     paddingHorizontal: 20,
-  },
-  columnLeft: {
-    flex: 1,
   },
   labelText: {
     color: "#888",
