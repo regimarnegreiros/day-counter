@@ -20,23 +20,103 @@ import { useEffect, useState } from "react";
 
 import { CounterCards } from "../../components/CounterCards/CounterCards";
 
+let DATA = {data:[ //esses dados serão puxados da API
+  {
+    id: 0,
+    titulo: "Reunião",
+    icone: "💼",
+    tipo: "r",
+    data_inicial: "2026-04-10",
+    data_alvo: "2026-04-30",
+    hue: 0,
+    descricao: "Reunião sobre o debates da empresa",
+    notificacao: "Mensal",
+  },
+  {
+    id: 1,
+    titulo: "Dias sem fumar",
+    icone: "💼",
+    tipo: "p",
+    data_inicial: "2026-04-10",
+    data_alvo: "2026-04-30",
+    hue: 39,
+    descricao: "Sem fumar",
+    notificacao: "Mensal",
+  },
+  {
+    id: 3,
+    titulo: "Reunião",
+    icone: "💼",
+    tipo: "r",
+    data_inicial: "2026-04-10",
+    data_alvo: "2026-04-30",
+    hue: 126,
+    descricao: "Reunião sobre o debates da empresa",
+    notificacao: "Mensal",
+  },
+  {
+    id: 4,
+    titulo: "Dias sem fumar",
+    icone: "💼",
+    tipo: "p",
+    data_inicial: "2026-04-10",
+    data_alvo: "2026-04-30",
+    hue: 207,
+    descricao: "Sem fumar",
+    notificacao: "Mensal",
+  },
+  {
+    id: 5,
+    titulo: "Reunião",
+    icone: "💼",
+    tipo: "r",
+    data_inicial: "2026-04-10",
+    data_alvo: "2026-04-30",
+    hue: 240,
+    descricao: "Reunião sobre o debates da empresa",
+    notificacao: "Mensal",
+  },
+  {
+    id: 6,
+    titulo: "Dias sem fumar",
+    icone: "💼",
+    tipo: "p",
+    data_inicial: "2026-04-10",
+    data_alvo: "2026-04-30",
+    hue: 296,
+    descricao: "Sem fumar",
+    notificacao: "Mensal",
+  },
+  {
+    id: 7,
+    titulo: "Dias sem fumar",
+    icone: "💼",
+    tipo: "p",
+    data_inicial: "2026-04-10",
+    data_alvo: "2026-04-30",
+    hue: 273,
+    descricao: "Sem fumar",
+    notificacao: "Mensal",
+  },
+]}
+
 const CounterScreen = (props) => {
   const { activeTab, setActiveTab } = props;
   const [showCreateCount, setShowCreateCount] = useState(false);
-  const [data, setData] = useState([]);
-  const getData = async () => {
-    const response = await fetch("http://192.168.0.118:3000/data", {
-      method: "get",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    const json = await response.json();
-    setData(json["data"]);
-  };
-  useEffect(() => {
-    getData();
-  }, []);
+  const [data, setData] = useState(DATA['data']);
+  // const getData = async () => {
+  //   const response = await fetch(process.env.EXPO_PUBLIC_API_URL ?? '' +"/data", {
+  //     method: "get",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //   });
+  //   const json = await response.json();
+  //   setData(json["data"]);
+  // };
+  // useEffect(() => {
+  //   getData();
+  // }, []);
 
   return (
     <SafeAreaView

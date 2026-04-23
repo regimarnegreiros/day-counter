@@ -52,15 +52,15 @@ export const InsertForm = ({ showForm }) => {
     setTimeout(() => setShowAlert(false), 5000);
   };
 
-  const createCounter = async (newCount) => {
-    fetch("http://192.168.0.118:3000/data", {
-      method: "post",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ data: newCount }),
-    });
-  };
+  // const createCounter = async (newCount) => {
+  //   fetch(process.env.EXPO_PUBLIC_API_URL+"/data", {
+  //     method: "post",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify({ data: newCount }),
+  //   });
+  // };
 
   const colorsOptions = [
     "hsl(0, 100%, 64%)",
@@ -298,19 +298,19 @@ export const InsertForm = ({ showForm }) => {
                   return;
                 }
 
-                const newCount = {
-                  titulo: title,
-                  icone: icon,
-                  tipo: typeCounter,
-                  data_inicial: startDate,
-                  hue: Number.parseInt(color.split("(")[1].split(",")[0]),
-                  descricao: description,
-                  notificacao: notifyInterval,
-                };
-                if (typeCounter === "r") {
-                  newCount["data_alvo"] = endDate;
-                }
-                createCounter(newCount);
+                // const newCount = {
+                //   titulo: title,
+                //   icone: icon,
+                //   tipo: typeCounter,
+                //   data_inicial: startDate,
+                //   hue: Number.parseInt(color.split("(")[1].split(",")[0]),
+                //   descricao: description,
+                //   notificacao: notifyInterval,
+                // };
+                // if (typeCounter === "r") {
+                //   newCount["data_alvo"] = endDate;
+                // }
+                // createCounter(newCount);
                 showForm(false);
               }}
             >

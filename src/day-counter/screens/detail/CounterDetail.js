@@ -38,7 +38,6 @@ export default function CounterDetail(props) {
           endDate={dados.data_alvo}
           notifyInteval={dados.notificacao}
           hue={dados.hue}
-          update={dados.update}
         />
         <View style={styles.row}>
           <CircleButton

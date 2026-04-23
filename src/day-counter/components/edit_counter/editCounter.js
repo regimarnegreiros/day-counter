@@ -28,7 +28,7 @@ function isSingleEmoji(str) {
   return emojiRegex.test(str);
 }
 
-export const EditCounter = props => {
+export const EditCounter = (props) => {
   const [icon, setIcon] = useState(props.icon);
   const [title, setTitle] = useState(props.title);
   const [description, setDescription] = useState(props.description);
@@ -50,17 +50,17 @@ export const EditCounter = props => {
     setTimeout(() => setShowAlert(false), 5000);
   };
 
-  const updateData = async (updatedCount) => {
-    await fetch("http://192.168.0.118:3000/data", {
-      method: "put",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        data: updatedCount,
-      }),
-    });
-  };
+  // const updateData = async (updatedCount) => {
+  //   await fetch(process.env.EXPO_PUBLIC_API_URL +"/data", {
+  //     method: "put",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify({
+  //       data: updatedCount,
+  //     }),
+  //   });
+  // };
 
   const colorsOptions = [
     "hsl(0, 100%, 64%)",
@@ -285,21 +285,21 @@ export const EditCounter = props => {
                   return;
                 }
 
-                const updateCount = {
-                  id: props.id,
-                  titulo: title,
-                  icone: icon,
-                  tipo: typeCounter,
-                  data_inicial: startDate,
-                  hue: Number.parseInt(color.split("(")[1].split(",")[0]),
-                  descricao: description,
-                  notificacao: notifyInterval,
-                };
-                if (typeCounter === "r") {
-                  updateCount["data_alvo"] = endDate;
-                }
-                updateData(updateCount);
-                props.setShowEditCounter(false);
+                //     const updateCount = {
+                //       id: props.id,
+                //       titulo: title,
+                //       icone: icon,
+                //       tipo: typeCounter,
+                //       data_inicial: startDate,
+                //       hue: Number.parseInt(color.split("(")[1].split(",")[0]),
+                //       descricao: description,
+                //       notificacao: notifyInterval,
+                //     };
+                //     if (typeCounter === "r") {
+                //       updateCount["data_alvo"] = endDate;
+                //     }
+                //     updateData(updateCount);
+                    props.setShowEditCounter(false);
               }}
             >
               <Text style={{ color: "#fff" }}>Salvar Contagem</Text>
