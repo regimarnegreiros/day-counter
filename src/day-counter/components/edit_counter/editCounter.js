@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Text,
   View,
@@ -28,9 +28,9 @@ function isSingleEmoji(str) {
   return emojiRegex.test(str);
 }
 
-export const EditCounter = (props) => {
+export const EditCounter = props => {
   const [icon, setIcon] = useState(props.icon);
-  const [name, setName] = useState(props.name);
+  const [title, setTitle] = useState(props.title);
   const [description, setDescription] = useState(props.description);
   const typeCounter = props.typeCounter;
   const [startDate, setStartDate] = useState(new Date(props.startDate));
@@ -41,8 +41,26 @@ export const EditCounter = (props) => {
   const [showStartDatePicker, setShowStartDatePicker] = useState(false);
   const [showEndDatePicker, setShowEndDatePicker] = useState(false);
 
-  const [showDateAlert, setShowDateAlert] = useState(false);
-  const [showIconAlert, setShowIconAlert] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("Algo deu errado");
+
+  const showAlertMessage = (text) => {
+    setAlertMessage(text);
+    setShowAlert(true);
+    setTimeout(() => setShowAlert(false), 5000);
+  };
+
+  const updateData = async (updatedCount) => {
+    await fetch("http://192.168.0.118:3000/data", {
+      method: "put",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        data: updatedCount,
+      }),
+    });
+  };
 
   const colorsOptions = [
     "hsl(0, 100%, 64%)",
@@ -74,6 +92,26 @@ export const EditCounter = (props) => {
       statusBarTranslucent={true}
     >
       <View style={styles.overlay}>
+        <Modal
+          visible={showAlert}
+          transparent={true}
+          animationType="none"
+          statusBarTranslucent={true}
+        >
+          <View style={[styles.overlay]}>
+            <View style={styles.alertBox}>
+              <Text style={{ color: "#FB2C36" }}>{alertMessage}</Text>
+              <TouchableOpacity
+                style={styles.alertButton}
+                onPress={() => {
+                  setShowAlert(false);
+                }}
+              >
+                <Text>Fechar Aviso</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
         <KeyboardAwareScrollView
           style={{ flex: 1, width: "100%" }}
           contentContainerStyle={{
@@ -113,27 +151,19 @@ export const EditCounter = (props) => {
                 value={icon}
                 onChangeText={(text) => {
                   if (!isSingleEmoji(text)) {
-                    setShowIconAlert(true);
-                    setTimeout(() => {
-                      setShowIconAlert(false);
-                    }, 5000);
+                    showAlertMessage("Este campo só aceita emojis");
                     setIcon("");
                   } else {
                     setIcon(text);
                   }
                 }}
               />
-              {showIconAlert ? (
-                <Text style={{ color: "#FB2C36" }}>
-                  Este campo só pode inserir apenas um emoji
-                </Text>
-              ) : null}
             </View>
             <Input
-              name="Nome"
-              placeholder="Insira o nome do contador"
-              text={name}
-              set={setName}
+              title="Título"
+              placeholder="Insira o título do contador"
+              text={title}
+              set={setTitle}
               required={true}
               maxLength={50}
             />
@@ -159,15 +189,16 @@ export const EditCounter = (props) => {
                       if (endDate - selectedDate >= 0) {
                         setStartDate(selectedValue);
                       } else {
-                        setShowDateAlert(true);
-                        setTimeout(() => {
-                          setShowDateAlert(false);
-                        }, 5000);
+                        showAlertMessage(
+                          "Data fim não pode ser menor que a data início",
+                        );
                       }
                     } else {
                       setStartDate(selectedValue);
-                        setEndDate(
-                          new Date(new Date().setDate(selectedDate.getDate() + 1))
+                      setEndDate(
+                        new Date(
+                          new Date().setDate(selectedDate.getDate() + 1),
+                        ),
                       );
                     }
                   }}
@@ -185,11 +216,6 @@ export const EditCounter = (props) => {
                 >
                   <Text>{endDate.toLocaleDateString("pt-BR")}</Text>
                 </Pressable>
-                {showDateAlert ? (
-                  <Text style={{ color: "#FB2C36" }}>
-                    Data fim não pode ser menor que a data início
-                  </Text>
-                ) : null}
                 {showEndDatePicker && (
                   <DateTimePicker
                     value={endDate}
@@ -200,10 +226,9 @@ export const EditCounter = (props) => {
                       if (new Date(selectedValue) - startDate >= 0) {
                         setEndDate(selectedValue);
                       } else {
-                        setShowDateAlert(true);
-                        setTimeout(() => {
-                          setShowDateAlert(false);
-                        }, 5000);
+                        showAlertMessage(
+                          "Data fim não pode ser menor que a data início",
+                        );
                       }
                     }}
                   />
@@ -242,16 +267,42 @@ export const EditCounter = (props) => {
               </View>
             </View>
             <TextArea
-              name="Descrição"
+              title="Descrição"
               placeholder="Insira a descrição do contador"
               text={description}
               set={setDescription}
               required={false}
             />
-            <TouchableOpacity style={styles.saveButton}>
-              <Text style={{ color: "#fff" }}>
-                Salvar Contagem
-              </Text>
+            <TouchableOpacity
+              style={styles.saveButton}
+              onPress={() => {
+                if (title === "") {
+                  showAlertMessage("Insira o título do contador");
+                  return;
+                }
+                if (icon === "") {
+                  showAlertMessage("O ícone não pode ser nulo");
+                  return;
+                }
+
+                const updateCount = {
+                  id: props.id,
+                  titulo: title,
+                  icone: icon,
+                  tipo: typeCounter,
+                  data_inicial: startDate,
+                  hue: Number.parseInt(color.split("(")[1].split(",")[0]),
+                  descricao: description,
+                  notificacao: notifyInterval,
+                };
+                if (typeCounter === "r") {
+                  updateCount["data_alvo"] = endDate;
+                }
+                updateData(updateCount);
+                props.setShowEditCounter(false);
+              }}
+            >
+              <Text style={{ color: "#fff" }}>Salvar Contagem</Text>
             </TouchableOpacity>
           </View>
         </KeyboardAwareScrollView>

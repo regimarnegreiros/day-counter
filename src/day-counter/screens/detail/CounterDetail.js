@@ -31,13 +31,14 @@ export default function CounterDetail(props) {
           showEditCounter={modalEdicao}
           setShowEditCounter={setModalEdicao}
           icon={dados.icone}
-          name={dados.titulo}
+          title={dados.titulo}
           description={dados.descricao}
           typeCounter={dados.tipo}
           startDate={dados.data_inicial}
           endDate={dados.data_alvo}
           notifyInteval={dados.notificacao}
           hue={dados.hue}
+          update={dados.update}
         />
         <View style={styles.row}>
           <CircleButton

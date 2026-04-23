@@ -11,7 +11,7 @@
     "url": "git+https://github.com/regimarnegreiros/day-counter.git"
   },
   "license": "MIT",
-  "contributors":[
+  "contributors": [
     {
       "name": "Carlos Eduardo Roseno",
       "url": "https://github.com/carlosrosen"
@@ -32,10 +32,13 @@
       "name": "Regimar de Deus Negreiros",
       "url": "https://github.com/regimarnegreiros"
     }
-  ],  
+  ],
   "type": "module",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "express": "^5.2.1"
   }
 }

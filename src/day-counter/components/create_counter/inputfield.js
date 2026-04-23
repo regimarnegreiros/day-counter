@@ -3,7 +3,7 @@ import { View, TextInput , Text, FlatList,TouchableOpacity, Button, KeyboardAvoi
 
 export const Input = props => (
     <View>
-        {props.required === false?(<Text>{props.name}</Text>):(<Text>{props.name} <Text style={{color:'#FB2C36'}}>*</Text></Text>)}
+        {props.required === false?(<Text>{props.title}</Text>):(<Text>{props.title} <Text style={{color:'#FB2C36'}}>*</Text></Text>)}
         <TextInput
         style={styles.inputField}
         placeholder={props.placeholder}
@@ -15,7 +15,7 @@ export const Input = props => (
 );
 export const TextArea = props =>(
     <View>
-        {props.required === false?(<Text>{props.name}</Text>):(<Text>{props.name} <Text style={{color:'#FB2C36'}}>*</Text></Text>)}
+        {props.required === false?(<Text>{props.title}</Text>):(<Text>{props.title} <Text style={{color:'#FB2C36'}}>*</Text></Text>)}
         <TextInput
         multiline
         numberOfLine={4}

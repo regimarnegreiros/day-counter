@@ -30,7 +30,7 @@ function isSingleEmoji(str) {
 
 export const InsertForm = ({ showForm }) => {
   const [icon, setIcon] = useState("");
-  const [name, setName] = useState("");
+  const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [typeCounter, setTypeCounter] = useState("p");
   const [startDate, setStartDate] = useState(new Date());
@@ -43,8 +43,24 @@ export const InsertForm = ({ showForm }) => {
   const [showStartDatePicker, setShowStartDatePicker] = useState(false);
   const [showEndDatePicker, setShowEndDatePicker] = useState(false);
 
-  const [showDateAlert, setShowDateAlert] = useState(false);
-  const [showIconAlert, setShowIconAlert] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("Algo deu errado");
+
+  const showAlertMessage = (text) => {
+    setAlertMessage(text);
+    setShowAlert(true);
+    setTimeout(() => setShowAlert(false), 5000);
+  };
+
+  const createCounter = async (newCount) => {
+    fetch("http://192.168.0.118:3000/data", {
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ data: newCount }),
+    });
+  };
 
   const colorsOptions = [
     "hsl(0, 100%, 64%)",
@@ -76,6 +92,26 @@ export const InsertForm = ({ showForm }) => {
       statusBarTranslucent={true}
     >
       <View style={styles.overlay}>
+        <Modal
+          visible={showAlert}
+          transparent={true}
+          animationType="none"
+          statusBarTranslucent={true}
+        >
+          <View style={[styles.overlay]}>
+            <View style={styles.alertBox}>
+              <Text style={{ color: "#FB2C36" }}>{alertMessage}</Text>
+              <TouchableOpacity
+                style={styles.alertButton}
+                onPress={() => {
+                  setShowAlert(false);
+                }}
+              >
+                <Text>Fechar Aviso</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
         <KeyboardAwareScrollView
           style={{ flex: 1, width: "100%" }}
           contentContainerStyle={{
@@ -115,27 +151,19 @@ export const InsertForm = ({ showForm }) => {
                 value={icon}
                 onChangeText={(text) => {
                   if (!isSingleEmoji(text)) {
-                    setShowIconAlert(true);
-                    setTimeout(() => {
-                      setShowIconAlert(false);
-                    }, 5000);
+                    showAlertMessage("Este campo só aceita emojis");
                     setIcon("");
                   } else {
                     setIcon(text);
                   }
                 }}
               />
-              {showIconAlert ? (
-                <Text style={{ color: "#FB2C36" }}>
-                  Este campo só pode inserir apenas um emoji
-                </Text>
-              ) : null}
             </View>
             <Input
-              name="Nome"
-              placeholder="Insira o nome do contador"
-              text={name}
-              set={setName}
+              title="Título"
+              placeholder="Insira o título do contador"
+              text={title}
+              set={setTitle}
               required={true}
               maxLength={50}
             />
@@ -170,26 +198,27 @@ export const InsertForm = ({ showForm }) => {
                   onChange={(e, selectedValue) => {
                     setShowStartDatePicker(false);
                     const selectedDate = new Date(selectedValue);
-                    if (typeCounter === "regressivo") {
+                    if (typeCounter === "r") {
                       if (endDate - selectedDate >= 0) {
                         setStartDate(selectedValue);
                       } else {
-                        setShowDateAlert(true);
-                        setTimeout(() => {
-                          setShowDateAlert(false);
-                        }, 5000);
+                        showAlertMessage(
+                          "Data fim não pode ser menor que a data início",
+                        );
                       }
                     } else {
                       setStartDate(selectedValue);
-                        setEndDate(
-                          new Date(new Date().setDate(selectedDate.getDate() + 1))
+                      setEndDate(
+                        new Date(
+                          new Date().setDate(selectedDate.getDate() + 1),
+                        ),
                       );
                     }
                   }}
                 />
               )}
             </View>
-            {typeCounter === "regressivo" ? (
+            {typeCounter === "r" ? (
               <View>
                 <Text>Data Fim</Text>
                 <Pressable
@@ -200,11 +229,6 @@ export const InsertForm = ({ showForm }) => {
                 >
                   <Text>{endDate.toLocaleDateString("pt-BR")}</Text>
                 </Pressable>
-                {showDateAlert ? (
-                  <Text style={{ color: "#FB2C36" }}>
-                    Data fim não pode ser menor que a data início
-                  </Text>
-                ) : null}
                 {showEndDatePicker && (
                   <DateTimePicker
                     value={endDate}
@@ -215,10 +239,9 @@ export const InsertForm = ({ showForm }) => {
                       if (new Date(selectedValue) - startDate >= 0) {
                         setEndDate(selectedValue);
                       } else {
-                        setShowDateAlert(true);
-                        setTimeout(() => {
-                          setShowDateAlert(false);
-                        }, 5000);
+                        showAlertMessage(
+                          "Data fim não pode ser menor que a data início",
+                        );
                       }
                     }}
                   />
@@ -257,16 +280,41 @@ export const InsertForm = ({ showForm }) => {
               </View>
             </View>
             <TextArea
-              name="Descrição"
+              title="Descrição"
               placeholder="Insira a descrição do contador"
               text={description}
               set={setDescription}
               required={false}
             />
-            <TouchableOpacity style={styles.saveButton}>
-              <Text style={{ color: "#fff" }}>
-                Criar Contagem
-              </Text>
+            <TouchableOpacity
+              style={styles.saveButton}
+              onPress={() => {
+                if (title === "") {
+                  showAlertMessage("Insira o título do contador");
+                  return;
+                }
+                if (icon === "") {
+                  showAlertMessage("O ícone não pode ser nulo");
+                  return;
+                }
+
+                const newCount = {
+                  titulo: title,
+                  icone: icon,
+                  tipo: typeCounter,
+                  data_inicial: startDate,
+                  hue: Number.parseInt(color.split("(")[1].split(",")[0]),
+                  descricao: description,
+                  notificacao: notifyInterval,
+                };
+                if (typeCounter === "r") {
+                  newCount["data_alvo"] = endDate;
+                }
+                createCounter(newCount);
+                showForm(false);
+              }}
+            >
+              <Text style={{ color: "#fff" }}>Criar Contagem</Text>
             </TouchableOpacity>
           </View>
         </KeyboardAwareScrollView>
@@ -358,6 +406,23 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     backgroundColor: "#AF52DE",
     padding: 10,
+    borderRadius: 12,
+  },
+  alertBox: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    margin: "auto",
+    paddingHorizontal: 10,
+    paddingVertical: 30,
+    backgroundColor: "#fff",
+    borderRadius: 12,
+    gap: 10,
+    borderWidth: 1,
+  },
+  alertButton: {
+    backgroundColor: "#61616194",
+    padding: 5,
     borderRadius: 12,
   },
 });
