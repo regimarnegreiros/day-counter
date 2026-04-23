@@ -18,7 +18,7 @@ import DateTimePicker from "@react-native-community/datetimepicker";
 
 import { AlignCenter, Check } from "lucide-react-native";
 
-import { TextArea, Input, Select } from "./inputfield";
+import { TextArea, Input, Select } from "../create_counter/inputfield";
 
 function isSingleEmoji(str) {
   if (!str) return false;
@@ -28,17 +28,15 @@ function isSingleEmoji(str) {
   return emojiRegex.test(str);
 }
 
-export const InsertForm = ({ showForm }) => {
-  const [icon, setIcon] = useState("");
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
-  const [typeCounter, setTypeCounter] = useState("p");
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(
-    new Date(new Date().setDate(new Date().getDate() + 1)),
-  );
-  const [notifyInterval, setNotifyInterval] = useState("diario");
-  const [color, setColor] = useState("hsl(0, 100%, 64%)");
+export const EditCounter = (props) => {
+  const [icon, setIcon] = useState(props.icon);
+  const [name, setName] = useState(props.name);
+  const [description, setDescription] = useState(props.description);
+  const typeCounter = props.typeCounter;
+  const [startDate, setStartDate] = useState(new Date(props.startDate));
+  const [endDate, setEndDate] = useState(new Date(props.endDate));
+  const [notifyInterval, setNotifyInterval] = useState(props.notifyInterval);
+  const [color, setColor] = useState(`hsl(${props.hue}, 100%, 64%)`);
 
   const [showStartDatePicker, setShowStartDatePicker] = useState(false);
   const [showEndDatePicker, setShowEndDatePicker] = useState(false);
@@ -70,7 +68,7 @@ export const InsertForm = ({ showForm }) => {
 
   return (
     <Modal
-      visible={true}
+      visible={props.showEditCounter}
       transparent={true}
       animationType="fade"
       statusBarTranslucent={true}
@@ -96,10 +94,10 @@ export const InsertForm = ({ showForm }) => {
                 justifyContent: "space-between",
               }}
             >
-              <Text style={{ fontSize: 24 }}>Nova Contagem</Text>
+              <Text style={{ fontSize: 24 }}>Editar Contagem</Text>
               <TouchableOpacity
                 style={styles.closeButton}
-                onPress={() => showForm(false)}
+                onPress={() => props.setShowEditCounter(false)}
               >
                 <Text>X</Text>
               </TouchableOpacity>
@@ -140,19 +138,6 @@ export const InsertForm = ({ showForm }) => {
               maxLength={50}
             />
             <View>
-              <Text>Tipo</Text>
-              <View style={styles.selectConteiner}>
-                <Picker
-                  style={styles.selectField}
-                  selectedValue="p"
-                  onValueChange={(val) => setTypeCounter(val)}
-                >
-                  <Picker.Item label="Progressivo" value="p" />
-                  <Picker.Item label="Regressivo" value="r" />
-                </Picker>
-              </View>
-            </View>
-            <View>
               <Text>Data Início</Text>
               <Pressable
                 onPress={() => {
@@ -170,7 +155,7 @@ export const InsertForm = ({ showForm }) => {
                   onChange={(e, selectedValue) => {
                     setShowStartDatePicker(false);
                     const selectedDate = new Date(selectedValue);
-                    if (typeCounter === "regressivo") {
+                    if (typeCounter === "r") {
                       if (endDate - selectedDate >= 0) {
                         setStartDate(selectedValue);
                       } else {
@@ -189,7 +174,7 @@ export const InsertForm = ({ showForm }) => {
                 />
               )}
             </View>
-            {typeCounter === "regressivo" ? (
+            {typeCounter === "r" ? (
               <View>
                 <Text>Data Fim</Text>
                 <Pressable
@@ -265,7 +250,7 @@ export const InsertForm = ({ showForm }) => {
             />
             <TouchableOpacity style={styles.saveButton}>
               <Text style={{ color: "#fff" }}>
-                Criar Contagem
+                Salvar Contagem
               </Text>
             </TouchableOpacity>
           </View>

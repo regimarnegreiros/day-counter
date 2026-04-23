@@ -5,6 +5,7 @@ import {
   ScrollView,
   Button,
   Modal,
+  FlatList
 } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { Plus } from "lucide-react-native";
@@ -39,8 +40,8 @@ const CounterScreen = (props) => {
             titulo="Reunião"
             icone="💼"
             tipo="r"
-            data_inicial="10/04/2026"
-            data_alvo="30/04/2026"
+            data_inicial="2026-04-10"
+            data_alvo="2026-04-30"
             hue={0}
             descricao={"Reunião sobre o debates da empresa"}
             notificacao={"Mensal"}
@@ -50,8 +51,8 @@ const CounterScreen = (props) => {
             titulo="Dias sem fumar"
             icone="💼"
             tipo="p"
-            data_inicial="10/04/2026"
-            data_alvo="30/04/2026"
+            data_inicial="2026-04-10"
+            data_alvo="2026-04-30"
             hue={39}
             descricao={"Sem fumar"}
             notificacao={"Mensal"}
@@ -61,8 +62,8 @@ const CounterScreen = (props) => {
             titulo="Reunião"
             icone="💼"
             tipo="r"
-            data_inicial="10/04/2026"
-            data_alvo="30/04/2026"
+            data_inicial="2026-04-10"
+            data_alvo="2026-04-30"
             hue={126}
             descricao={"Reunião sobre o debates da empresa"}
             notificacao={"Mensal"}
@@ -72,8 +73,8 @@ const CounterScreen = (props) => {
             titulo="Dias sem fumar"
             icone="💼"
             tipo="p"
-            data_inicial="10/04/2026"
-            data_alvo="30/04/2026"
+            data_inicial="2026-04-10"
+            data_alvo="2026-04-30"
             hue={207}
             descricao={"Sem fumar"}
             notificacao={"Mensal"}
@@ -83,8 +84,8 @@ const CounterScreen = (props) => {
             titulo="Reunião"
             icone="💼"
             tipo="r"
-            data_inicial="10/04/2026"
-            data_alvo="30/04/2026"
+            data_inicial="2026-04-10"
+            data_alvo="2026-04-30"
             hue={240}
             descricao={"Reunião sobre o debates da empresa"}
             notificacao={"Mensal"}
@@ -94,8 +95,8 @@ const CounterScreen = (props) => {
             titulo="Dias sem fumar"
             icone="💼"
             tipo="p"
-            data_inicial="10/04/2026"
-            data_alvo="30/04/2026"
+            data_inicial="2026-04-10"
+            data_alvo="2026-04-30"
             hue={296}
             descricao={"Sem fumar"}
             notificacao={"Mensal"}
@@ -105,8 +106,8 @@ const CounterScreen = (props) => {
             titulo="Dias sem fumar"
             icone="💼"
             tipo="p"
-            data_inicial="10/04/2026"
-            data_alvo="30/04/2026"
+            data_inicial="2026-04-10"
+            data_alvo="2026-04-30"
             hue={273}
             descricao={"Sem fumar"}
             notificacao={"Mensal"}
