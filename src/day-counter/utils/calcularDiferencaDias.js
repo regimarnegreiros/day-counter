@@ -1,15 +1,13 @@
-import { converterData } from "./converterData";
-
 export const calcularDiferencaDias = (data_alvo, data_criacao, tipo) => {
   const hoje = new Date();
   hoje.setHours(0, 0, 0, 0);
   let diferencaMilissegundos = 0;
   if (tipo === "r") {
-    const dataRef = converterData(data_alvo);
+    const dataRef = new Date(data_alvo);
     dataRef.setHours(0, 0, 0, 0);
     diferencaMilissegundos = dataRef.getTime() - hoje.getTime();
   } else {
-    const dataRef = converterData(data_criacao);
+    const dataRef = new Date(data_criacao);
     dataRef.setHours(0, 0, 0, 0);
     diferencaMilissegundos = hoje.getTime() - dataRef.getTime();
   }

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Text,
   View,
@@ -18,7 +18,9 @@ import DateTimePicker from "@react-native-community/datetimepicker";
 
 import { AlignCenter, Check } from "lucide-react-native";
 
-import { TextArea, Input, Select } from "./inputfield";
+import { TextArea, Input, Select } from "../create_counter/inputfield";
+
+import { styles } from '../create_counter/createCounter'
 
 function isSingleEmoji(str) {
   if (!str) return false;
@@ -28,17 +30,15 @@ function isSingleEmoji(str) {
   return emojiRegex.test(str);
 }
 
-export const InsertForm = ({ showForm }) => {
-  const [icon, setIcon] = useState("");
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [typeCounter, setTypeCounter] = useState("p");
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(
-    new Date(new Date().setDate(new Date().getDate() + 1)),
-  );
-  const [notifyInterval, setNotifyInterval] = useState("diario");
-  const [color, setColor] = useState("hsl(0, 100%, 64%)");
+export const EditCounter = (props) => {
+  const [icon, setIcon] = useState(props.icon);
+  const [title, setTitle] = useState(props.title);
+  const [description, setDescription] = useState(props.description);
+  const typeCounter = props.typeCounter;
+  const [startDate, setStartDate] = useState(new Date(props.startDate));
+  const [endDate, setEndDate] = useState(new Date(props.endDate));
+  const [notifyInterval, setNotifyInterval] = useState(props.notifyInterval);
+  const [color, setColor] = useState(`hsl(${props.hue}, 100%, 64%)`);
 
   const [showStartDatePicker, setShowStartDatePicker] = useState(false);
   const [showEndDatePicker, setShowEndDatePicker] = useState(false);
@@ -52,13 +52,15 @@ export const InsertForm = ({ showForm }) => {
     setTimeout(() => setShowAlert(false), 5000);
   };
 
-  // const createCounter = async (newCount) => {
-  //   fetch(process.env.EXPO_PUBLIC_API_URL+"/data", {
-  //     method: "post",
+  // const updateData = async (updatedCount) => {
+  //   await fetch(process.env.EXPO_PUBLIC_API_URL +"/data", {
+  //     method: "put",
   //     headers: {
   //       "Content-Type": "application/json",
   //     },
-  //     body: JSON.stringify({ data: newCount }),
+  //     body: JSON.stringify({
+  //       data: updatedCount,
+  //     }),
   //   });
   // };
 
@@ -86,7 +88,7 @@ export const InsertForm = ({ showForm }) => {
 
   return (
     <Modal
-      visible={true}
+      visible={props.showEditCounter}
       transparent={true}
       animationType="fade"
       statusBarTranslucent={true}
@@ -132,10 +134,10 @@ export const InsertForm = ({ showForm }) => {
                 justifyContent: "space-between",
               }}
             >
-              <Text style={{ fontSize: 24 }}>Nova Contagem</Text>
+              <Text style={{ fontSize: 24 }}>Editar Contagem</Text>
               <TouchableOpacity
                 style={styles.closeButton}
-                onPress={() => showForm(false)}
+                onPress={() => props.setShowEditCounter(false)}
               >
                 <Text>X</Text>
               </TouchableOpacity>
@@ -167,19 +169,6 @@ export const InsertForm = ({ showForm }) => {
               required={true}
               maxLength={50}
             />
-            <View>
-              <Text>Tipo</Text>
-              <View style={styles.selectConteiner}>
-                <Picker
-                  style={styles.selectField}
-                  selectedValue="p"
-                  onValueChange={(val) => setTypeCounter(val)}
-                >
-                  <Picker.Item label="Progressivo" value="p" />
-                  <Picker.Item label="Regressivo" value="r" />
-                </Picker>
-              </View>
-            </View>
             <View>
               <Text>Data Início</Text>
               <Pressable
@@ -298,23 +287,24 @@ export const InsertForm = ({ showForm }) => {
                   return;
                 }
 
-                // const newCount = {
-                //   titulo: title,
-                //   icone: icon,
-                //   tipo: typeCounter,
-                //   data_inicial: startDate,
-                //   hue: Number.parseInt(color.split("(")[1].split(",")[0]),
-                //   descricao: description,
-                //   notificacao: notifyInterval,
-                // };
-                // if (typeCounter === "r") {
-                //   newCount["data_alvo"] = endDate;
-                // }
-                // createCounter(newCount);
-                showForm(false);
+                //     const updateCount = {
+                //       id: props.id,
+                //       titulo: title,
+                //       icone: icon,
+                //       tipo: typeCounter,
+                //       data_inicial: startDate,
+                //       hue: Number.parseInt(color.split("(")[1].split(",")[0]),
+                //       descricao: description,
+                //       notificacao: notifyInterval,
+                //     };
+                //     if (typeCounter === "r") {
+                //       updateCount["data_alvo"] = endDate;
+                //     }
+                //     updateData(updateCount);
+                    props.setShowEditCounter(false);
               }}
             >
-              <Text style={{ color: "#fff" }}>Criar Contagem</Text>
+              <Text style={{ color: "#fff" }}>Salvar Contagem</Text>
             </TouchableOpacity>
           </View>
         </KeyboardAwareScrollView>
@@ -322,107 +312,3 @@ export const InsertForm = ({ showForm }) => {
     </Modal>
   );
 };
-
-export const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  overlay: {
-    backgroundColor: "#B5B5B599",
-    height: "100%",
-    width: "100%",
-    flex: 1,
-  },
-  InputFormBox: {
-    display: "flex",
-    flexDirection: "column",
-    backgroundColor: "#fff",
-    maxWidth: "90%",
-    overflow: "hidden",
-    borderColor: "#5a5050",
-    borderRadius: 200,
-    borderStyle: "solid",
-    borderRadius: 20,
-    margin: "auto",
-    padding: 15,
-    columnGap: 5,
-    zIndex: 1,
-    gap: 10,
-  },
-  selectConteiner: {
-    borderColor: "#61616194",
-    borderRadius: 12,
-    borderWidth: 1,
-    borderStyle: "solid",
-    justifyContent: "center",
-    overflow: "hidden",
-    height: 40,
-  },
-  selectField: {
-    borderColor: "#61616194",
-    borderRadius: 12,
-    borderWidth: 1,
-    borderStyle: "solid",
-    height: 55,
-  },
-  closeButton: {
-    color: "#FB2C36",
-    backgroundColor: "#FB2C36",
-    width: 75,
-    height: 35,
-    borderRadius: 45,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  colorView: {
-    height: 30,
-    width: 30,
-    borderRadius: 50,
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  colorButtonBox: {
-    display: "flex",
-    flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "space-between",
-    gap: 10,
-    padding: 2,
-    alignItems: "center",
-  },
-  inputField: {
-    borderColor: "#61616194",
-    borderRadius: 12,
-    borderWidth: 1,
-    borderStyle: "solid",
-    height: 40,
-    justifyContent: "center",
-    paddingLeft: 7,
-  },
-  saveButton: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "center",
-    backgroundColor: "#AF52DE",
-    padding: 10,
-    borderRadius: 12,
-  },
-  alertBox: {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    margin: "auto",
-    paddingHorizontal: 10,
-    paddingVertical: 30,
-    backgroundColor: "#fff",
-    borderRadius: 12,
-    gap: 10,
-    borderWidth: 1,
-  },
-  alertButton: {
-    backgroundColor: "#61616194",
-    padding: 5,
-    borderRadius: 12,
-  },
-});

@@ -7,6 +7,7 @@ import DatailsCard from "../../components/detail/DetailsCard";
 import ProgressBar from "../../components/detail/ProgressBar";
 import CircleButton from "../../components/detail/CircleButton";
 import ModalExclusao from "../../components/detail/ModalExclusao";
+import { EditCounter } from "../../components/edit_counter/editCounter.js";
 import { calcularDiferencaDias } from "../../utils/calcularDiferencaDias.js";
 
 export default function CounterDetail(props) {
@@ -25,6 +26,18 @@ export default function CounterDetail(props) {
           onClose={() => {
             setModalExclusao(false);
           }}
+        />
+        <EditCounter
+          showEditCounter={modalEdicao}
+          setShowEditCounter={setModalEdicao}
+          icon={dados.icone}
+          title={dados.titulo}
+          description={dados.descricao}
+          typeCounter={dados.tipo}
+          startDate={dados.data_inicial}
+          endDate={dados.data_alvo}
+          notifyInteval={dados.notificacao}
+          hue={dados.hue}
         />
         <View style={styles.row}>
           <CircleButton

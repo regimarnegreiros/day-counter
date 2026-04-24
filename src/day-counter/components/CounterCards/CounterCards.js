@@ -8,6 +8,9 @@ import { gerarPaletaCores } from "../../utils/gerarPaletaCores";
 
 export const CounterCards = (props) => {
   const { corFundo, corBadge, corBarra } = gerarPaletaCores(props.hue);
+  const data_inicial = new Date(props.data_inicial);
+  const data_alvo = new Date(props.data_alvo);
+  const dateFormat = new Intl.DateTimeFormat('pt-BR', {year:'numeric',month:'2-digit',day:'2-digit'})
   const dias = calcularDiferencaDias(
     props.data_alvo,
     props.data_inicial,
@@ -34,7 +37,7 @@ export const CounterCards = (props) => {
           <View style={styles.eventdate}>
             <Feather name="calendar" size={16} color="#1C1C1E" />
             <Text style={styles.dateText}>
-              {props.tipo === "p" ? props.data_inicial : props.data_alvo}
+              {props.tipo === "p" ? dateFormat.format(data_inicial) : dateFormat.format(data_alvo)}
             </Text>
           </View>
         </View>
@@ -77,7 +80,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingTop: 12,
     paddingBottom: 24,
-    marginBottom: 16,
   },
   header: {
     flexDirection: "row",

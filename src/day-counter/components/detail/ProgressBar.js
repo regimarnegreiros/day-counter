@@ -1,11 +1,10 @@
 import { View, Text, StyleSheet } from "react-native";
-import { converterData } from "../../utils/converterData.js";
 
 export default function ProgressBar(props) {
   const progresso = (data_alvo, data_inicial) => {
     const hoje = new Date();
-    const alvoFormatado = converterData(data_alvo);
-    const criacaoFormatado = converterData(data_inicial);
+    const alvoFormatado = new Date(data_alvo);
+    const criacaoFormatado = new Date(data_inicial);
     hoje.setHours(0, 0, 0, 0);
     alvoFormatado.setHours(0, 0, 0, 0);
     criacaoFormatado.setHours(0, 0, 0, 0);
