@@ -20,6 +20,8 @@ import { AlignCenter, Check } from "lucide-react-native";
 
 import { TextArea, Input, Select } from "../create_counter/inputfield";
 
+import { styles } from '../create_counter/createCounter'
+
 function isSingleEmoji(str) {
   if (!str) return false;
   const emojiRegex =
@@ -310,90 +312,3 @@ export const EditCounter = (props) => {
     </Modal>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  overlay: {
-    backgroundColor: "#B5B5B599",
-    height: "100%",
-    width: "100%",
-    flex: 1,
-  },
-  InputFormBox: {
-    display: "flex",
-    flexDirection: "column",
-    backgroundColor: "#fff",
-    maxWidth: "90%",
-    overflow: "hidden",
-    borderColor: "#5a5050",
-    borderRadius: 200,
-    borderStyle: "solid",
-    borderRadius: 20,
-    margin: "auto",
-    padding: 15,
-    columnGap: 5,
-    zIndex: 1,
-    gap: 10,
-  },
-  selectConteiner: {
-    borderColor: "#61616194",
-    borderRadius: 12,
-    borderWidth: 1,
-    borderStyle: "solid",
-    justifyContent: "center",
-    overflow: "hidden",
-    height: 40,
-  },
-  selectField: {
-    borderColor: "#61616194",
-    borderRadius: 12,
-    borderWidth: 1,
-    borderStyle: "solid",
-    height: 55,
-  },
-  closeButton: {
-    color: "#FB2C36",
-    backgroundColor: "#FB2C36",
-    width: 75,
-    height: 35,
-    borderRadius: 45,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  colorView: {
-    height: 30,
-    width: 30,
-    borderRadius: 50,
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  colorButtonBox: {
-    display: "flex",
-    flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "space-between",
-    gap: 10,
-    padding: 2,
-    alignItems: "center",
-  },
-  inputField: {
-    borderColor: "#61616194",
-    borderRadius: 12,
-    borderWidth: 1,
-    borderStyle: "solid",
-    height: 40,
-    justifyContent: "center",
-    paddingLeft: 7,
-  },
-  saveButton: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "center",
-    backgroundColor: "#AF52DE",
-    padding: 10,
-    borderRadius: 12,
-  },
-});

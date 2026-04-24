@@ -323,7 +323,7 @@ export const InsertForm = ({ showForm }) => {
   );
 };
 
-const styles = StyleSheet.create({
+export const styles = StyleSheet.create({
   container: {
     flex: 1,
   },

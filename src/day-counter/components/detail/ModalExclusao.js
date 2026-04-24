@@ -7,6 +7,7 @@ export default function ModalExclusao(props) {
       transparent={true}
       visible={props.visible}
       onRequestClose={props.onClose}
+      statusBarTranslucent={true}
     >
       <View style={styles.modalOverlay}>
         <View style={styles.modalContainer}>
