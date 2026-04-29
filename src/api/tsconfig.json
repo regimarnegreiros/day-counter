@@ -1,0 +1,15 @@
+{
+    "compilerOptions": {
+        "module": "commonjs",
+        "alwaysStrict": true,
+        "checkJs": true,
+        "exactOptionalPropertyTypes": true,
+        "noImplicitThis": true,
+        "resolveJsonModule": true,
+        "rewriteRelativeImportExtensions": true,
+        "strict": true
+    },
+    "exclude": [
+        "node_modules", "out"
+    ]
+}
