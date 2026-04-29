@@ -2,12 +2,16 @@
 
 //#region imports
 
-import express, { Express, NextFunction, Request, Response } from "express";
-import sqlite3, { Database } from 'sqlite3';
+import express, { Express, Request, Response } from "express";
+import sqlite3, { Database } from "sqlite3";
 import {
-  Configuration, databaseHealthCheck, error500Logger,
-  exitStatus, HTTPCodes, loadConfig, requestLogger
+  Configuration, error500Logger,
+  exitStatus, loadConfig, requestLogger
 } from "./utils.js";
+import { DBReady, health, userInfo } from "./methods/get.ts";
+import { signIn, signUp } from "./methods/post.ts";
+import { syncEvents } from "./methods/patch.ts";
+import { deleteUser } from "./methods/delete.ts";
 
 //#endregion
 
@@ -22,62 +26,31 @@ app.use(requestLogger);
 
 //#region GET
 
-app.get("/api/health", (res: Response) => {
-  if (process.uptime() < 1) // So services have time to start
-    return res.status(HTTPCodes.serviceUnavailable).send({ status: "starting" });
+app.get("/api/health", health);
 
-  res.status(HTTPCodes.ok).send({ status: "ok" });
-});
+app.get("/api/ready", (_req: Request, res: Response) => DBReady(res, db));
 
-app.get("/api/ready", async (req: Request, res: Response) => {
-  const dbOK: boolean = await databaseHealthCheck(db);
-
-  if (!dbOK) return res.status(HTTPCodes.serviceUnavailable).send({
-    status: "degraded",
-    database: "down"
-  });
-
-  res.status(HTTPCodes.ok).send({
-    status: "ok",
-    database: "up"
-  });
-
-});
-
-app.get('/api/users/:id', (req: Request, res: Response) => {
-  res.status(HTTPCodes.ok).send({
-    'user': 'david',
-    'age': 21
-  });
-});
+app.get("/api/users/:id", userInfo);
 
 //#endregion
 
 //#region POST
 
-app.post('/api/signup', (req: Request, res: Response) => {
-  res.status(HTTPCodes.notImplemented).send({status: "not implemented"}); // TODO
-});
+app.post("/api/signup", signUp);
 
-app.post('/api/signin', (req: Request, res: Response) => {
-  res.status(HTTPCodes.notImplemented).send({status: "not implemented"}); // TODO
-});
+app.post("/api/signin", signIn);
 
 //#endregion
 
 //#region PATCH
 
-app.patch('/api/syncevents', (req: Request, res: Response) => {
-  res.status(HTTPCodes.notImplemented).send({status: "not implemented"}); // TODO
-});
+app.patch("/api/syncevents", syncEvents);
 
 //#endregion
 
 //#region DELETE
 
-app.delete('/api/users/:id', (req: Request, res: Response) => {
-  res.status(HTTPCodes.notImplemented).send({status: "not implemented"}); // TODO
-});
+app.delete("/api/users/:id", deleteUser);
 
 //#endregion
 
