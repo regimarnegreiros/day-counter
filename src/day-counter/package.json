@@ -2,7 +2,8 @@
   "name": "day-counter",
   "version": "1.0.0",
   "main": "index.js",
-  "contributors":[
+  "type": "module",
+  "contributors": [
     {
       "name": "Carlos Eduardo Roseno",
       "url": "https://github.com/carlosrosen"
@@ -23,20 +24,30 @@
       "name": "Regimar de Deus Negreiros",
       "url": "https://github.com/regimarnegreiros"
     }
-  ],  
+  ],
   "scripts": {
     "start": "expo start",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
+    "android": "expo run:android",
+    "ios": "expo run:ios",
     "web": "expo start --web"
   },
   "dependencies": {
-    "expo": "~55.0.6",
-    "expo-status-bar": "~55.0.4",
+    "@expo/vector-icons": "^15.0.2",
+    "@react-native-community/datetimepicker": "8.6.0",
+    "@react-native-picker/picker": "^2.11.4",
+    "@react-navigation/bottom-tabs": "^7.15.9",
+    "@react-navigation/native": "^7.2.2",
+    "@react-navigation/native-stack": "^7.14.11",
+    "expo": "~55.0.15",
+    "expo-status-bar": "~55.0.5",
     "lucide-react-native": "^0.577.0",
     "react": "19.2.0",
-    "react-native": "0.83.2",
-    "react-native-safe-area-context": "^5.7.0"
+    "react-native": "^0.83.6",
+    "react-native-gesture-handler": "~2.30.0",
+    "react-native-keyboard-aware-scroll-view": "^0.9.5",
+    "react-native-safe-area-context": "~5.6.2",
+    "react-native-safe-area-view": "^2.0.0",
+    "react-native-screens": "~4.23.0"
   },
   "private": true
 }

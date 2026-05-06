@@ -3,65 +3,74 @@ import { StyleSheet } from "react-native";
 export default StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#ffffff',
+    backgroundColor: "#ffffff",
     // alignItems: 'center',
     // justifyContent: 'center',
   },
-  
+
   header: {
-    flexDirection: 'row',
+    flexDirection: "row",
     padding: 10,
-    alignItems: 'center',
+    alignItems: "center",
     borderBottomWidth: 1,
-    borderBottomColor: '#eeeeee'
+    borderBottomColor: "#eeeeee",
   },
   headerIconBox: {
-    backgroundColor: '#AD46FF',
+    backgroundColor: "#AD46FF",
     padding: 10,
     borderRadius: 12,
     margin: 12,
-    alignSelf: 'flex-start'
+    alignSelf: "flex-start",
   },
   headerTitle: {
     fontSize: 18,
-    fontWeight: 'bold'
+    fontWeight: "bold",
   },
   headerSubtitle: {
-    fontSize: 12, color: '#777777'
+    fontSize: 12,
+    color: "#777777",
   },
 
   tabBar: {
-    flexDirection: 'row',
-    height: 65,
-    justifyContent: 'space-around',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-around",
+    alignItems: "center",
   },
   tabItem: {
-    alignItems: 'center'
+    alignItems: "center",
   },
   tabLabel: {
     fontSize: 10,
-    color: '#777777',
-    marginTop: 4
+    color: "#777777",
+    marginTop: 4,
   },
   tabButton: {
     flex: 1,
-    alignItems: 'center'
+    alignItems: "center",
   },
 
   fab: {
-    position: 'absolute', right: 20, bottom: 90,
-    backgroundColor: '#AF52DE', width: 60, height: 60,
-    borderRadius: 30, justifyContent: 'center', alignItems: 'center',
-    elevation: 5, shadowColor: '#000', shadowOpacity: 0.3, shadowRadius: 5,
+    position: "absolute",
+    right: 16,
+    bottom: 16,
+    backgroundColor: "#AF52DE",
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    justifyContent: "center",
+    alignItems: "center",
+    elevation: 5,
+    shadowColor: "#000",
+    shadowOpacity: 0.3,
+    shadowRadius: 5,
   },
 
   activeIcon: {
     size: 22,
-    color: '#AF52DE'
+    color: "#AF52DE",
   },
   inactiveIcon: {
     size: 22,
-    color: '#777777'
-  }
+    color: "#777777",
+  },
 });
