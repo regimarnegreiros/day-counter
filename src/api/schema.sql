@@ -8,14 +8,14 @@ CREATE TABLE IF NOT EXISTS user(
 );
 CREATE TABLE IF NOT EXISTS counters(
 	id INTEGER PRIMARY KEY AUTOINCREMENT,
-	icon VARCHAR(2) NOT NULL,
+	icon CHAR(2) NOT NULL,
 	title VARCHAR(50) NOT NULL,
 	type CHAR(1) NOT NULL CHECK(type IN ('r','p')), -- [R]egressive, [P]rogressive
 	start_date CHAR(10) NOT NULL,
 	end_date CHAR(10),
 	description TEXT,
 	hue INT NOT NULL CHECK(hue >= 0 AND hue <= 360),
-	notify_interval CHAR(1) NOT NULL,
+	notify_interval CHAR(1) NOT NULL CHECK(notify_interval IN ('d','s','m','a')), -- [D]iario, [S]emanal, [M]ensal, [A]nual
 	user_id CHAR(36) NOT NULL,
 	FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE,
 
