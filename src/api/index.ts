@@ -7,7 +7,7 @@ import sqlite3, { Database } from "sqlite3";
 import {
   Configuration, error500Logger,
   exitStatus, loadConfig, requestLogger
-} from "./utils.js";
+} from "./utils.ts";
 import { DBReady, health, userInfo } from "./methods/get.ts";
 import { signIn, signUp } from "./methods/post.ts";
 import { syncEvents } from "./methods/patch.ts";
