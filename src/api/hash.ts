@@ -18,11 +18,7 @@ export async function hash(text: string){
 
 export async function verifyHash(hashText:string, text:string) {
     try{
-        if(await argon2.verify(hashText,text,hashConfig)){
-            return true;
-        }else{
-            return false
-        }
+        return await argon2.verify(hashText,text,hashConfig)
     } catch(err: unknown){
         console.error('failed to verify hash',err);
         throw new Error('failed to verify text');
