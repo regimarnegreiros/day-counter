@@ -10,6 +10,7 @@
         "strict": true
     },
     "exclude": [
-        "node_modules", "out"
+        "node_modules", "out",
+        "coverage", "babel.config.cjs" // tests files
     ]
 }

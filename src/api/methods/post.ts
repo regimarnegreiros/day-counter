@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { HTTPCodes } from "../utils";
+import { HTTPCodes } from "../utils.ts";
 
 export async function signIn(req: Request, res: Response) {
     res.status(HTTPCodes.notImplemented).send({ status: "not implemented" }); // TODO
