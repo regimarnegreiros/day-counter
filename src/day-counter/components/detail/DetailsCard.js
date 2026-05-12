@@ -4,6 +4,12 @@ export default function DatailsCard(props) {
   const data_inicial = new Date(props.data_inicial);
   const data_alvo = new Date(props.data_alvo);
   const dateFormat = new Intl.DateTimeFormat('pt-BR', {year:'numeric',month:'2-digit',day:'2-digit'})
+  const notify_convertions = {
+    'd': 'Diário',
+    's': 'Semanal',
+    'm': 'Mensal',
+    'a': 'Anual'
+  }
   return (
     <View style={styles.detailsContainer}>
       <View style={styles.section}>
@@ -41,7 +47,7 @@ export default function DatailsCard(props) {
         )}
         <View>
           <Text style={styles.labelText}>NOTIFICAÇÃO</Text>
-          <Text style={styles.valueText}>{props.notificacao}</Text>
+          <Text style={styles.valueText}>{notify_convertions[props.notificacao]}</Text>
         </View>
       </View>
     </View>
