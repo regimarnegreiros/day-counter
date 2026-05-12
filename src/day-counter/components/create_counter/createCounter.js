@@ -253,13 +253,13 @@ export const InsertForm = ({ showForm }) => {
               <View style={styles.selectConteiner}>
                 <Picker
                   style={styles.selectField}
-                  selectedValue="d"
+                  selectedValue="diario"
                   onValueChange={(val) => setNotifyInterval(val)}
                 >
-                  <Picker.Item label="Diário" value="d" />
-                  <Picker.Item label="Semanal" value="s" />
-                  <Picker.Item label="Mensal" value="m" />
-                  <Picker.Item label="Anual" value="a" />
+                  <Picker.Item label="Diário" value="diario" />
+                  <Picker.Item label="Semanal" value="semanal" />
+                  <Picker.Item label="Mensal" value="mensal" />
+                  <Picker.Item label="Anual" value="anual" />
                 </Picker>
               </View>
             </View>

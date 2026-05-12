@@ -31,7 +31,7 @@ let DATA = {
       data_alvo: "2026-07-15",
       hue: 200,
       descricao: "Contagem regressiva para minhas férias",
-      notificacao: "s",
+      notificacao: "Semanal",
     },
     {
       id: 1,
@@ -42,7 +42,7 @@ let DATA = {
       data_alvo: "2026-09-01",
       hue: 120,
       descricao: "Projeto de 6 meses focado em treino",
-      notificacao: "d",
+      notificacao: "Diária",
     },
     {
       id: 2,
@@ -53,7 +53,7 @@ let DATA = {
       data_alvo: "2026-05-20",
       hue: 340,
       descricao: "Contagem para meu aniversário 🎉",
-      notificacao: "m",
+      notificacao: "Mensal",
     },
     {
       id: 3,
@@ -64,7 +64,7 @@ let DATA = {
       data_alvo: "2026-06-10",
       hue: 30,
       descricao: "Desafio pessoal sem açúcar",
-      notificacao: "d",
+      notificacao: "Diária",
     },
     {
       id: 4,
@@ -75,7 +75,7 @@ let DATA = {
       data_alvo: "2026-04-30",
       hue: 10,
       descricao: "Deadline final do projeto da empresa",
-      notificacao: "s",
+      notificacao: "Semanal",
     },
     {
       id: 5,
@@ -86,7 +86,7 @@ let DATA = {
       data_alvo: "2026-06-01",
       hue: 260,
       descricao: "Ler 5 livros em 2 meses",
-      notificacao: "s",
+      notificacao: "Semanal",
     },
     {
       id: 6,
@@ -97,7 +97,7 @@ let DATA = {
       data_alvo: "2026-12-10",
       hue: 180,
       descricao: "Primeira viagem internacional 🌍",
-      notificacao: "m",
+      notificacao: "Mensal",
     },
   ],
 };
