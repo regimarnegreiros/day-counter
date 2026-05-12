@@ -8,7 +8,7 @@ import {
   type Configuration, error500Logger,
   exitStatus, loadConfig, requestLogger, shutdown
 } from "./utils.ts";
-import { DBReady, getCardById, health, userInfo} from "./methods/get.ts";
+import { DBReady, getCardById, getUserCards, health, userInfo} from "./methods/get.ts";
 import { signIn, signUp, createCard } from "./methods/post.ts";
 import { syncEvents, updateCard } from "./methods/patch.ts";
 import { deleteCard, deleteUser } from "./methods/delete.ts";
@@ -37,9 +37,9 @@ app.get("/api/health", health);
 
 app.get("/api/ready", (_req: Request, res: Response) => DBReady(res, DatabaseSingleton.getInstance()));
 
-app.get("/api/users/:id", userInfo);
+app.get("/api/user/:id", userInfo);
 
-app.get('/api/users/cards')
+app.get('/api/user/:id/cards', getUserCards);
 
 app.get('/api/card/:id', getCardById);
 
