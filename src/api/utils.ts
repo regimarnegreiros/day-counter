@@ -1,7 +1,8 @@
+import { Server } from 'http';
 import type { NextFunction, Request, Response } from "express";
 import { type PathOrFileDescriptor, readFileSync } from "fs";
 import { isIP } from "net";
-import type { Database } from "sqlite3";
+import { type Database } from "sqlite3";
 
 //#region interfaces
 
@@ -113,6 +114,24 @@ export function error500Logger(err: Error, req: Request, res: Response, next: Ne
   res.status(HTTPCodes.internalError).send({ error: "internal server error" });
 }
 
+export function shutdown(server: Server, db: Database) {
+  server.close(() => {
+    console.log("Shutting down server");
+    db.close((err) => {
+      if (err) {
+        console.error(err);
+        process.exit(exitStatus.unspecifiedError);
+      }
+
+      console.log("Database connection closed");
+      process.exit(exitStatus.success)
+    })
+  });
+  setTimeout(() => {
+    console.error("Timeout!!!");
+    process.exit(exitStatus.timeout);
+  }, 3000);
+}
 
 //#endregion
 
@@ -121,6 +140,7 @@ export function error500Logger(err: Error, req: Request, res: Response, next: Ne
 export const exitStatus = Object.freeze({
   success: 0,
   unspecifiedError: 1,
+  timeout: 2,
 });
 
 export const HTTPCodes = Object.freeze({

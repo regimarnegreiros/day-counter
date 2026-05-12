@@ -6,7 +6,7 @@ import express from "express";
 import type { Express, Request, Response } from 'express';
 import {
   type Configuration, error500Logger,
-  exitStatus, loadConfig, requestLogger
+  exitStatus, loadConfig, requestLogger, shutdown
 } from "./utils.ts";
 import { DBReady, getCardById, health, userInfo} from "./methods/get.ts";
 import { signIn, signUp, createCard } from "./methods/post.ts";
@@ -14,6 +14,7 @@ import { syncEvents, updateCard } from "./methods/patch.ts";
 import { deleteCard, deleteUser } from "./methods/delete.ts";
 import sqlite3 from "sqlite3";
 import { Server } from "http";
+import { DatabaseSingleton } from "./database/database.ts";
 const { Database } = sqlite3;
 
 //#endregion
@@ -21,7 +22,7 @@ const { Database } = sqlite3;
 type Database = sqlite3.Database;
 const serverData: Configuration = loadConfig("server-options.json");
 const app: Express = express();
-const db: Database = new Database(":memory:"); // Mudar depois?
+DatabaseSingleton.setInstance(':memory:'); // change later to a database path
 
 //middlewares
 
@@ -34,7 +35,7 @@ app.use(requestLogger);
 
 app.get("/api/health", health);
 
-app.get("/api/ready", (_req: Request, res: Response) => DBReady(res, db));
+app.get("/api/ready", (_req: Request, res: Response) => DBReady(res, DatabaseSingleton.getInstance()));
 
 app.get("/api/users/:id", userInfo);
 
@@ -82,7 +83,7 @@ const server: Server = app.listen(serverData.appPort, serverData.appIP, () => {
   console.log(`Serving @ http://${serverData.appIP}:${serverData.appPort}/`)
 });
 
-process.once("SIGINT", () => shutdown(server, db));
-process.once("SIGTERM", () => shutdown(server, db));
+process.once("SIGINT", () => shutdown(server, DatabaseSingleton.getInstance()));
+process.once("SIGTERM", () => shutdown(server, DatabaseSingleton.getInstance()));
 
 //#endregion
