@@ -1,9 +1,6 @@
-import sqlite3 from 'sqlite3';
-const { Database } = sqlite3;
+import sqlite3 , {type Database } from 'sqlite3';
 import { databaseHealthCheck, HTTPCodes } from '../utils.ts';
-import { Request, Response } from 'express';
-
-type Database = sqlite3.Database;
+import type { Request, Response } from 'express';
 
 export function health(_req: Request, res: Response) {
   if (process.uptime() < 1) // So services have time to start
@@ -36,3 +33,12 @@ export async function userInfo(req: Request, res: Response) {
   });
 }
 
+export async function getCardById(req: Request, res: Response) {
+  //calls db and exec a select;
+  return res.status(HTTPCodes.notImplemented).send();
+}
+
+export async function getUserCards(req: Request, res: Response) {
+  //calls db and exec a select;
+  return res.status(HTTPCodes.notImplemented).send();
+}

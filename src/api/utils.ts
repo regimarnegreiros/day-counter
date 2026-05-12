@@ -1,10 +1,8 @@
-import { Server } from "http";
-import { NextFunction, Request, Response } from "express";
-import { PathOrFileDescriptor, readFileSync } from "fs";
+import { Server } from 'http';
+import type { NextFunction, Request, Response } from "express";
+import { type PathOrFileDescriptor, readFileSync } from "fs";
 import { isIP } from "net";
-import sqlite3 from "sqlite3";
-const { Database } = sqlite3;
-
+import { type Database } from "sqlite3";
 
 //#region interfaces
 
@@ -18,7 +16,7 @@ export interface Configuration {
 
 //#region types
 
-type Database = sqlite3.Database;
+
 
 //#endregion
 
