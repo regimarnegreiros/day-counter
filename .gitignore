@@ -78,7 +78,7 @@ google-services.json
 
 # Compiled from TS
 
-src/api/*.js
+src/api/**/*.js
 
 # jest coverager
 
