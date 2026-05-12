@@ -1,6 +1,6 @@
 {
     "compilerOptions": {
-        "module": "commonjs",
+        "module": "esnext",
         "alwaysStrict": true,
         "checkJs": true,
         "exactOptionalPropertyTypes": true,

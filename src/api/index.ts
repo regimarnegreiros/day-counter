@@ -3,18 +3,22 @@
 //#region imports
 
 import express, { Express, Request, Response } from "express";
-import sqlite3, { Database } from "sqlite3";
 import {
   Configuration, error500Logger,
-  exitStatus, loadConfig, requestLogger
+  exitStatus, loadConfig, requestLogger,
+  shutdown
 } from "./utils.ts";
 import { DBReady, health, userInfo } from "./methods/get.ts";
 import { signIn, signUp } from "./methods/post.ts";
 import { syncEvents } from "./methods/patch.ts";
 import { deleteUser } from "./methods/delete.ts";
+import sqlite3 from "sqlite3";
+import { Server } from "http";
+const { Database } = sqlite3;
 
 //#endregion
 
+type Database = sqlite3.Database;
 const serverData: Configuration = loadConfig("server-options.json");
 const app: Express = express();
 const db: Database = new Database(":memory:"); // Mudar depois?
@@ -62,13 +66,11 @@ app.use(error500Logger);
 
 //#region run
 
-const server = app.listen(serverData.appPort, serverData.appIP, () => {
+const server: Server = app.listen(serverData.appPort, serverData.appIP, () => {
   console.log(`Serving @ http://${serverData.appIP}:${serverData.appPort}/`)
 });
 
-process.on("SIGINT", () => {
-  console.log("Shutting down server");
-  server.close(() => {process.exit(exitStatus.success)});
-});
+process.once("SIGINT", () => shutdown(server, db));
+process.once("SIGTERM", () => shutdown(server, db));
 
 //#endregion

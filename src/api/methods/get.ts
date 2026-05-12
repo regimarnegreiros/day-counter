@@ -1,8 +1,11 @@
-import { Database } from 'sqlite3';
+import sqlite3 from 'sqlite3';
+const { Database } = sqlite3;
 import { databaseHealthCheck, HTTPCodes } from '../utils.ts';
 import { Request, Response } from 'express';
 
-export function health(res: Response) {
+type Database = sqlite3.Database;
+
+export function health(_req: Request, res: Response) {
   if (process.uptime() < 1) // So services have time to start
     return res.status(HTTPCodes.serviceUnavailable).send({ status: "starting" });
 
