@@ -6,7 +6,7 @@ import express from "express";
 import type { Express, Request, Response } from 'express';
 import {
   type Configuration, error500Logger,
-  exitStatus, loadConfig, requestLogger
+  exitStatus, loadConfig, requestLogger, shutdown
 } from "./utils.ts";
 import { DBReady, getCardById, health, userInfo} from "./methods/get.ts";
 import { signIn, signUp, createCard } from "./methods/post.ts";
