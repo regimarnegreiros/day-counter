@@ -2,18 +2,18 @@
 
 //#region imports
 
-import express, { Express, Request, Response } from "express";
+import express, { type Express, type Request, type Response } from "express";
 import {
-  Configuration, error500Logger,
-  exitStatus, loadConfig, requestLogger,
-  shutdown
+  type Configuration, exitStatus, loadConfig, shutdown
 } from "./utils.ts";
-import { DBReady, health, userInfo } from "./methods/get.ts";
-import { signIn, signUp } from "./methods/post.ts";
-import { syncEvents } from "./methods/patch.ts";
-import { deleteUser } from "./methods/delete.ts";
 import sqlite3 from "sqlite3";
 import { Server } from "http";
+import { DatabaseSingleton } from "./database/database.singleton.ts";
+import { userRoutes } from "./routes/user.route.ts";
+import { cardRoutes } from "./routes/card.route.ts";
+import { systemRoutes } from "./routes/system.route.ts";
+import { requestLogger } from "./middlewares/log.middleware.ts";
+import { error500Logger } from "./middlewares/error.middleware.ts";
 const { Database } = sqlite3;
 
 //#endregion
@@ -21,42 +21,18 @@ const { Database } = sqlite3;
 type Database = sqlite3.Database;
 const serverData: Configuration = loadConfig("server-options.json");
 const app: Express = express();
-const db: Database = new Database(":memory:"); // Mudar depois?
+DatabaseSingleton.setInstance(':memory:'); // change later to a database path
+
+//#region middlewares
 
 app.use(express.json());
 app.use(requestLogger);
 
 //#endregion
 
-//#region GET
-
-app.get("/api/health", health);
-
-app.get("/api/ready", (_req: Request, res: Response) => DBReady(res, db));
-
-app.get("/api/users/:id", userInfo);
-
-//#endregion
-
-//#region POST
-
-app.post("/api/signup", signUp);
-
-app.post("/api/signin", signIn);
-
-//#endregion
-
-//#region PATCH
-
-app.patch("/api/syncevents", syncEvents);
-
-//#endregion
-
-//#region DELETE
-
-app.delete("/api/users/:id", deleteUser);
-
-//#endregion
+app.use(userRoutes);
+app.use(cardRoutes);
+app.use(systemRoutes);
 
 //#region errorHandlers
 
@@ -70,7 +46,7 @@ const server: Server = app.listen(serverData.appPort, serverData.appIP, () => {
   console.log(`Serving @ http://${serverData.appIP}:${serverData.appPort}/`)
 });
 
-process.once("SIGINT", () => shutdown(server, db));
-process.once("SIGTERM", () => shutdown(server, db));
+process.once("SIGINT", () => shutdown(server, DatabaseSingleton.getInstance()));
+process.once("SIGTERM", () => shutdown(server, DatabaseSingleton.getInstance()));
 
 //#endregion
