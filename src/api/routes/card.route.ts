@@ -1,14 +1,14 @@
 import { Router } from "express";
-import { getAllUserCards, getCardById, updateCard, createCard, deleteCard } from "../controllers/card.controller.ts";
+import CardController from "../controllers/card.controller.ts";
 
 export const cardRoutes = Router();
 
-cardRoutes.get('/api/user/:id/cards', getAllUserCards);
+cardRoutes.get('/api/user/:id/cards', CardController.getAllUserCards);
 
-cardRoutes.get('/api/card/:id', getCardById);
+cardRoutes.get('/api/card/:id', CardController.getCardById);
 
-cardRoutes.post('/api/card', createCard);
+cardRoutes.post('/api/card', CardController.createCard);
 
-cardRoutes.put('/api/card/',updateCard);
+cardRoutes.put('/api/card/', CardController.updateCard);
 
-cardRoutes.delete('/api/card/:id',deleteCard);
+cardRoutes.delete('/api/card/:id', CardController.deleteCard);

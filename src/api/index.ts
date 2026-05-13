@@ -2,7 +2,7 @@
 
 //#region imports
 
-import express, { type Express, type Request, type Response } from "express";
+import express, { type Express } from "express";
 import {
   type Configuration, exitStatus, loadConfig, shutdown
 } from "./utils.ts";
@@ -14,7 +14,6 @@ import { cardRoutes } from "./routes/card.route.ts";
 import { systemRoutes } from "./routes/system.route.ts";
 import { requestLogger } from "./middlewares/log.middleware.ts";
 import { error500Logger } from "./middlewares/error.middleware.ts";
-const { Database } = sqlite3;
 
 //#endregion
 
@@ -30,9 +29,13 @@ app.use(requestLogger);
 
 //#endregion
 
+//#region application_routes
+
 app.use(userRoutes);
 app.use(cardRoutes);
 app.use(systemRoutes);
+
+//#endregion
 
 //#region errorHandlers
 
