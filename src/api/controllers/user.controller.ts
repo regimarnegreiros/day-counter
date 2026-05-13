@@ -1,8 +1,8 @@
 import type { Request, Response } from "express";
 import { HTTPCodes } from "../utils.ts";
-import { UserService } from "../services/user.service.ts";
+import UserService from "../services/user.service.ts";
 
-export class UserController {
+export default class UserController {
   static async signIn(req: Request, res: Response) {
     res.status(HTTPCodes.notImplemented).send({ status: "not implemented" }); // TODO
   }
@@ -18,7 +18,7 @@ export class UserController {
     const { id } = req.params;
 
     try {
-      UserService.deleteUser(id);
+      await UserService.deleteUser(id);
     } catch (err: any) {
       console.error(err.stack);
       return res.status(HTTPCodes.badRequest).send({ message: "invalid user" }); //have to be changed
@@ -35,7 +35,7 @@ export class UserController {
     const { id } = req.params;
 
     try {
-      const user = UserService.getUser(id);
+      const user = await UserService.getUser(id);
     } catch (err: any) {
       console.error(err.stack);
       return res.status(HTTPCodes.badRequest).send({ message: "invalid user" }); //have to be changed

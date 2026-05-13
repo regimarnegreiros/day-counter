@@ -1,7 +1,7 @@
-import { UserRepository } from "../repositories/user.repository.ts";
+import UserRepository from "../repositories/user.repository.ts";
 import { hash, verifyHash } from "../hash.ts";
 
-export class UserService{
+export default class UserService{
     private constructor(){}
 
     static async deleteUser(id: string){ 
@@ -9,7 +9,7 @@ export class UserService{
             throw new Error('invalid id');
         }
         try{
-            UserRepository.deleteUser(id);
+            await UserRepository.deleteUser(id);
         }catch(err: any){
             console.error(err.stack);
             throw new Error('Something went wrong.')

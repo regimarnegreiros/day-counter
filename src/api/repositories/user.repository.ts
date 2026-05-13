@@ -3,7 +3,7 @@
 
 import { DatabaseSingleton } from "../database/database.singleton.ts";
 
-export class UserRepository{
+export default class UserRepository{
     private constructor(){}
 
     static async deleteUser(id: string) {

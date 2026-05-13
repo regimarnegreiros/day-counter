@@ -1,4 +1,4 @@
-import CardRepository from "../repositories/card.repository";
+import CardRepository from "../repositories/card.repository.ts";
 
 export default class CardService{
     private constructor(){}

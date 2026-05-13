@@ -1,10 +1,11 @@
 import type { Request, Response } from "express"
 import { HTTPCodes } from "../utils.ts"
+import CardService from '../services/card.service.ts'
 
 export default class CardController{
 
     static async deleteCard(req: Request, res: Response) {
-        //calls db instance and execute a delete
+        
         res.status(HTTPCodes.notImplemented).send()
     }
     

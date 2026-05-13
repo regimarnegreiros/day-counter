@@ -1,6 +1,5 @@
 import { Router } from "express";
 import { SystemController } from "../controllers/system.controller.ts";
-import { DatabaseSingleton } from "../database/database.singleton.ts";
 
 export const systemRoutes = Router();
 
