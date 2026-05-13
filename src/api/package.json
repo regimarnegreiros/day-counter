@@ -36,7 +36,8 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "api": "npx ts-node index.ts"
   },
   "dependencies": {
     "argon2": "^0.44.0",

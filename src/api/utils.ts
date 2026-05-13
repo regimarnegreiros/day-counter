@@ -1,4 +1,4 @@
-import { Server } from 'http';
+import { Server } from "http";
 import type { NextFunction, Request, Response } from "express";
 import { type PathOrFileDescriptor, readFileSync } from "fs";
 import { isIP } from "net";
@@ -99,19 +99,6 @@ export function loadConfig(path: PathOrFileDescriptor): Configuration {
 
     return { appIP: "127.0.0.1", appPort: 3000 };
   }
-}
-
-export function requestLogger(req: Request, res: Response, next: NextFunction): void {
-  console.debug(`${req.method} REQUEST @ ${req.url}`);
-  console.debug(`COOKIES: ${JSON.stringify(req.cookies, null, 2)}\n`);
-  console.debug(`HEADER: ${JSON.stringify(req.headers, null, 2)}\n`);
-  console.debug(`BODY: ${JSON.stringify(req.body, null, 2)}\n`);
-  next();
-}
-
-export function error500Logger(err: Error, req: Request, res: Response, next: NextFunction): void {
-  console.error(err.stack);
-  res.status(HTTPCodes.internalError).send({ error: "internal server error" });
 }
 
 export function shutdown(server: Server, db: Database) {

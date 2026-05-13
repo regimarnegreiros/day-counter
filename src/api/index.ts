@@ -2,20 +2,18 @@
 
 //#region imports
 
-import express from "express";
-import type { Express, Request, Response } from 'express';
+import express, { type Express } from "express";
 import {
-  type Configuration, error500Logger,
-  exitStatus, loadConfig, requestLogger, shutdown
+  type Configuration, exitStatus, loadConfig, shutdown
 } from "./utils.ts";
-import { DBReady, getCardById, getUserCards, health, userInfo} from "./methods/get.ts";
-import { signIn, signUp, createCard } from "./methods/post.ts";
-import { syncEvents, updateCard } from "./methods/patch.ts";
-import { deleteCard, deleteUser } from "./methods/delete.ts";
 import sqlite3 from "sqlite3";
 import { Server } from "http";
-import { DatabaseSingleton } from "./database/database.ts";
-const { Database } = sqlite3;
+import { DatabaseSingleton } from "./database/database.singleton.ts";
+import { userRoutes } from "./routes/user.route.ts";
+import { cardRoutes } from "./routes/card.route.ts";
+import { systemRoutes } from "./routes/system.route.ts";
+import { requestLogger } from "./middlewares/log.middleware.ts";
+import { error500Logger } from "./middlewares/error.middleware.ts";
 
 //#endregion
 
@@ -24,50 +22,18 @@ const serverData: Configuration = loadConfig("server-options.json");
 const app: Express = express();
 DatabaseSingleton.setInstance(':memory:'); // change later to a database path
 
-//middlewares
+//#region middlewares
 
 app.use(express.json());
 app.use(requestLogger);
 
 //#endregion
 
-//#region GET
+//#region application_routes
 
-app.get("/api/health", health);
-
-app.get("/api/ready", (_req: Request, res: Response) => DBReady(res, DatabaseSingleton.getInstance()));
-
-app.get("/api/user/:id", userInfo);
-
-app.get('/api/user/:id/cards', getUserCards);
-
-app.get('/api/card/:id', getCardById);
-
-//#endregion
-
-//#region POST
-
-app.post("/api/signup", signUp);
-
-app.post("/api/signin", signIn);
-
-app.post('/api/card', createCard);
-
-//#endregion
-
-//#region PATCH
-
-app.patch("/api/syncevents", syncEvents);
-
-app.patch('/api/card',updateCard);
-
-//#endregion
-
-//#region DELETE
-
-app.delete("/api/users/:id", deleteUser);
-
-app.delete('/api/card/:id',deleteCard);
+app.use(userRoutes);
+app.use(cardRoutes);
+app.use(systemRoutes);
 
 //#endregion
 
