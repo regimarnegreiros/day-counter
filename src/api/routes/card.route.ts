@@ -3,12 +3,12 @@ import CardController from "../controllers/card.controller.ts";
 
 export const cardRoutes = Router();
 
-cardRoutes.get('/api/user/:id/cards', CardController.getAllUserCards);
+cardRoutes.get('/api/user/:userId/cards', CardController.getAllUserCards);
 
-cardRoutes.get('/api/card/:id', CardController.getCardById);
+cardRoutes.get('/api/user/card/:cardId', CardController.getCardById);
 
-cardRoutes.post('/api/card', CardController.createCard);
+cardRoutes.post('/api/user/card', CardController.createCard);
 
-cardRoutes.put('/api/card/', CardController.updateCard);
+cardRoutes.put('/api/user/card/', CardController.updateCard);
 
-cardRoutes.delete('/api/card/:id', CardController.deleteCard);
+cardRoutes.delete('/api/user/card/:cardId', CardController.deleteCard);

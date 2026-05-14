@@ -7,7 +7,7 @@ userRoutes.post("/api/signup", UserController.signUp);
 
 userRoutes.post("/api/signin", UserController.signIn);
 
-userRoutes.get("/api/user/:id", UserController.userInfo);
+userRoutes.get("/api/user/:userId", UserController.userInfo);
 
-userRoutes.delete("/api/users/:id", UserController.deleteUser);
+userRoutes.delete("/api/user/:userId", UserController.deleteUser);
 

@@ -12,13 +12,13 @@ export default class UserController {
   }
 
   static async deleteUser(req: Request, res: Response) {
-    if (typeof req.params.id != "string") {
+    if (typeof req.params.userId != "string") {
       return res.status(HTTPCodes.badRequest).send({ message: "invalid user" });
     }
-    const { id } = req.params;
+    const { userId } = req.params;
 
     try {
-      await UserService.deleteUser(id);
+      await UserService.deleteUser(userId);
     } catch (err: any) {
       console.error(err.stack);
       return res.status(HTTPCodes.badRequest).send({ message: "invalid user" }); //have to be changed
@@ -28,14 +28,13 @@ export default class UserController {
   }
 
   static async userInfo(req: Request, res: Response) {
-    if (typeof req.params.id != "string") {
+    if (typeof req.params.userId != "string") {
       return res.status(HTTPCodes.badRequest).send({ message: "invalid user" });
     }
 
-    const { id } = req.params;
-
+    const { userId } = req.params;
     try {
-      const user = await UserService.getUser(id);
+      const user = await UserService.getUser(userId);
     } catch (err: any) {
       console.error(err.stack);
       return res.status(HTTPCodes.badRequest).send({ message: "invalid user" }); //have to be changed
