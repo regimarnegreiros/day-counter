@@ -12,6 +12,19 @@ export interface Configuration {
 
 };
 
+export interface Card {
+  cardID: number, // mudar para string (UUIDv7)
+  icon: string,
+  title: string,
+  type: string,
+  start_date: string,
+  end_date: string,
+  description: string,
+  hue: number,
+  notify_interval: string,
+  user_id: number
+};
+
 //#endregion
 
 //#region types
