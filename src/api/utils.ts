@@ -22,14 +22,25 @@ export interface Card {
   description: string,
   hue: number,
   notify_interval: string,
-  user_id: number
+  user_id: string
+};
+
+export interface User {
+  userID: string,
+  name: string,
+  email: string,
+  password: string,
+  cards?: Array<UserCard>
 };
 
 //#endregion
 
 //#region types
 
-
+export type SafeUser = Omit<User, "password">;
+export type UserCard = Omit<Card, "user_id">;
+export type Resolver<T> = (value: T | PromiseLike<T>) => void;
+export type Rejector = (reason?: any) => void;
 
 //#endregion
 
