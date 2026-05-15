@@ -1,13 +1,14 @@
 PRAGMA foreign_keys = true;
 
-CREATE TABLE IF NOT EXISTS user(
-	id CHAR(36) PRIMARY KEY, -- UUID
+CREATE TABLE IF NOT EXISTS users (
+	id CHAR(36) PRIMARY KEY, -- UUIDv7
 	name VARCHAR(255) NOT NULL,
 	email VARCHAR(255) NOT NULL UNIQUE,
 	password VARCHAR(255) NOT NULL, -- HASH + SALT !!!
 );
-CREATE TABLE IF NOT EXISTS counters(
-	id INTEGER PRIMARY KEY AUTOINCREMENT, -- MUDAR PARA UUIDV7 !!!
+
+CREATE TABLE IF NOT EXISTS counters (
+	id CHAR(36) PRIMARY KEY, -- UUIDv7
 	icon CHAR(2) NOT NULL,
 	title VARCHAR(50) NOT NULL,
 	type CHAR(1) NOT NULL CHECK(type IN ('r','p')), -- [R]egressive, [P]rogressive
@@ -16,8 +17,7 @@ CREATE TABLE IF NOT EXISTS counters(
 	description TEXT,
 	hue INT NOT NULL CHECK(hue >= 0 AND hue <= 360),
 	notify_interval CHAR(1) NOT NULL CHECK(notify_interval IN ('d','s','m','a')), -- [D]iario, [S]emanal, [M]ensal, [A]nual
-	user_id CHAR(36) NOT NULL,
-	FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE,
+	user_id CHAR(36) NOT NULL REFERENCES users(id) ON DELETE CASCADE,
 
 	CONSTRAINT verify_end_date_needed CHECK(
 		(type = 'r' AND date(end_date) IS NOT NULL) OR
