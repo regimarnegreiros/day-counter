@@ -13,7 +13,7 @@ export default class UserRepository{
     
     static async getUser(id: string){
         const db = DatabaseSingleton.getInstance();
-        //db delete code
+        return {userId: '2ca277bf-28e1-4b7c-a606-500769a79757', email: 'exemple@exemple.com'}
     }
     
     static async signIn(id: string){

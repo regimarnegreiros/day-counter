@@ -1,11 +1,14 @@
 /**
  * For a detailed explanation regarding each configuration property, visit:
  * https://jestjs.io/docs/configuration
- */
+*/
 
-import type {Config} from 'jest';
+import { createRequire } from 'node:module';
 
-const config: Config = {
+const require = createRequire(import.meta.url);
+
+
+const config = {
   // All imported modules in your tests should be mocked automatically
   // automock: false,
 
@@ -92,7 +95,9 @@ const config: Config = {
   // ],
 
   // A map from regular expressions to module names or to arrays of module names that allow to stub out resources with a single module
-  // moduleNameMapper: {},
+  moduleNameMapper: {
+    '^jose': require.resolve('jose')
+  },
 
   // An array of regexp pattern strings, matched against all module paths before considered 'visible' to the module loader
   // modulePathIgnorePatterns: [],
