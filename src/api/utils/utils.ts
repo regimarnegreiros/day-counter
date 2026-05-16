@@ -16,7 +16,16 @@ export interface Configuration {
 
 //#region types
 
+const public_routes = new Map<string, string[]>([
+    ['/api/signin', ['post']],
+    ['/api/signin', ['post']]
+]);
 
+export function isPublicRoute(test_route:string){
+  const accepted_methods = public_routes.get(test_route);
+  if(accepted_methods === undefined) return false;
+  return true;
+}
 
 //#endregion
 
