@@ -1,5 +1,5 @@
 import type { Request, Response } from "express";
-import { databaseHealthCheck, HTTPCodes } from "../utils.ts";
+import { databaseHealthCheck, HTTPCodes } from "../utils/utils.ts";
 import { DatabaseSingleton } from "../database/database.singleton.ts";
 
 export class SystemController{

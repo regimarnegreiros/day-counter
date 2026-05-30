@@ -37,10 +37,19 @@ export interface User {
 
 //#region types
 
+const public_routes = new Map<string, string[]>([
+    ['/api/signin', ['post']],
+    ['/api/signin', ['post']]
+]);
 export type SafeUser = Omit<User, "password">;
 export type UserCard = Omit<Card, "user_id">;
 export type Resolver<T> = (value: T | PromiseLike<T>) => void;
 export type Rejector = (reason?: any) => void;
+export function isPublicRoute(test_route:string){
+  const accepted_methods = public_routes.get(test_route);
+  if(accepted_methods === undefined) return false;
+  return true;
+}
 
 //#endregion
 
