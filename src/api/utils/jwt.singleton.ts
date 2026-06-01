@@ -45,7 +45,7 @@ export default class JWT {
       if (!process.env.JWT_EXPIRE_PERIOD)
         throw new Error("JWT expire period not found");
       if (
-        new Date().getTime() - JWT.last_refresh.getTime() / 86_400_000 > // 1000 * 24 * 60 * 60
+        (new Date().getTime() - JWT.last_refresh.getTime()) / 86_400_000 > // 1000 * 24 * 60 * 60
         Number.parseInt(process.env.JWT_EXPIRE_PERIOD)
       ) {
         const result2 = await jwtVerify(jwt, JWT.old_secret, {
@@ -63,7 +63,7 @@ export default class JWT {
     if (process.env.JWT_REFRESH_SECRET === undefined)
       throw new Error("JWT period refresh secret not found");
     if (
-      new Date().getTime() - JWT.last_refresh.getTime() / 86400000 > // 1000 * 24 * 60 * 60
+      (new Date().getTime() - JWT.last_refresh.getTime()) / 86400000 > // 1000 * 24 * 60 * 60
       Number.parseInt(process.env.JWT_REFRESH_SECRET)
     ) {
       JWT.old_secret = JWT.actual_secret;
