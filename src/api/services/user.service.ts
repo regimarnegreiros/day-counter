@@ -3,26 +3,21 @@ import { hash, verifyHash } from "../hash.ts";
 import validator from "validator";
 import JWT from "../utils/jwt.singleton.ts";
 import { User } from "../utils/utils.ts";
+import { createUserSchema, updateUserSchema } from "../schemas/createUserSchema.ts";
+import { z } from "zod";
 
 export default class UserService {
     private constructor() {}
 
-    static async signUp(name: string, email: string, password: string) {
-        if (!name || name.length < 3)
-            throw new Error("O nome deve ter pelo menos 3 caracteres");
+    static async signUp(data: z.infer<typeof createUserSchema>) {
+        const validatedData = createUserSchema.parse(data);
 
-        if (!validator.isEmail(email))
-            throw new Error("Formato de e-mail inválido");
-
-        if (!password || password.length < 6)
-            throw new Error("A senha deve ter pelo menos 6 caracteres");
-
-        const existingUser = await UserRepository.getUserByEmailOrId(email);
+        const existingUser = await UserRepository.getUserByEmailOrId(validatedData.email);
         if (existingUser) throw new Error("E-mail já está em uso");
 
-        const hashedPassword = await hash(password);
-        const newUser = await UserRepository.signUp(name, email, hashedPassword);
-        if (!newUser) throw new Error("Usuário não pôde ser cadastrado");
+        const hashedPassword = await hash(validatedData.password);
+        const newUser = await UserRepository.signUp(validatedData.name, validatedData.email, hashedPassword);
+        if (!newUser) throw new Error("Usuário não pode ser cadastrado");
 
         const jwt_token = await JWT.sign({ userId: newUser.userID });
         return {jwt_token, user: {name: newUser.name, email: newUser.email }};
@@ -64,7 +59,8 @@ export default class UserService {
         return await UserRepository.getUserByEmailOrId(id);
     }
 
-    static async updateUser(id: string, data: Omit<Partial<User>, "cards" | "userID">) {
+    //  Confirmação pendente se mantém essa estrutura ou volta pra antiga
+     static async updateUser(id: string, data: Omit<Partial<User>, "cards" | "userID">) {
         const dataCopy = { ...data };
 
         if (!validator.isUUID(id))

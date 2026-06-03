@@ -3,7 +3,7 @@ import CardController from "../controllers/card.controller.ts";
 
 export const cardRoutes = Router();
 
-cardRoutes.get('/api/user/:userId/cards', CardController.getAllUserCards);
+cardRoutes.get('/api/user/cards', CardController.getAllUserCards);
 
 cardRoutes.get('/api/user/card/:cardId', CardController.getCardById);
 
