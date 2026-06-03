@@ -4,11 +4,11 @@ import { Card } from "../utils.ts";
 export default class CardRepository {
   private constructor() {}
 
-  static async deleteCard(cardID: number): Promise<boolean> {
+  static async deleteCard(cardID: string): Promise<boolean> {
     const db = DatabaseSingleton.getInstance();
 
     return new Promise<boolean>((resolve, reject) => {
-      db.run("DELETE FROM users WHERE id = ?", [cardID], function (err) {
+      db.run("DELETE FROM counters WHERE id = ?", [cardID], function (err) {
         if (err) {
           reject(err);
           return;
@@ -19,7 +19,7 @@ export default class CardRepository {
     });
   }
 
-  static async getCardById(cardID: number): Promise<Card | undefined> {
+  static async getCardById(cardID: string): Promise<Card | undefined> {
     const db = DatabaseSingleton.getInstance();
 
     return new Promise<Card | undefined>((resolve, reject) => {
@@ -34,7 +34,7 @@ export default class CardRepository {
     });
   }
 
-  static async getUserCards(userID: number): Promise<Array<Card>> {
+  static async getUserCards(userID: string): Promise<Array<Card>> {
     const db = DatabaseSingleton.getInstance();
 
     return new Promise<Array<Card>>((resolve, reject) => {
@@ -51,7 +51,7 @@ export default class CardRepository {
     });
   }
   static async updateCard(
-    cardID: number,
+    cardID: string,
     updates: Partial<Omit<Card, "user_id" | "cardID">>
   ): Promise<boolean> {
     const db = DatabaseSingleton.getInstance();
@@ -91,10 +91,11 @@ export default class CardRepository {
     const db = DatabaseSingleton.getInstance();
 
     return new Promise<boolean>((resolve, reject) => {
-      const fields: Array<string> = []; // ["id"]
-      const values: Array<any> = []; // [uuid.v7()]
+      const fields: Array<string> = ["id"]; 
+      const values: Array<any> = [card.id ?? require("uuid").v7()]; 
 
       Object.entries(card).forEach((pair) => {
+        if (pair[0] === "id") return;
         fields.push(`${pair[0]}`);
         values.push(pair[1]);
       });
