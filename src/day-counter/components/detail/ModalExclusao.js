@@ -1,6 +1,23 @@
 import { View, StyleSheet, Text, TouchableOpacity, Modal } from "react-native";
+import { useState } from "react";
+import { cardService } from "../../services/card.service";
 
 export default function ModalExclusao(props) {
+  const [loading, setLoading] = useState(false);
+
+  const handleDelete = async () => {
+    try {
+      setLoading(true);
+      await cardService.deleteCard(props.id);
+      if (props.onClose) props.onClose();
+      if (props.onSuccess) props.onSuccess();
+    } catch (error) {
+      console.log("Erro ao deletar", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <Modal
       animationType="fade"
@@ -19,8 +36,12 @@ export default function ModalExclusao(props) {
             >
               <Text style={styles.cancelarText}>Cancelar</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.excluirButton}>
-              <Text style={styles.excluirText}>Excluir</Text>
+            <TouchableOpacity 
+              style={[styles.excluirButton, loading && { opacity: 0.7 }]}
+              onPress={handleDelete}
+              disabled={loading}
+            >
+              <Text style={styles.excluirText}>{loading ? "Aguarde..." : "Excluir"}</Text>
             </TouchableOpacity>
           </View>
         </View>

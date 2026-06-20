@@ -1,20 +1,20 @@
 import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import InputsView from "../screens/login-cadastro/InputsView";
+import AuthScreen from "../screens/login-cadastro/AuthScreen";
 
 const Stack = createNativeStackNavigator();
 
-export default function AuthRoutes({ onLogin }) {
+export default function AuthRoutes() {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="Signin">
         {({ navigation }) => (
-          <InputsView screenType="signin" navigation={navigation} onLogin={onLogin} />
+          <AuthScreen screenType="signin" navigation={navigation} />
         )}
       </Stack.Screen>
       <Stack.Screen name="Signup">
         {({ navigation }) => (
-            <InputsView screenType="signup" navigation={navigation} onLogin={onLogin} />
+            <AuthScreen screenType="signup" navigation={navigation} />
         )}
       </Stack.Screen>
     </Stack.Navigator>

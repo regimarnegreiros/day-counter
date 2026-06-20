@@ -2,15 +2,14 @@ import {
   View,
   StyleSheet,
   TouchableOpacity,
-  TextInput,
   Text,
-  Pressable,
-  Platform,
+  ActivityIndicator,
 } from "react-native";
-import { Feather } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { AuthContext } from "../../contexts/AuthContext";
+import { AuthInput, EyeButton } from "../../components/AuthInput";
+import { validarEmail } from "../../utils/validarEmail";
 
 const colors = {
   mainViolet: "#ad46ff",
@@ -34,30 +33,30 @@ const initialErrMsgs = {
   name: "",
 };
 
-function validateEmail(email) {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-}
-
-function EntryScreen({ screen, onNavigate, onLogin }) {
+function EntryScreen({ screen, onNavigate }) {
+  const { login, register } = useContext(AuthContext);
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
   const [confirmPass, setConfirmPass] = useState("");
   const [name, setName] = useState("");
   const [err, setErr] = useState(initialErrMsgs);
+  const [globalErr, setGlobalErr] = useState("");
+  const [loading, setLoading] = useState(false);
   const [showPass, setShowPass] = useState(false);
   const [showConfirmPass, setShowConfirmPass] = useState(false);
 
   const isSignin = screen === "signin";
 
-  function handleSubmit() {
+  async function handleSubmit() {
     const newErr = { ...initialErrMsgs };
     let valid = true;
+    setGlobalErr("");
 
     if (!isSignin && name.trim() === "") {
       newErr.name = "Nome é obrigatório.";
       valid = false;
     }
-    if (!validateEmail(email)) {
+    if (!validarEmail(email)) {
       newErr.email = "E-mail inválido.";
       valid = false;
     }
@@ -72,124 +71,102 @@ function EntryScreen({ screen, onNavigate, onLogin }) {
 
     setErr(newErr);
     if (valid) {
-      onLogin?.();
+      setLoading(true);
+      try {
+        if (isSignin) {
+          await login(email, pass);
+        } else {
+          await register(name, email, pass);
+        }
+      } catch (error) {
+        setGlobalErr(error.message || "Erro na autenticação.");
+      } finally {
+        setLoading(false);
+      }
     }
   }
-
-  const renderInput = ({
-    label,
-    iconName,
-    value,
-    onChangeText,
-    placeholder,
-    inputMode,
-    secureTextEntry,
-    errMsg,
-    rightElement,
-  }) => (
-    <View style={styles.inputGroup} key={label}>
-      <Text style={styles.inputLabel}>{label}</Text>
-      <View
-        style={[
-          styles.inputContainer,
-          errMsg ? styles.inputContainerError : null,
-        ]}
-      >
-        <Feather
-          name={iconName}
-          size={16}
-          color={colors.mainViolet}
-          style={styles.inputIcon}
-        />
-        <TextInput
-          style={styles.textInput}
-          value={value}
-          onChangeText={onChangeText}
-          placeholder={placeholder}
-          placeholderTextColor={colors.placeholderGrey}
-          inputMode={inputMode || "text"}
-          secureTextEntry={secureTextEntry || false}
-          autoCapitalize="none"
-          autoCorrect={false}
-        />
-        {rightElement || null}
-      </View>
-      {errMsg ? <Text style={styles.errMsg}>{errMsg}</Text> : null}
-    </View>
-  );
-
-  const eyeButton = (visible, onPress) => (
-    <Pressable onPress={onPress} style={styles.eyeButton}>
-      <Feather
-        name={visible ? "eye-off" : "eye"}
-        size={16}
-        color={colors.borderGrey}
-      />
-    </Pressable>
-  );
 
   return (
     <View style={styles.card}>
       <View style={styles.cardContent}>
-        {!isSignin &&
-          renderInput({
-            label: "Nome",
-            iconName: "user",
-            value: name,
-            onChangeText: setName,
-            placeholder: "Nome",
-            errMsg: err.name,
-          })}
-
-        {renderInput({
-          label: "E-mail",
-          iconName: "mail",
-          value: email,
-          onChangeText: setEmail,
-          placeholder: "email@provedor",
-          inputMode: "email",
-          errMsg: err.email,
-        })}
-
-        {renderInput({
-          label: "Senha",
-          iconName: "lock",
-          value: pass,
-          onChangeText: setPass,
-          placeholder: "••••••••",
-          secureTextEntry: !showPass,
-          errMsg: err.pass,
-          rightElement: eyeButton(showPass, () => setShowPass((v) => !v)),
-        })}
-
-        {!isSignin &&
-          renderInput({
-            label: "Confirmar senha",
-            iconName: "lock",
-            value: confirmPass,
-            onChangeText: setConfirmPass,
-            placeholder: "••••••••",
-            secureTextEntry: !showConfirmPass,
-            errMsg: err.confirmPass,
-            rightElement: eyeButton(showConfirmPass, () =>
-              setShowConfirmPass((v) => !v),
-            ),
-          })}
-
-        {isSignin && (
-          <Pressable style={styles.forgotContainer}>
-            <Text style={styles.forgotText}>Esqueci minha senha</Text>
-          </Pressable>
+        {!isSignin && (
+          <AuthInput
+            label="Nome"
+            iconName="user"
+            value={name}
+            onChangeText={setName}
+            placeholder="Nome"
+            errMsg={err.name}
+          />
         )}
+
+        <AuthInput
+          label="E-mail"
+          iconName="mail"
+          value={email}
+          onChangeText={setEmail}
+          placeholder="email@provedor"
+          inputMode="email"
+          errMsg={err.email}
+        />
+
+        <AuthInput
+          label="Senha"
+          iconName="lock"
+          value={pass}
+          onChangeText={setPass}
+          placeholder="••••••••"
+          secureTextEntry={!showPass}
+          errMsg={err.pass}
+          rightElement={
+            <EyeButton
+              visible={showPass}
+              onPress={() => setShowPass((v) => !v)}
+            />
+          }
+        />
+
+        {!isSignin && (
+          <AuthInput
+            label="Confirmar senha"
+            iconName="lock"
+            value={confirmPass}
+            onChangeText={setConfirmPass}
+            placeholder="••••••••"
+            secureTextEntry={!showConfirmPass}
+            errMsg={err.confirmPass}
+            rightElement={
+              <EyeButton
+                visible={showConfirmPass}
+                onPress={() => setShowConfirmPass((v) => !v)}
+              />
+            }
+          />
+        )}
+        {globalErr ? (
+          <Text
+            style={[
+              styles.errMsg,
+              { marginLeft: 0, alignSelf: "center", marginBottom: 10 },
+            ]}
+          >
+            {globalErr}
+          </Text>
+        ) : null}
 
         <TouchableOpacity
           style={styles.primaryButton}
           onPress={handleSubmit}
           activeOpacity={0.85}
+          disabled={loading}
         >
-          <Text style={styles.primaryButtonText}>
-            {isSignin ? "Login" : "Cadastrar"}
-          </Text>
+          {loading ? (
+            <ActivityIndicator color={colors.white} />
+          ) : (
+            <Text style={styles.primaryButtonText}>
+              {isSignin ? "Login" : "Cadastrar"}
+            </Text>
+          )}
         </TouchableOpacity>
 
         <View style={styles.divider}>
@@ -212,14 +189,11 @@ function EntryScreen({ screen, onNavigate, onLogin }) {
   );
 }
 
-export default function InputsView({ screenType, navigation, onLogin }) {
+export default function AuthScreen({ screenType, navigation }) {
   const isSignin = screenType === "signin";
-
   const handleNavigate = () =>
     navigation.navigate(isSignin ? "Signup" : "Signin");
-
   if (screenType !== "signin" && screenType !== "signup") return <View />;
-
   return (
     <SafeAreaView style={styles.wrapper} edges={["bottom"]}>
       <View style={styles.header}>
@@ -232,11 +206,7 @@ export default function InputsView({ screenType, navigation, onLogin }) {
           isSignin ? styles.cardRoundedLeft : styles.cardRoundedRight,
         ]}
       >
-        <EntryScreen
-          screen={screenType}
-          onNavigate={handleNavigate}
-          onLogin={onLogin}
-        />
+        <EntryScreen screen={screenType} onNavigate={handleNavigate} />
       </View>
 
       <View
@@ -299,50 +269,12 @@ const styles = StyleSheet.create({
     borderTopRightRadius: numerics.viewBorder,
     backgroundColor: colors.mainViolet,
   },
-
-  /* Input */
-  inputGroup: {
-    marginBottom: 14,
-  },
-  inputLabel: {
-    fontSize: 13,
-    fontWeight: "500",
-    color: colors.labelGrey,
-    marginBottom: 6,
-  },
-  inputContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    borderWidth: 1,
-    borderColor: colors.borderGrey,
-    borderRadius: 50,
-    paddingHorizontal: 14,
-    paddingVertical: Platform.OS === "ios" ? 12 : 8,
-    backgroundColor: colors.white,
-  },
-  inputContainerError: {
-    borderColor: colors.errorRed,
-  },
-  inputIcon: {
-    marginRight: 8,
-  },
-  textInput: {
-    flex: 1,
-    fontSize: 14,
-    color: "#222",
-    padding: 0,
-  },
-  eyeButton: {
-    paddingLeft: 8,
-  },
   errMsg: {
     fontSize: 11,
     color: colors.errorRed,
     marginTop: 4,
     marginLeft: 14,
   },
-
-  /* Forgot */
   forgotContainer: {
     alignSelf: "flex-end",
     marginBottom: 20,
@@ -353,8 +285,6 @@ const styles = StyleSheet.create({
     color: colors.linkBlue,
     textDecorationLine: "underline",
   },
-
-  /* Buttons */
   primaryButton: {
     backgroundColor: colors.mainViolet,
     borderRadius: 50,
@@ -387,8 +317,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: "500",
   },
-
-  /* Divider */
   divider: {
     flexDirection: "row",
     alignItems: "center",
