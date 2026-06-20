@@ -1,6 +1,5 @@
 import type { Request, Response } from "express"
 import { HTTPCodes } from "../utils/utils.ts"
-import CardService from '../services/card.service.ts'
 
 export default class CardController{
 
