@@ -18,6 +18,12 @@ export const createUserSchema = z.object({
       message: "Senha é obrigatória",
     })
     .min(6, "A senha deve ter pelo menos 6 caracteres"),
+
+  confirmPassword: z
+    .string({
+      message: "Confirmação de senha é obrigatória",
+    })
+    .min(6, "A confirmação de senha deve ter pelo menos 6 caracteres"),
 });
 
 export const updateUserSchema = createUserSchema.partial();
