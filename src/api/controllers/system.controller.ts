@@ -1,6 +1,5 @@
 import type { Request, Response } from "express";
 import { databaseHealthCheck, HTTPCodes } from "../utils/utils.ts";
-import { DatabaseSingleton } from "../database/database.singleton.ts";
 
 export class SystemController{
 
@@ -12,7 +11,7 @@ export class SystemController{
     }
     
     static async DBReady(req: Request, res: Response) {
-        const dbOK: boolean = await databaseHealthCheck(DatabaseSingleton.getInstance());
+        const dbOK: boolean = await databaseHealthCheck();
         
         if (!dbOK) return res.status(HTTPCodes.serviceUnavailable).send({
             status: "degraded",

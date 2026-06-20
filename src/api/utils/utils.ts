@@ -2,7 +2,7 @@ import { Server } from "http";
 import type { NextFunction, Request, Response } from "express";
 import { type PathOrFileDescriptor, readFileSync } from "fs";
 import { isIP } from "net";
-import { type Database } from "sqlite3";
+import { prisma } from "../database/database.ts";
 
 //#region interfaces
 
@@ -13,7 +13,7 @@ export interface Configuration {
 };
 
 export interface Card {
-  cardID: number, // mudar para string (UUIDv7)
+  cardID: string,
   icon: string,
   title: string,
   type: string,
@@ -72,15 +72,9 @@ class InvalidIPError extends Error {
  * @returns {Promise<void>}
  * A boolean. True if the statement went through, false if not
  */
-export async function databaseHealthCheck(db: Database): Promise<boolean> {
+export async function databaseHealthCheck(): Promise<boolean> {
   try {
-    await new Promise<void>((resolve, reject) => {
-      db.get("SELECT 1", (err: Error | null) => {
-        if (err) reject(err);
-        else resolve();
-      })
-    });
-
+    await prisma.$queryRaw`SELECT 1`;
     return true;
   }
   catch {
@@ -134,18 +128,17 @@ export function loadConfig(path: PathOrFileDescriptor): Configuration {
   }
 }
 
-export function shutdown(server: Server, db: Database) {
-  server.close(() => {
+export function shutdown(server: Server) {
+  server.close(async () => {
     console.log("Shutting down server");
-    db.close((err) => {
-      if (err) {
-        console.error(err);
-        process.exit(exitStatus.unspecifiedError);
-      }
-
+    try {
+      await prisma.$disconnect();
       console.log("Database connection closed");
-      process.exit(exitStatus.success)
-    })
+      process.exit(exitStatus.success);
+    } catch (err) {
+      console.error(err);
+      process.exit(exitStatus.unspecifiedError);
+    }
   });
   setTimeout(() => {
     console.error("Timeout!!!");
