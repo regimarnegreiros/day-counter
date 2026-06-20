@@ -2,7 +2,7 @@ import UserRepository from "../repositories/user.repository.ts";
 import { hash, verifyHash } from "../hash.ts";
 import validator from "validator";
 import JWT from "../utils/jwt.singleton.ts";
-import { User } from "../utils/utils.ts";
+import { type User } from "../utils/utils.ts";
 import {
   createUserSchema,
   updateUserSchema,
