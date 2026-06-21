@@ -3,7 +3,7 @@ import { View, StyleSheet, Text } from "react-native";
 export default function DatailsCard(props) {
   const data_inicial = new Date(props.data_inicial);
   const data_alvo = new Date(props.data_alvo);
-  const dateFormat = new Intl.DateTimeFormat('pt-BR', {year:'numeric',month:'2-digit',day:'2-digit'})
+  const dateFormat = new Intl.DateTimeFormat('pt-BR', {year:'numeric',month:'2-digit',day:'2-digit', timeZone: 'UTC'})
   const notify_convertions = {
     'd': 'Diário',
     's': 'Semanal',
@@ -24,7 +24,7 @@ export default function DatailsCard(props) {
       <View style={styles.row}>
         <View>
           <Text style={styles.labelText}>
-            {props.tipo === "r" ? "DATA ALVO" : "DATA INCIAL"}
+            {props.tipo === "r" ? "DATA ALVO" : "DATA INICIAL"}
           </Text>
           <Text style={styles.valueText}>
             {props.tipo === "r" ? dateFormat.format(data_alvo) : dateFormat.format(data_inicial)}

@@ -275,17 +275,12 @@ export const EditCounter = (props) => {
 
                 try {
                   setLoading(true);
-                  const formatYMD = (d) => {
-                    const offset = d.getTimezoneOffset();
-                    const adjustedDate = new Date(d.getTime() - (offset*60*1000));
-                    return adjustedDate.toISOString().split('T')[0];
-                  }
 
                   const updateCount = {
                     title: title,
                     icon: icon,
                     type: typeCounter,
-                    start_date: formatYMD(startDate),
+                    start_date: startDate.toISOString().split('T')[0],
                     hue: Number.parseInt(color.split("(")[1].split(",")[0]),
                     description: description,
                     notify_interval: notifyInterval,
