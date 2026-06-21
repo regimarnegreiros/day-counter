@@ -17,9 +17,9 @@ export const authService = {
     }
   },
 
-  async register(name, email, password) {
+  async register(name, email, password, confirmPassword) {
     try {
-      const response = await api.post('/api/signup', { name, email, password });
+      const response = await api.post('/api/signup', { name, email, password, confirmPassword });
       const { jwt_token, user } = response.data;
       
       if (jwt_token) {

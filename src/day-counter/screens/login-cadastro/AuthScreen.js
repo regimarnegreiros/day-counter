@@ -76,7 +76,7 @@ function EntryScreen({ screen, onNavigate }) {
         if (isSignin) {
           await login(email, pass);
         } else {
-          await register(name, email, pass);
+          await register(name, email, pass, confirmPass);
         }
       } catch (error) {
         setGlobalErr(error.message || "Erro na autenticação.");

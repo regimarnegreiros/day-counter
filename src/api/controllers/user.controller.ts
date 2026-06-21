@@ -7,7 +7,7 @@ export default class UserController {
     const { email, password } = req.body;
     try {
       const result = await UserService.signIn(email, password);
-      return res.status(HTTPCodes.ok).json({ jwt_token: result.jwt_token });
+      return res.status(HTTPCodes.ok).json({ jwt_token: result.jwt_token, user: result.user });
     } catch (err: any) {
       return res.status(HTTPCodes.badRequest).json({ message: err.message });
     }
@@ -16,7 +16,7 @@ export default class UserController {
   static async signUp(req: Request, res: Response) {
     try {
       const result = await UserService.signUp(req.body);
-      return res.status(HTTPCodes.created).json({ jwt_token: result.jwt_token });
+      return res.status(HTTPCodes.created).json({ jwt_token: result.jwt_token, user: result.user });
     } catch (err: any) {
       return res.status(HTTPCodes.badRequest).json({ message: err.message });
     }

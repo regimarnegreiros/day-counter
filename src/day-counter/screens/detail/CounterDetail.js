@@ -38,7 +38,7 @@ export default function CounterDetail(props) {
           typeCounter={dados.tipo}
           startDate={dados.data_inicial}
           endDate={dados.data_alvo}
-          notifyInteval={dados.notificacao}
+          notifyInterval={dados.notificacao}
           hue={dados.hue}
         />
         <View style={styles.row}>

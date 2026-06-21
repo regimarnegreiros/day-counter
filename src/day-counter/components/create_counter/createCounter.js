@@ -25,7 +25,7 @@ function isSingleEmoji(str) {
   return emojiRegex.test(str);
 }
 
-export const InsertForm = ({ showForm }) => {
+export const InsertForm = ({ showForm, onSuccess }) => {
   const [icon, setIcon] = useState("");
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -313,6 +313,7 @@ export const InsertForm = ({ showForm }) => {
 
                   await cardService.createCard(newCount);
                   showForm(false);
+                  if (onSuccess) onSuccess();
                 } catch (error) {
                   showAlertMessage("Erro ao criar contador.");
                   console.error(error);

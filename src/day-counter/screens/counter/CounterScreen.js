@@ -2,11 +2,10 @@ import { StatusBar } from "expo-status-bar";
 import {
   View,
   TouchableOpacity,
-  Button,
-  Modal,
   FlatList,
+  RefreshControl,
 } from "react-native";
-import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { Plus } from "lucide-react-native";
 import layoutStyle from "../../components/layout/layoutStyles";
 
@@ -15,7 +14,7 @@ import {
   MenuSelector,
 } from "../../components/layout/layoutComponent";
 import { InsertForm } from "../../components/create_counter/createCounter";
-import { useEffect, useState, useCallback } from "react";
+import { useState, useCallback } from "react";
 import { useFocusEffect } from "@react-navigation/native";
 import { CounterCards } from "../../components/CounterCards/CounterCards";
 import { cardService } from "../../services/card.service";
@@ -29,9 +28,10 @@ const CounterScreen = (props) => {
   const fetchCards = async () => {
     try {
       setLoading(true);
-      const cards = await cardService.getCards();
+      const response = await cardService.getCards();
+      const cards = response.data || [];
       const mappedData = cards.map(c => ({
-        id: c.id,
+        id: c.cardID,
         titulo: c.title,
         icone: c.icon,
         tipo: c.type,
@@ -65,11 +65,14 @@ const CounterScreen = (props) => {
 
       <View style={{ flex: 1 }}>
         {showCreateCount ? (
-          <InsertForm showForm={setShowCreateCount}/>
+          <InsertForm showForm={setShowCreateCount} onSuccess={fetchCards} />
         ) : null}
         <FlatList
           contentContainerStyle={{ padding: 16, gap:16 }}
           data={data}
+          refreshControl={
+            <RefreshControl refreshing={loading} onRefresh={fetchCards} />
+          }
           renderItem={({ item }) => (
             <CounterCards
               id={item.id}

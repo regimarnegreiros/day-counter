@@ -28,9 +28,9 @@ export const cardService = {
     }
   },
 
-  async updateCard(data) {
+  async updateCard(id, data) {
     try {
-      const response = await api.put('/api/user/card/', data);
+      const response = await api.put(`/api/user/card/${id}`, data);
       return response.data;
     } catch (error) {
       throw error.response?.data || error;
