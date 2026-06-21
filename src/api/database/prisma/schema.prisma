@@ -17,6 +17,7 @@ model users {
   name String
   email String @unique
   password String
+  notification Boolean @default(false)
   counters counters[]
 }
 

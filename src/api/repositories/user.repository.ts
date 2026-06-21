@@ -113,11 +113,10 @@ export default class UserRepository {
     static async updateUserById(
         id: string,
         data: Omit<Partial<User>, "cards" | "userID">
-    ): Promise<Omit<User, "cards"> | undefined> {
+    ): Promise<Omit<SafeUser, "cards"> | undefined> {
         if (Object.keys(data).length === 0) {
             throw new Error("Nenhum dado para atualizar");
         }
-
         try {
             const user = await prisma.users.update({
                 where: { id },
@@ -127,7 +126,7 @@ export default class UserRepository {
                 userID: user.id,
                 email: user.email,
                 name: user.name,
-                password: user.password,
+                notification: user.notification,
             };
         } catch (err) {
             console.error(err);

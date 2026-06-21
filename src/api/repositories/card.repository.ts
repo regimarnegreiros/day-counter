@@ -62,11 +62,11 @@ export default class CardRepository {
     updates: Partial<Omit<Card, "user_id" | "cardID">>
   ): Promise<boolean> {
     try {
-      const result = await prisma.counters.updateMany({
+      const result = await prisma.counters.update({
         where: { id: cardID },
         data: updates as any,
       });
-      return result.count > 0;
+      return !!result;
     } catch (err) {
       console.error(err);
       return false;

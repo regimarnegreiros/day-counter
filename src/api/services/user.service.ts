@@ -72,29 +72,31 @@ export default class UserService {
     id: string,
     data: Omit<Partial<User>, "cards" | "userID">,
   ) {
-    const dataCopy = { ...data };
-
+    
     if (!validator.isUUID(id)) throw new Error("ID inválido");
-
+    
     if (data.email !== undefined) {
       if (!validator.isEmail(data.email))
         throw new Error("Formato de e-mail inválido");
-
+      
       const existingUser = await UserRepository.getUserByEmailOrId(data.email);
       if (existingUser && existingUser.userID !== id)
         throw new Error("E-mail já está em uso");
     }
-
+    
     if (data.name !== undefined && data.name.length < 3)
       throw new Error("O nome deve ter pelo menos 3 caracteres");
-
+    
+    data.notification = Boolean(data.notification)
+    const dataCopy = { ...data };
+    
     if (data.password !== undefined) {
       if (data.password.length < 6)
         throw new Error("A senha deve ter pelo menos 6 caracteres");
 
       dataCopy.password = await hash(data.password);
     }
-
+    
     return await UserRepository.updateUserById(id, dataCopy);
   }
 }
