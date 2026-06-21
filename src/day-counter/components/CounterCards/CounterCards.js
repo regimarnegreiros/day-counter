@@ -1,21 +1,25 @@
+import { useMemo } from "react";
 import { View, Text, StyleSheet, Pressable } from "react-native";
-import { FontAwesome, Feather } from "@expo/vector-icons";
+import { Feather } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 
 import ProgressBar from "../detail/ProgressBar";
 import { calcularDiferencaDias } from "../../utils/calcularDiferencaDias";
 import { gerarPaletaCores } from "../../utils/gerarPaletaCores";
+import { formatarData } from "../../utils/formatarData";
 
 export const CounterCards = (props) => {
-  const { corFundo, corBadge, corBarra } = gerarPaletaCores(props.hue);
-  const data_inicial = new Date(props.data_inicial);
-  const data_alvo = new Date(props.data_alvo);
-  const dateFormat = new Intl.DateTimeFormat('pt-BR', {year:'numeric',month:'2-digit',day:'2-digit'})
-  const dias = calcularDiferencaDias(
-    props.data_alvo,
-    props.data_inicial,
-    props.tipo,
+  const { corFundo, corBadge, corBarra } = useMemo(
+    () => gerarPaletaCores(props.hue),
+    [props.hue]
   );
+  const { data_inicial, data_alvo, dias } = useMemo(() => {
+    return {
+      data_inicial: new Date(props.data_inicial),
+      data_alvo: new Date(props.data_alvo),
+      dias: calcularDiferencaDias(props.data_alvo, props.data_inicial, props.tipo),
+    };
+  }, [props.data_alvo, props.data_inicial, props.tipo]);
   const navigation = useNavigation();
   const paginaDetalhes = () => {
     navigation.navigate("CounterDetail", {
@@ -37,7 +41,7 @@ export const CounterCards = (props) => {
           <View style={styles.eventdate}>
             <Feather name="calendar" size={16} color="#1C1C1E" />
             <Text style={styles.dateText}>
-              {props.tipo === "p" ? dateFormat.format(data_inicial) : dateFormat.format(data_alvo)}
+              {props.tipo === "p" ? formatarData(data_inicial) : formatarData(data_alvo)}
             </Text>
           </View>
         </View>

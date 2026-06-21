@@ -16,15 +16,11 @@ import {
   LogOut,
   ChevronRight,
   X,
-  UserCircle,
-  Clock,
-  CalendarDays,
 } from "lucide-react-native";
 import profileStyles from "./profileStyle";
 import layoutStyles from "../../components/layout/layoutStyles";
 import {
   AppHeader,
-  MenuSelector,
 } from "../../components/layout/layoutComponent";
 
 const ProfileScreen = (props) => {
@@ -38,7 +34,7 @@ const ProfileScreen = (props) => {
   });
 
   const [modalVisible, setModalVisible] = useState(false);
-  const [editingField, setEditingField] = useState(null); // 'name', 'email', 'password'
+  const [editingField, setEditingField] = useState(null); 
   const [tempValue, setTempValue] = useState("");
 
   const menuItems = [
@@ -50,7 +46,6 @@ const ProfileScreen = (props) => {
 
   const stats = [
     { label: "Total de Contadores", value: 4 },
-    // { label: "Total de Ofensivas", value: 12 },
   ];
 
   const openEditor = (field) => {

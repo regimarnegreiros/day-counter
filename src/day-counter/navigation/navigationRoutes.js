@@ -1,19 +1,10 @@
-import React from "react";
-import { View, Text } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import CounterScreen from "../screens/counter/CounterScreen";
 import ProfileScreen from "../screens/userProfile/ProfileScreen"
 import { MenuSelector } from "../components/layout/layoutComponent";
-import { Clock, Calendar, User } from "lucide-react-native";
+import { Clock, User } from "lucide-react-native";
 
 const Tab = createBottomTabNavigator();
-
-// Telas temporárias apenas para teste
-const Placeholder = ({ route }) => (
-  <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-    <Text>Tela {route.name} em desenvolvimento...</Text>
-  </View>
-);
 
 export default function AppRoutes() {
   return (
