@@ -39,6 +39,7 @@ export default class UserRepository {
                     email: userWithCards.email,
                     name: userWithCards.name,
                     password: userWithCards.password,
+                    notification: userWithCards.notification,
                     cards: userWithCards.counters.map((c) => ({
                         cardID: c.id,
                         icon: c.icon,
@@ -62,6 +63,7 @@ export default class UserRepository {
                     email: justUser.email,
                     name: justUser.name,
                     password: justUser.password,
+                    notification: justUser.notification
                 };
             }
         } catch (err) {
@@ -103,6 +105,7 @@ export default class UserRepository {
                 userID: user.id,
                 name: user.name,
                 email: user.email,
+                notification: user.notification
             };
         } catch (err) {
             console.error(err);
