@@ -11,7 +11,7 @@ export default class CardService{
             ...validatedData,
             end_date: validatedData.end_date || null,
             description: validatedData.description || null,
-            user_id
+            user_id: user_id
         };
         return await CardRepository.createCard(card_data as any);
     }   

@@ -25,10 +25,8 @@ export default class UserRepository {
         if (!validator.isEmail(emailOrId) && !validator.isUUID(emailOrId)) {
             throw new Error("E-mail ou ID inválido");
         }
-
         try {
             const query = validator.isEmail(emailOrId) ? { email: emailOrId } : { id: emailOrId };
-
             if (getCards) {
                 const userWithCards = await prisma.users.findUnique({
                     where: query,

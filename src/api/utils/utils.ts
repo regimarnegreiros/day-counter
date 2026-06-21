@@ -39,7 +39,9 @@ export interface User {
 
 const public_routes = new Map<string, string[]>([
     ['/api/signin', ['post']],
-    ['/api/signin', ['post']]
+    ['/api/signup', ['post']],
+    ['/api/health', ['get']],
+    ['/api/ready',['get']]
 ]);
 export type SafeUser = Omit<User, "password">;
 export type UserCard = Omit<Card, "user_id">;
@@ -161,6 +163,7 @@ export const HTTPCodes = Object.freeze({
   ok: 200,
   /** New resoruce created */
   created: 201,
+  noContent: 204,
   /** Accessible via alternate URI in Location header */
   found: 302,
   /** Client error, server rejects request */

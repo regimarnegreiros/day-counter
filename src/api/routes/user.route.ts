@@ -3,11 +3,13 @@ import UserController from "../controllers/user.controller.ts";
 
 export const userRoutes = Router();
 
-userRoutes.post("/api/signup", UserController.signUp);
+userRoutes.post("/signup", UserController.signUp);
 
-userRoutes.post("/api/signin", UserController.signIn);
+userRoutes.post("/signin", UserController.signIn);
 
-userRoutes.get("/api/user/:userId", UserController.userInfo);
+userRoutes.get("/user/", UserController.userAuthenticatedInfo);
 
-userRoutes.delete("/api/user/:userId", UserController.deleteUser);
+userRoutes.get("/user/:userId", UserController.userInfo);
+
+userRoutes.delete("/user/:userId", UserController.deleteUser);
 

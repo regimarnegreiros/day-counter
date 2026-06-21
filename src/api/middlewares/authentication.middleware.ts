@@ -36,7 +36,7 @@ export async function authentication(
         .json({ message: "something went wrong with your validaton" });
   }
   const payload = payload_try;
-  const userId = payload["userId"];
+  const userId = payload["userID"];
   if (typeof userId !== "string") {
     return res
       .status(HTTPCodes.notFound)
@@ -54,6 +54,10 @@ export async function authentication(
       .status(HTTPCodes.notFound)
       .json({ message: "user not found" });
   }
-  req.body['userInfo'] = user;
+  if(!req.body){
+    req.body = {userInfo:user}
+  }else{
+    req.body['userInfo'] = user;
+  }
   next();
 }
