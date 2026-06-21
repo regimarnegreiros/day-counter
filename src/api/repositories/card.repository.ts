@@ -73,7 +73,7 @@ export default class CardRepository {
     }
   }
 
-  static async createCard(card: Omit<Card, "cardID">): Promise<boolean> {
+  static async createCard(card: Omit<Card, "cardID">): Promise<string | undefined> {
     try {
       const result = await prisma.counters.create({
         data: {
@@ -86,13 +86,12 @@ export default class CardRepository {
           description: card.description || null,
           hue: card.hue,
           notify_interval: card.notify_interval,
-          user_id: card.user_id,
+          user_id: card.user_id
         },
       });
-      return !!result;
+      return result.id;
     } catch (err) {
       console.error(err);
-      return false;
     }
   }
 }

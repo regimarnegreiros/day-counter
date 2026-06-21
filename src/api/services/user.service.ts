@@ -31,7 +31,7 @@ export default class UserService {
     );
     if (!newUser) throw new Error("Usuário não pode ser cadastrado");
 
-    const jwt_token = await JWT.sign({ userId: newUser.userID });
+    const jwt_token = await JWT.sign({ userID: newUser.userID });
     return { jwt_token, user: { name: newUser.name, email: newUser.email } };
   }
 
@@ -46,7 +46,7 @@ export default class UserService {
     const isPasswordValid = await verifyHash(user.password, password);
     if (!isPasswordValid) throw new Error("Credenciais inválidas");
 
-    const jwt_token = await JWT.sign({ userId: user.userID });
+    const jwt_token = await JWT.sign({ userID: user.userID });
     return { jwt_token, user: { name: user.name, email: user.email } };
   }
 
@@ -62,7 +62,7 @@ export default class UserService {
   }
 
   static async getUser(id: string) {
-    if (!validator.isUUID(id)) throw new Error("ID inválido");
+    if (!validator.isUUID(id,7)) throw new Error("ID inválido");
 
     return await UserRepository.getUserByEmailOrId(id);
   }

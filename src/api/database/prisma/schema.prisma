@@ -21,7 +21,7 @@ model users {
 }
 
 model counters {
-  id              String  @id
+  id              String  @id @default(uuid(7))
   icon            String
   title           String
   type            String
