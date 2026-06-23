@@ -28,7 +28,7 @@ export default function ModalExclusao(props) {
     >
       <View style={styles.modalOverlay}>
         <View style={styles.modalContainer}>
-          <Text>Tem certeza que deseja excluir esse contador?</Text>
+          <Text style={styles.modalText}>Tem certeza que deseja excluir esse contador?</Text>
           <View style={styles.modalExclusaoBotoes}>
             <TouchableOpacity
               style={styles.cancelarButton}
@@ -61,33 +61,40 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFF",
     width: "90%",
     maxHeight: "80%",
-    padding: 24,
+    padding: 30,
     borderRadius: 20,
     alignItems: "center",
+  },
+  modalText: {
+    fontSize: 18,
+    textAlign: "center",
+    marginBottom: 30,
+    fontWeight: "500",
   },
   modalExclusaoBotoes: {
     flexDirection: "row",
-    justifyContent: "space-evenly",
+    justifyContent: "space-between",
     width: "100%",
-    marginTop: 10,
   },
   cancelarButton: {
-    width: 120,
+    width: "48%",
     backgroundColor: "#EEEEEE",
     borderRadius: 20,
-    paddingVertical: 10,
+    paddingVertical: 15,
     alignItems: "center",
   },
-  cancelarText: {},
+  cancelarText: {
+    fontSize: 16,
+  },
   excluirButton: {
-    width: 120,
+    width: "48%",
     backgroundColor: "#FF000C",
     borderRadius: 20,
-    paddingVertical: 10,
+    paddingVertical: 15,
     alignItems: "center",
   },
   excluirText: {
     color: "#FFF",
-    fontWeight: "bold",
+    fontSize: 16,
   },
 });

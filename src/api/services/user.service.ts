@@ -21,7 +21,7 @@ export default class UserService {
     if (existingUser) throw new Error("E-mail já está em uso");
 
     if (validatedData.password !== validatedData.confirmPassword)
-      throw new Error("Senha e Confirmação de senha são diferentes.");
+      throw new Error("Senha e confirmação de senha são diferentes.");
 
     const hashedPassword = await hash(validatedData.password);
     const newUser = await UserRepository.signUp(

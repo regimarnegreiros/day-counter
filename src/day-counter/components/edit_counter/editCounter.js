@@ -287,7 +287,7 @@ export const EditCounter = (props) => {
                   };
 
                   if (typeCounter === "r") {
-                    updateCount.end_date = formatYMD(endDate);
+                    updateCount.end_date = endDate.toISOString().split('T')[0];
                   }
 
                   await cardService.updateCard(props.id, updateCount);
