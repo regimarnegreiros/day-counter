@@ -1,0 +1,36 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model users {
+  id String @id @default(uuid(7))
+  name String
+  email String @unique
+  password String
+  notification Boolean @default(false)
+  counters counters[]
+}
+
+model counters {
+  id              String  @id @default(uuid(7))
+  icon            String
+  title           String
+  type            String
+  start_date      String
+  end_date        String?
+  description     String?
+  hue             Int
+  notify_interval String
+  user_id         String
+  user            users   @relation(fields: [user_id], references: [id], onDelete: Cascade)
+}

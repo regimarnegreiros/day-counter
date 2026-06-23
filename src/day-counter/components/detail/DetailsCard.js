@@ -1,9 +1,15 @@
 import { View, StyleSheet, Text } from "react-native";
+import { formatarData } from "../../utils/formatarData";
 
 export default function DatailsCard(props) {
   const data_inicial = new Date(props.data_inicial);
   const data_alvo = new Date(props.data_alvo);
-  const dateFormat = new Intl.DateTimeFormat('pt-BR', {year:'numeric',month:'2-digit',day:'2-digit'})
+  const notify_convertions = {
+    'd': 'Diário',
+    's': 'Semanal',
+    'm': 'Mensal',
+    'a': 'Anual'
+  }
   return (
     <View style={styles.detailsContainer}>
       <View style={styles.section}>
@@ -18,10 +24,10 @@ export default function DatailsCard(props) {
       <View style={styles.row}>
         <View>
           <Text style={styles.labelText}>
-            {props.tipo === "r" ? "DATA ALVO" : "DATA INCIAL"}
+            {props.tipo === "r" ? "DATA ALVO" : "DATA INICIAL"}
           </Text>
           <Text style={styles.valueText}>
-            {props.tipo === "r" ? dateFormat.format(data_alvo) : dateFormat.format(data_inicial)}
+            {props.tipo === "r" ? formatarData(data_alvo) : formatarData(data_inicial)}
           </Text>
         </View>
         <View>
@@ -36,12 +42,12 @@ export default function DatailsCard(props) {
         {props.tipo === "r" && (
           <View>
             <Text style={styles.labelText}>DATA INICIAL</Text>
-            <Text style={styles.valueText}>{dateFormat.format(data_inicial)}</Text>
+            <Text style={styles.valueText}>{formatarData(data_inicial)}</Text>
           </View>
         )}
         <View>
           <Text style={styles.labelText}>NOTIFICAÇÃO</Text>
-          <Text style={styles.valueText}>{props.notificacao}</Text>
+          <Text style={styles.valueText}>{notify_convertions[props.notificacao]}</Text>
         </View>
       </View>
     </View>

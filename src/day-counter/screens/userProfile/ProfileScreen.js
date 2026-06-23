@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useCallback } from "react";
 import {
   View,
   Text,
@@ -16,29 +16,47 @@ import {
   LogOut,
   ChevronRight,
   X,
-  UserCircle,
-  Clock,
-  CalendarDays,
 } from "lucide-react-native";
 import profileStyles from "./profileStyle";
 import layoutStyles from "../../components/layout/layoutStyles";
 import {
   AppHeader,
-  MenuSelector,
 } from "../../components/layout/layoutComponent";
+import { AuthContext } from "../../contexts/AuthContext";
+import { cardService } from "../../services/card.service";
+import { useFocusEffect } from "@react-navigation/native";
 
 const ProfileScreen = (props) => {
+  const { user, logout } = useContext(AuthContext);
   const { activeTab, setActiveTab } = props;
 
   const [userData, setUserData] = useState({
-    name: "Pedro Oliveira",
-    email: "pedro.oliveira@email.com",
+    name: user?.name || "Carregando...",
+    email: user?.email || "carregando@email.com",
     password: "••••••••",
     notifications: true,
   });
 
+  const [counterCount, setCounterCount] = useState(0);
+
+  useFocusEffect(
+    useCallback(() => {
+      // Atualiza os dados caso o user mude no contexto
+      setUserData(prev => ({
+        ...prev,
+        name: user?.name || prev.name,
+        email: user?.email || prev.email,
+      }));
+
+      // Busca o total real de contadores
+      cardService.getCards()
+        .then(response => setCounterCount(response.data?.length || 0))
+        .catch(err => console.log("Erro ao buscar total:", err));
+    }, [user])
+  );
+
   const [modalVisible, setModalVisible] = useState(false);
-  const [editingField, setEditingField] = useState(null); // 'name', 'email', 'password'
+  const [editingField, setEditingField] = useState(null); 
   const [tempValue, setTempValue] = useState("");
 
   const menuItems = [
@@ -49,8 +67,7 @@ const ProfileScreen = (props) => {
   ];
 
   const stats = [
-    { label: "Total de Contadores", value: 4 },
-    // { label: "Total de Ofensivas", value: 12 },
+    { label: "Total de Contadores", value: counterCount },
   ];
 
   const openEditor = (field) => {
@@ -208,6 +225,7 @@ const ProfileScreen = (props) => {
         <TouchableOpacity
           style={profileStyles.logoutButton}
           activeOpacity={0.8}
+          onPress={logout}
         >
           <LogOut
             size={32}

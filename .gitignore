@@ -2,6 +2,12 @@
 
 # dependencies
 node_modules/
+package-lock.json
+*.db
+*.sqlite
+*.sqlite3
+*.db-journal
+src/api/database/generated/
 
 # Expo
 .expo/
@@ -32,6 +38,9 @@ yarn-error.*
 
 # local env files
 .env*.local
+.env
+.env*
+!.env.exemple
 
 # typescript
 *.tsbuildinfo
@@ -74,3 +83,12 @@ google-services.json
 
 # Android Profiling
 *.hprof
+
+
+# Compiled from TS
+
+src/api/**/*.js
+
+# jest coverager
+
+coverage/

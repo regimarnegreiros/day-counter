@@ -2,23 +2,20 @@ import { useState } from "react";
 import {
   Text,
   View,
-  Button,
   StyleSheet,
   TextInput,
   TouchableOpacity,
-  ScrollView,
   Pressable,
   Modal,
-  KeyboardAvoidingView,
-  Platform,
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import DateTimePicker from "@react-native-community/datetimepicker";
+import { cardService } from "../../services/card.service";
 
-import { AlignCenter, Check } from "lucide-react-native";
+import { Check } from "lucide-react-native";
 
-import { TextArea, Input, Select } from "./inputfield";
+import { TextArea, Input } from "./inputfield";
 
 function isSingleEmoji(str) {
   if (!str) return false;
@@ -28,7 +25,7 @@ function isSingleEmoji(str) {
   return emojiRegex.test(str);
 }
 
-export const InsertForm = ({ showForm }) => {
+export const InsertForm = ({ showForm, onSuccess }) => {
   const [icon, setIcon] = useState("");
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -37,8 +34,9 @@ export const InsertForm = ({ showForm }) => {
   const [endDate, setEndDate] = useState(
     new Date(new Date().setDate(new Date().getDate() + 1)),
   );
-  const [notifyInterval, setNotifyInterval] = useState("diario");
+  const [notifyInterval, setNotifyInterval] = useState("d");
   const [color, setColor] = useState("hsl(0, 100%, 64%)");
+  const [loading, setLoading] = useState(false);
 
   const [showStartDatePicker, setShowStartDatePicker] = useState(false);
   const [showEndDatePicker, setShowEndDatePicker] = useState(false);
@@ -51,16 +49,6 @@ export const InsertForm = ({ showForm }) => {
     setShowAlert(true);
     setTimeout(() => setShowAlert(false), 5000);
   };
-
-  // const createCounter = async (newCount) => {
-  //   fetch(process.env.EXPO_PUBLIC_API_URL+"/data", {
-  //     method: "post",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify({ data: newCount }),
-  //   });
-  // };
 
   const colorsOptions = [
     "hsl(0, 100%, 64%)",
@@ -253,13 +241,13 @@ export const InsertForm = ({ showForm }) => {
               <View style={styles.selectConteiner}>
                 <Picker
                   style={styles.selectField}
-                  selectedValue="diario"
+                  selectedValue="d"
                   onValueChange={(val) => setNotifyInterval(val)}
                 >
-                  <Picker.Item label="Diário" value="diario" />
-                  <Picker.Item label="Semanal" value="semanal" />
-                  <Picker.Item label="Mensal" value="mensal" />
-                  <Picker.Item label="Anual" value="anual" />
+                  <Picker.Item label="Diário" value="d" />
+                  <Picker.Item label="Semanal" value="s" />
+                  <Picker.Item label="Mensal" value="m" />
+                  <Picker.Item label="Anual" value="a" />
                 </Picker>
               </View>
             </View>
@@ -287,8 +275,9 @@ export const InsertForm = ({ showForm }) => {
               required={false}
             />
             <TouchableOpacity
-              style={styles.saveButton}
-              onPress={() => {
+              style={[styles.saveButton, loading && { opacity: 0.7 }]}
+              disabled={loading}
+              onPress={async () => {
                 if (title === "") {
                   showAlertMessage("Insira o título do contador");
                   return;
@@ -298,23 +287,44 @@ export const InsertForm = ({ showForm }) => {
                   return;
                 }
 
-                // const newCount = {
-                //   titulo: title,
-                //   icone: icon,
-                //   tipo: typeCounter,
-                //   data_inicial: startDate,
-                //   hue: Number.parseInt(color.split("(")[1].split(",")[0]),
-                //   descricao: description,
-                //   notificacao: notifyInterval,
-                // };
-                // if (typeCounter === "r") {
-                //   newCount["data_alvo"] = endDate;
-                // }
-                // createCounter(newCount);
-                showForm(false);
+                try {
+                  setLoading(true);
+                  // O toISOString pode gerar timezone issues dependo de onde o usuário está
+                  // Formatar manualmente com locale ajuda
+                  const formatYMD = (d) => {
+                    const offset = d.getTimezoneOffset();
+                    const adjustedDate = new Date(d.getTime() - (offset*60*1000));
+                    return adjustedDate.toISOString().split('T')[0];
+                  }
+
+                  const newCount = {
+                    title: title,
+                    icon: icon,
+                    type: typeCounter,
+                    start_date: formatYMD(startDate),
+                    hue: Number.parseInt(color.split("(")[1].split(",")[0]),
+                    description: description,
+                    notify_interval: notifyInterval,
+                  };
+
+                  if (typeCounter === "r") {
+                    newCount.end_date = formatYMD(endDate);
+                  }
+
+                  await cardService.createCard(newCount);
+                  showForm(false);
+                  if (onSuccess) onSuccess();
+                } catch (error) {
+                  showAlertMessage("Erro ao criar contador.");
+                  console.error(error);
+                } finally {
+                  setLoading(false);
+                }
               }}
             >
-              <Text style={{ color: "#fff" }}>Criar Contagem</Text>
+              <Text style={{ color: "#fff" }}>
+                {loading ? "Criando..." : "Criar Contagem"}
+              </Text>
             </TouchableOpacity>
           </View>
         </KeyboardAwareScrollView>

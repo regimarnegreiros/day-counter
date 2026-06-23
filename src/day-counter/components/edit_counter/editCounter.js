@@ -2,23 +2,19 @@ import { useState, useEffect } from "react";
 import {
   Text,
   View,
-  Button,
-  StyleSheet,
   TextInput,
   TouchableOpacity,
-  ScrollView,
   Pressable,
   Modal,
-  KeyboardAvoidingView,
-  Platform,
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import DateTimePicker from "@react-native-community/datetimepicker";
+import { cardService } from "../../services/card.service";
 
-import { AlignCenter, Check } from "lucide-react-native";
+import { Check } from "lucide-react-native";
 
-import { TextArea, Input, Select } from "../create_counter/inputfield";
+import { TextArea, Input } from "../create_counter/inputfield";
 
 import { styles } from '../create_counter/createCounter'
 
@@ -39,6 +35,7 @@ export const EditCounter = (props) => {
   const [endDate, setEndDate] = useState(new Date(props.endDate));
   const [notifyInterval, setNotifyInterval] = useState(props.notifyInterval);
   const [color, setColor] = useState(`hsl(${props.hue}, 100%, 64%)`);
+  const [loading, setLoading] = useState(false);
 
   const [showStartDatePicker, setShowStartDatePicker] = useState(false);
   const [showEndDatePicker, setShowEndDatePicker] = useState(false);
@@ -51,18 +48,6 @@ export const EditCounter = (props) => {
     setShowAlert(true);
     setTimeout(() => setShowAlert(false), 5000);
   };
-
-  // const updateData = async (updatedCount) => {
-  //   await fetch(process.env.EXPO_PUBLIC_API_URL +"/data", {
-  //     method: "put",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify({
-  //       data: updatedCount,
-  //     }),
-  //   });
-  // };
 
   const colorsOptions = [
     "hsl(0, 100%, 64%)",
@@ -242,13 +227,13 @@ export const EditCounter = (props) => {
               <View style={styles.selectConteiner}>
                 <Picker
                   style={styles.selectField}
-                  selectedValue="diario"
+                  selectedValue="d"
                   onValueChange={(val) => setNotifyInterval(val)}
                 >
-                  <Picker.Item label="Diário" value="diario" />
-                  <Picker.Item label="Semanal" value="semanal" />
-                  <Picker.Item label="Mensal" value="mensal" />
-                  <Picker.Item label="Anual" value="anual" />
+                  <Picker.Item label="Diário" value="d" />
+                  <Picker.Item label="Semanal" value="s" />
+                  <Picker.Item label="Mensal" value="m" />
+                  <Picker.Item label="Anual" value="a" />
                 </Picker>
               </View>
             </View>
@@ -276,8 +261,9 @@ export const EditCounter = (props) => {
               required={false}
             />
             <TouchableOpacity
-              style={styles.saveButton}
-              onPress={() => {
+              style={[styles.saveButton, loading && { opacity: 0.7 }]}
+              disabled={loading}
+              onPress={async () => {
                 if (title === "") {
                   showAlertMessage("Insira o título do contador");
                   return;
@@ -287,24 +273,37 @@ export const EditCounter = (props) => {
                   return;
                 }
 
-                //     const updateCount = {
-                //       id: props.id,
-                //       titulo: title,
-                //       icone: icon,
-                //       tipo: typeCounter,
-                //       data_inicial: startDate,
-                //       hue: Number.parseInt(color.split("(")[1].split(",")[0]),
-                //       descricao: description,
-                //       notificacao: notifyInterval,
-                //     };
-                //     if (typeCounter === "r") {
-                //       updateCount["data_alvo"] = endDate;
-                //     }
-                //     updateData(updateCount);
-                    props.setShowEditCounter(false);
+                try {
+                  setLoading(true);
+
+                  const updateCount = {
+                    title: title,
+                    icon: icon,
+                    type: typeCounter,
+                    start_date: startDate.toISOString().split('T')[0],
+                    hue: Number.parseInt(color.split("(")[1].split(",")[0]),
+                    description: description,
+                    notify_interval: notifyInterval,
+                  };
+
+                  if (typeCounter === "r") {
+                    updateCount.end_date = formatYMD(endDate);
+                  }
+
+                  await cardService.updateCard(props.id, updateCount);
+                  props.setShowEditCounter(false);
+                  if (props.onSuccess) props.onSuccess();
+                } catch (error) {
+                  showAlertMessage("Erro ao editar contador");
+                  console.error(error);
+                } finally {
+                  setLoading(false);
+                }
               }}
             >
-              <Text style={{ color: "#fff" }}>Salvar Contagem</Text>
+              <Text style={{ color: "#fff" }}>
+                {loading ? "Salvando..." : "Salvar Contagem"}
+              </Text>
             </TouchableOpacity>
           </View>
         </KeyboardAwareScrollView>
