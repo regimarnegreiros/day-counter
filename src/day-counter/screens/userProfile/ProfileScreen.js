@@ -1,30 +1,17 @@
 import React, { useState, useContext, useCallback } from "react";
-import {
-  View,
-  Text,
-  ScrollView,
-  TouchableOpacity,
-  Modal,
-  TextInput,
-} from "react-native";
+import { View, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import {
-  User,
-  Mail,
-  Lock,
-  Bell,
-  LogOut,
-  ChevronRight,
-  X,
-} from "lucide-react-native";
+import { User, Mail, Lock, Bell } from "lucide-react-native";
 import profileStyles from "./profileStyle";
 import layoutStyles from "../../components/layout/layoutStyles";
-import {
-  AppHeader,
-} from "../../components/layout/layoutComponent";
+import { AppHeader } from "../../components/layout/layoutComponent";
 import { AuthContext } from "../../contexts/AuthContext";
 import { cardService } from "../../services/card.service";
 import { useFocusEffect } from "@react-navigation/native";
+
+import { ProfileHeader } from "./components/ProfileHeader";
+import { ProfileMenu } from "./components/ProfileMenu";
+import { ProfileEditModal } from "./components/ProfileEditModal";
 
 const ProfileScreen = (props) => {
   const { user, logout } = useContext(AuthContext);
@@ -41,14 +28,12 @@ const ProfileScreen = (props) => {
 
   useFocusEffect(
     useCallback(() => {
-      // Atualiza os dados caso o user mude no contexto
       setUserData(prev => ({
         ...prev,
         name: user?.name || prev.name,
         email: user?.email || prev.email,
       }));
 
-      // Busca o total real de contadores
       cardService.getCards()
         .then(response => setCounterCount(response.data?.length || 0))
         .catch(err => console.log("Erro ao buscar total:", err));
@@ -57,7 +42,6 @@ const ProfileScreen = (props) => {
 
   const [modalVisible, setModalVisible] = useState(false);
   const [editingField, setEditingField] = useState(null); 
-  const [tempValue, setTempValue] = useState("");
 
   const menuItems = [
     { id: "name", label: "Editar nome", icon: User },
@@ -76,165 +60,41 @@ const ProfileScreen = (props) => {
       return;
     }
     setEditingField(field);
-    setTempValue(userData[field]);
     setModalVisible(true);
   };
 
-  const saveChanges = () => {
-    setUserData((prev) => ({ ...prev, [editingField]: tempValue }));
-    setModalVisible(false);
+  const saveChanges = (field, newValue, currentValue) => {
+    // Para simplificar, atualizamos o estado local.
+    // Futuramente, pode validar currentValue antes de enviar à API.
+    setUserData((prev) => ({ ...prev, [field]: newValue }));
   };
 
-  const getModalTitle = () => {
-    switch (editingField) {
-      case "name":
-        return "Editar nome";
-      case "email":
-        return "Alterar email";
-      case "password":
-        return "Alterar senha";
-      default:
-        return "";
-    }
-  };
 
   return (
-    <SafeAreaView style={layoutStyles.container}>
+    <SafeAreaView style={layoutStyles.container} edges={["top", "left", "right"]}>
       <AppHeader title="Perfil" />
 
       <ScrollView
         style={profileStyles.scrollView}
-        contentContainerStyle={profileStyles.content}
+        contentContainerStyle={[profileStyles.content, { flexGrow: 1 }]}
       >
-        <View style={profileStyles.userCard}>
-          <Text style={profileStyles.userName}>{userData.name}</Text>
-          <Text style={profileStyles.userEmail}>{userData.email}</Text>
-        </View>
+        <ProfileHeader userData={userData} stats={stats} />
 
-        <View style={profileStyles.divider} />
-
-        <View style={profileStyles.statsContainer}>
-          {stats.map((stat) => (
-            <View key={stat.label} style={profileStyles.statCard}>
-              <Text style={profileStyles.statValue}>{stat.value}</Text>
-              <Text style={profileStyles.statLabel}>{stat.label}</Text>
-            </View>
-          ))}
-        </View>
-
-        <View style={profileStyles.divider} />
-
-        <View style={profileStyles.menuContainer}>
-          {menuItems.map((item) => (
-            <TouchableOpacity
-              key={item.id}
-              style={profileStyles.menuItem}
-              activeOpacity={0.7}
-              onPress={() => openEditor(item.id)}
-            >
-              <View style={profileStyles.menuIconContainer}>
-                <item.icon
-                  size={22}
-                  color={
-                    item.id === "notifications" && !userData.notifications
-                      ? "#9CA3AF"
-                      : "#A855F7"
-                  }
-                  strokeWidth={2.5}
-                />
-              </View>
-              <Text
-                style={[
-                  profileStyles.menuItemText,
-                  item.id === "notifications" &&
-                    !userData.notifications && { color: "#9CA3AF" },
-                ]}
-              >
-                {item.label}
-              </Text>
-              {item.id === "notifications" ? (
-                <View
-                  style={{
-                    width: 44,
-                    height: 24,
-                    backgroundColor: userData.notifications
-                      ? "#AD46FF"
-                      : "#E5E7EB",
-                    borderRadius: 12,
-                    justifyContent: "center",
-                    paddingHorizontal: 2,
-                  }}
-                >
-                  <View
-                    style={{
-                      width: 20,
-                      height: 20,
-                      backgroundColor: "white",
-                      borderRadius: 10,
-                      alignSelf: userData.notifications
-                        ? "flex-end"
-                        : "flex-start",
-                    }}
-                  />
-                </View>
-              ) : (
-                <ChevronRight size={24} color="#1F2937" strokeWidth={3} />
-              )}
-            </TouchableOpacity>
-          ))}
-        </View>
+        <ProfileMenu
+          menuItems={menuItems}
+          userData={userData}
+          openEditor={openEditor}
+          logout={logout}
+        />
       </ScrollView>
 
-      <Modal
-        animationType="fade"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => setModalVisible(false)}
-      >
-        <View style={profileStyles.modalOverlay}>
-          <View style={profileStyles.modalContent}>
-            <TouchableOpacity
-              style={profileStyles.modalCloseButton}
-              onPress={() => setModalVisible(false)}
-            >
-              <X size={20} color="white" strokeWidth={3} />
-            </TouchableOpacity>
-
-            <Text style={profileStyles.modalTitle}>{getModalTitle()}</Text>
-
-            <TextInput
-              style={profileStyles.modalInput}
-              value={tempValue}
-              onChangeText={setTempValue}
-              autoFocus={true}
-              secureTextEntry={editingField === "password"}
-              autoCapitalize={editingField === "email" ? "none" : "words"}
-            />
-
-            <TouchableOpacity
-              style={profileStyles.modalSaveButton}
-              onPress={saveChanges}
-            >
-              <Text style={profileStyles.modalSaveButtonText}>Salvar</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </Modal>
-
-      <View style={profileStyles.logoutContainer}>
-        <TouchableOpacity
-          style={profileStyles.logoutButton}
-          activeOpacity={0.8}
-          onPress={logout}
-        >
-          <LogOut
-            size={32}
-            color="#FFFFFF"
-            strokeWidth={2.5}
-            style={{ marginLeft: 4 }}
-          />
-        </TouchableOpacity>
-      </View>
+      <ProfileEditModal
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+        editingField={editingField}
+        userData={userData}
+        onSave={saveChanges}
+      />
     </SafeAreaView>
   );
 };
