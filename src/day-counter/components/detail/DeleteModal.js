@@ -1,6 +1,6 @@
 import { View, StyleSheet, Text, TouchableOpacity, Modal } from "react-native";
 import { useState } from "react";
-import { cardService } from "../../services/card.service";
+import { cardService } from "../../services/cardService";
 
 export default function ModalExclusao(props) {
   const [loading, setLoading] = useState(false);
@@ -28,7 +28,7 @@ export default function ModalExclusao(props) {
     >
       <View style={styles.modalOverlay}>
         <View style={styles.modalContainer}>
-          <Text>Tem certeza que deseja excluir esse contador?</Text>
+          <Text style={styles.modalText}>Tem certeza que deseja excluir esse contador?</Text>
           <View style={styles.modalExclusaoBotoes}>
             <TouchableOpacity
               style={styles.cancelarButton}
@@ -62,32 +62,45 @@ const styles = StyleSheet.create({
     width: "90%",
     maxHeight: "80%",
     padding: 24,
-    borderRadius: 20,
+    borderRadius: 24,
     alignItems: "center",
+  },
+  modalText: {
+    fontSize: 18,
+    textAlign: "center",
+    marginBottom: 24,
+    fontWeight: "500",
   },
   modalExclusaoBotoes: {
     flexDirection: "row",
-    justifyContent: "space-evenly",
+    justifyContent: "space-between",
     width: "100%",
-    marginTop: 10,
+    gap: 12,
   },
   cancelarButton: {
-    width: 120,
-    backgroundColor: "#EEEEEE",
-    borderRadius: 20,
-    paddingVertical: 10,
+    flex: 1,
+    backgroundColor: "#F3F3F3",
+    borderRadius: 12,
+    height: 50,
+    justifyContent: "center",
     alignItems: "center",
   },
-  cancelarText: {},
+  cancelarText: {
+    fontSize: 16,
+    fontWeight: "600",
+    color: "#555",
+  },
   excluirButton: {
-    width: 120,
-    backgroundColor: "#FF000C",
-    borderRadius: 20,
-    paddingVertical: 10,
+    flex: 1,
+    backgroundColor: "#FB2C36",
+    borderRadius: 12,
+    height: 50,
+    justifyContent: "center",
     alignItems: "center",
   },
   excluirText: {
     color: "#FFF",
+    fontSize: 16,
     fontWeight: "bold",
   },
 });

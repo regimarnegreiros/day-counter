@@ -50,7 +50,8 @@
     "react-native-keyboard-aware-scroll-view": "^0.9.5",
     "react-native-safe-area-context": "~5.6.2",
     "react-native-safe-area-view": "^2.0.0",
-    "react-native-screens": "~4.23.0"
+    "react-native-screens": "~4.23.0",
+    "rn-emoji-keyboard": "^1.7.0"
   },
   "private": true
 }

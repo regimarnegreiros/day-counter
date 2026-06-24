@@ -16,10 +16,12 @@ export default function DatailsCard(props) {
         <Text style={styles.labelText}>TITULO</Text>
         <Text style={styles.valueText}>{props.titulo}</Text>
       </View>
-      <View style={styles.section}>
-        <Text style={styles.labelText}>DESCRIÇÃO</Text>
-        <Text style={styles.valueText}>{props.descricao}</Text>
-      </View>
+      {!!props.descricao && (
+        <View style={styles.section}>
+          <Text style={styles.labelText}>DESCRIÇÃO</Text>
+          <Text style={styles.valueText}>{props.descricao}</Text>
+        </View>
+      )}
       <View style={styles.divider} />
       <View style={styles.row}>
         <View>
@@ -56,7 +58,6 @@ export default function DatailsCard(props) {
 
 const styles = StyleSheet.create({
   detailsContainer: {
-    flex: 1,
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
     backgroundColor: "#FFF",
@@ -64,16 +65,16 @@ const styles = StyleSheet.create({
     paddingBottom: 30,
   },
   section: {
-    flex: 1,
+    paddingVertical: 10,
     justifyContent: "center",
     paddingHorizontal: 20,
   },
   row: {
-    flex: 1,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
     paddingHorizontal: 20,
+    paddingVertical: 10,
   },
   labelText: {
     color: "#888",

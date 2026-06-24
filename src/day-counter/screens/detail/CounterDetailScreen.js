@@ -5,8 +5,8 @@ import { useRoute, useNavigation } from "@react-navigation/native";
 import DatailsCard from "../../components/detail/DetailsCard";
 import ProgressBar from "../../components/detail/ProgressBar";
 import CircleButton from "../../components/detail/CircleButton";
-import ModalExclusao from "../../components/detail/ModalExclusao";
-import { EditCounter } from "../../components/edit_counter/editCounter.js";
+import ModalExclusao from "../../components/detail/DeleteModal";
+import { EditCounter } from "../../components/counter/EditCounter.js";
 
 export default function CounterDetail(props) {
   const [modalEdicao, setModalEdicao] = useState(false);

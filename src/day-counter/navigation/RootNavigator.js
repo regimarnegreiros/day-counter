@@ -2,8 +2,8 @@ import React, { useContext } from "react";
 import { ActivityIndicator, View } from "react-native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import AuthRoutes from "./AuthRoutes";
-import AppRoutes from "./navigationRoutes";
-import CounterDetail from "../screens/detail/CounterDetail";
+import AppRoutes from "./AppRoutes";
+import CounterDetail from "../screens/detail/CounterDetailScreen";
 import { AuthContext } from "../contexts/AuthContext";
 
 const Root = createNativeStackNavigator();

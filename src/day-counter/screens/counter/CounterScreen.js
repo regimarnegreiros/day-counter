@@ -12,12 +12,12 @@ import layoutStyle from "../../components/layout/layoutStyles";
 import {
   AppHeader,
   MenuSelector,
-} from "../../components/layout/layoutComponent";
-import { InsertForm } from "../../components/create_counter/createCounter";
+} from "../../components/layout/Layout";
+import { InsertForm } from "../../components/counter/CreateCounter";
 import { useState, useCallback } from "react";
 import { useFocusEffect } from "@react-navigation/native";
-import { CounterCards } from "../../components/CounterCards/CounterCards";
-import { cardService } from "../../services/card.service";
+import { CounterCards } from "../../components/counter/CounterCards";
+import { cardService } from "../../services/cardService";
 
 const CounterScreen = (props) => {
   const { activeTab, setActiveTab } = props;
