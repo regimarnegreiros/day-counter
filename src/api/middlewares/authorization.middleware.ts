@@ -1,5 +1,5 @@
 import type { Request, Response, NextFunction } from "express";
-import { HTTPCodes } from "../utils/utils.ts";
+import { HTTPCodes, isPublicRoute } from "../utils/utils.ts";
 import CardRepository from "../repositories/card.repository.ts";
 import validator from "validator";
 
@@ -8,6 +8,8 @@ export async function authorization(
   res: Response,
   next: NextFunction,
 ) {
+  if (isPublicRoute(req.url)) return next();
+
   const user = req.body["userInfo"];
 
   const urlArray = req.url.split("/");
