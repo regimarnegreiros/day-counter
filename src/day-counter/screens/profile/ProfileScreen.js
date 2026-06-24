@@ -1,5 +1,5 @@
 import React, { useState, useContext, useCallback } from "react";
-import { View, ScrollView } from "react-native";
+import { ScrollView, Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { User, Mail, Lock, Bell } from "lucide-react-native";
 import profileStyles from "./profileStyles";
@@ -7,6 +7,7 @@ import layoutStyles from "../../components/layout/layoutStyles";
 import { AppHeader } from "../../components/layout/Layout";
 import { AuthContext } from "../../contexts/AuthContext";
 import { cardService } from "../../services/cardService";
+import { userService } from "../../services/userService";
 import { useFocusEffect } from "@react-navigation/native";
 
 import { ProfileHeader } from "../../components/profile/ProfileHeader";
@@ -14,7 +15,7 @@ import { ProfileMenu } from "../../components/profile/ProfileMenu";
 import { ProfileEditModal } from "../../components/profile/ProfileEditModal";
 
 const ProfileScreen = (props) => {
-  const { user, logout } = useContext(AuthContext);
+  const { user, logout, updateUserData } = useContext(AuthContext);
   const { activeTab, setActiveTab } = props;
 
   const [userData, setUserData] = useState({
@@ -63,10 +64,73 @@ const ProfileScreen = (props) => {
     setModalVisible(true);
   };
 
-  const saveChanges = (field, newValue, currentValue) => {
-    // Para simplificar, atualizamos o estado local.
-    // Futuramente, pode validar currentValue antes de enviar à API.
-    setUserData((prev) => ({ ...prev, [field]: newValue }));
+  const saveChanges = async (field, newValue, currentValue) => {
+    try {
+      if (field === 'name') {
+        if (!newValue || !newValue.trim()) {
+          throw { message: "O nome não pode estar vazio.", field: "tempValue" };
+        }
+        if (newValue.trim().length < 3) {
+          throw { message: "O nome deve ter pelo menos 3 caracteres.", field: "tempValue" };
+        }
+        await userService.updateName(newValue.trim());
+        updateUserData({ name: newValue.trim() });
+        setUserData((prev) => ({ ...prev, name: newValue.trim() }));
+        Alert.alert("Sucesso", "Nome atualizado com sucesso!");
+      } else if (field === 'email') {
+        if (!currentValue) {
+          throw { message: "O e-mail atual é obrigatório.", field: "currentValue" };
+        }
+        if (currentValue.trim().toLowerCase() !== user.email.toLowerCase()) {
+          throw { message: "O e-mail atual não confere.", field: "currentValue" };
+        }
+        if (!newValue || !newValue.trim()) {
+          throw { message: "O novo e-mail é obrigatório.", field: "tempValue" };
+        }
+        if (newValue.trim().toLowerCase() === user.email.toLowerCase()) {
+          throw { message: "O novo e-mail não pode ser igual ao atual.", field: "tempValue" };
+        }
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(newValue.trim())) {
+          throw { message: "Formato de e-mail inválido.", field: "tempValue" };
+        }
+        await userService.updateEmail(newValue.trim());
+        updateUserData({ email: newValue.trim() });
+        setUserData((prev) => ({ ...prev, email: newValue.trim() }));
+        Alert.alert("Sucesso", "E-mail atualizado com sucesso!");
+      } else if (field === 'password') {
+        if (!currentValue) {
+          throw { message: "A senha atual é obrigatória.", field: "currentValue" };
+        }
+        if (!newValue) {
+          throw { message: "A nova senha é obrigatória.", field: "tempValue" };
+        }
+        if (newValue.length < 6) {
+          throw { message: "A senha não pode ter menos que 6 caracteres", field: "tempValue" };
+        }
+        try {
+          await userService.updatePassword(currentValue, newValue);
+        } catch (apiError) {
+          const msg = apiError.error || apiError.message || "Erro desconhecido";
+          if (msg.includes("não coincide") || msg.includes("senha atual")) {
+            throw { message: msg, field: "currentValue" };
+          } else if (msg.includes("menos que 6")) {
+            throw { message: msg, field: "tempValue" };
+          } else {
+            throw { message: msg, field: "general" };
+          }
+        }
+        Alert.alert("Sucesso", "Senha alterada com sucesso!");
+      } else if (field === 'notifications') {
+        setUserData((prev) => ({ ...prev, notifications: !prev.notifications }));
+      }
+    } catch (error) {
+      if (error.field) {
+        throw error;
+      }
+      const errorMessage = error.error || error.message || "Ocorreu um erro ao salvar as alterações.";
+      throw { message: errorMessage, field: "general" };
+    }
   };
 
 

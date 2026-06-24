@@ -91,7 +91,7 @@ export default class UserService {
 
     if (data.password !== undefined) {
       if (data.password.length < 6)
-        throw new Error("A senha deve ter pelo menos 6 caracteres");
+        throw new Error("A senha não pode ter menos que 6 caracteres");
 
       dataCopy.password = await hash(data.password);
     }
@@ -104,6 +104,7 @@ export default class UserService {
     newPassword: string,
   ) {
     if (!validator.isUUID(userId)) throw new Error("ID inválido");
+    if (newPassword.length < 6) throw new Error("A senha não pode ter menos que 6 caracteres");
     const user = await UserRepository.getUserByEmailOrId(userId);
     if (!user) throw new Error("Usuário não encontrado");
     if (!await verifyHash(user.password,  password)) throw new Error("A senha não coincide com a senha do usuário");
