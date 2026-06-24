@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Text } from "react-native";
-import profileStyles from "../profileStyle";
+import profileStyles from "../../screens/profile/profileStyles";
 
 export const ProfileHeader = ({ userData, stats }) => {
   return (

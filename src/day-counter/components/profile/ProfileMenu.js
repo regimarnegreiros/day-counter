@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import { ChevronRight, LogOut } from "lucide-react-native";
-import profileStyles from "../profileStyle";
+import profileStyles from "../../screens/profile/profileStyles";
 
 export const ProfileMenu = ({ menuItems, userData, openEditor, logout }) => {
   return (

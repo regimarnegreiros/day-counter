@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, TouchableOpacity, Modal, TextInput } from "react-native";
 import { X } from "lucide-react-native";
-import profileStyles from "../profileStyle";
+import profileStyles from "../../screens/profile/profileStyles";
 
 export const ProfileEditModal = ({
   modalVisible,

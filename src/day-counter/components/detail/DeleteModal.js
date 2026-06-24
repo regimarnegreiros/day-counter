@@ -1,6 +1,6 @@
 import { View, StyleSheet, Text, TouchableOpacity, Modal } from "react-native";
 import { useState } from "react";
-import { cardService } from "../../services/card.service";
+import { cardService } from "../../services/cardService";
 
 export default function ModalExclusao(props) {
   const [loading, setLoading] = useState(false);

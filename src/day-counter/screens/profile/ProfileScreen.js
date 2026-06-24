@@ -2,16 +2,16 @@ import React, { useState, useContext, useCallback } from "react";
 import { View, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { User, Mail, Lock, Bell } from "lucide-react-native";
-import profileStyles from "./profileStyle";
+import profileStyles from "./profileStyles";
 import layoutStyles from "../../components/layout/layoutStyles";
-import { AppHeader } from "../../components/layout/layoutComponent";
+import { AppHeader } from "../../components/layout/Layout";
 import { AuthContext } from "../../contexts/AuthContext";
-import { cardService } from "../../services/card.service";
+import { cardService } from "../../services/cardService";
 import { useFocusEffect } from "@react-navigation/native";
 
-import { ProfileHeader } from "./components/ProfileHeader";
-import { ProfileMenu } from "./components/ProfileMenu";
-import { ProfileEditModal } from "./components/ProfileEditModal";
+import { ProfileHeader } from "../../components/profile/ProfileHeader";
+import { ProfileMenu } from "../../components/profile/ProfileMenu";
+import { ProfileEditModal } from "../../components/profile/ProfileEditModal";
 
 const ProfileScreen = (props) => {
   const { user, logout } = useContext(AuthContext);
