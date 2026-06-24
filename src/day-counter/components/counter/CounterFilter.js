@@ -31,17 +31,17 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     backgroundColor: '#F3F4F6',
-    borderRadius: 20,
-    padding: 6,
+    borderRadius: 16,
+    padding: 4,
     marginHorizontal: 16,
     marginTop: 16,
     marginBottom: 8,
   },
   button: {
     flex: 1,
-    paddingVertical: 12,
+    paddingVertical: 8,
     alignItems: 'center',
-    borderRadius: 16,
+    borderRadius: 12,
   },
   buttonSelected: {
     backgroundColor: '#A855F7',
@@ -52,9 +52,9 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   text: {
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: '500',
-    color: '#D1D5DB', // A bit lighter for unselected
+    color: '#D1D5DB',
   },
   textSelected: {
     color: '#FFFFFF',
