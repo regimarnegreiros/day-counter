@@ -20,6 +20,14 @@ export const AuthProvider = ({ children }) => {
     loadStorageData();
   }, []);
 
+  const updateUserData = async (newUserData) => {
+    setUser((prev) => {
+      const updatedUser = { ...prev, ...newUserData };
+      AsyncStorage.setItem('@user_data', JSON.stringify(updatedUser));
+      return updatedUser;
+    });
+  };
+
   const login = async (email, password) => {
     const data = await authService.login(email, password);
     setUser(data.user);
@@ -36,7 +44,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ signed: !!user, user, loading, login, register, logout }}>
+    <AuthContext.Provider value={{ signed: !!user, user, loading, login, register, logout, updateUserData }}>
       {children}
     </AuthContext.Provider>
   );

@@ -61,7 +61,9 @@ export default function CounterDetail(props) {
           <Text style={styles.icon}>{dados.icone}</Text>
           <Text style={styles.days}>{dados.dias}</Text>
           <Text style={styles.subtitle}>
-            {dados.tipo === "r" ? "Dias restantes" : "Dias se passaram"}
+            {dados.tipo === "r"
+              ? Number(dados.dias) === 1 ? "Dia restante" : "Dias restantes"
+              : Number(dados.dias) === 1 ? "Dia se passou" : "Dias se passaram"}
           </Text>
         </View>
         {dados.tipo === "r" && (

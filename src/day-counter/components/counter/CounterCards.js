@@ -60,8 +60,8 @@ export const CounterCards = (props) => {
         <Feather name="clock" size={16} color="#1C1C1E" />
         <Text style={styles.badgeText}>
           {props.tipo === "p"
-            ? `${dias} dias decorridos`
-            : `Faltam ${dias} dias`}
+            ? Number(dias) === 1 ? `${dias} dia decorrido` : `${dias} dias decorridos`
+            : Number(dias) === 1 ? `${dias} dia restante` : `${dias} dias restantes`}
         </Text>
       </View>
 

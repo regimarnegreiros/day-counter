@@ -209,6 +209,7 @@ export const EditCounter = (props) => {
                   selectedValue={notifyInterval}
                   onValueChange={(val) => setNotifyInterval(val)}
                 >
+                  <Picker.Item label="Nenhuma" value="n" />
                   <Picker.Item label="Diariamente" value="d" />
                   <Picker.Item label="Semanalmente" value="s" />
                   <Picker.Item label="Mensalmente" value="m" />

@@ -5,6 +5,7 @@ export default function DatailsCard(props) {
   const data_inicial = new Date(props.data_inicial);
   const data_alvo = new Date(props.data_alvo);
   const notify_convertions = {
+    'n': 'Nenhuma',
     'd': 'Diário',
     's': 'Semanal',
     'm': 'Mensal',
