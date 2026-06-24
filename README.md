@@ -18,56 +18,109 @@ O Contador de Dias é uma aplicação mobile desenvolvido para o acompanhamento 
 
 - Interface focada na experiência do usuário mobile
 
-## Tecnologias utilizadas:
+## 🗂 Visão Geral do Projeto
 
-- React Native
+O projeto está dividido em duas partes principais dentro da pasta `src/`:
+- **`src/day-counter`**: Aplicativo mobile desenvolvido em React Native utilizando o Expo.
+- **`src/api`**: Servidor Backend desenvolvido em Node.js com TypeScript, Express, Prisma e banco de dados SQLite.
 
-- JavaScript
+## 🚀 Tecnologias utilizadas:
 
-- Expo
+- **Frontend:** React Native, JavaScript, Expo
+- **Backend:** Node.js, TypeScript, Express, Prisma, SQLite
 
-## Pré-requisito:
+## 📋 Pré-requisitos
+
 Antes de executar o projeto, é necessário ter instalado:
 
-- Node.js
-
+- [Node.js](https://nodejs.org/)
 - npm
-
 - Expo Go (no celular) ou um emulador (como o Android Studio).
 
-## Instalação e execução:
+---
 
-1. Clone o repositório:
+## 🛠 Instalação e execução
+
+### 1. Clonando o repositório
 
 ```bash
 git clone https://github.com/regimarnegreiros/day-counter.git
+cd day-counter
 ```
 
-2. Acesse a pasta do projeto:
+### 2. Configurando e rodando o Backend (`src/api`)
 
+O backend é a API que fornece os dados para o aplicativo.
+
+1. Acesse a pasta da API:
 ```bash
-cd day-counter\src\day-counter
+cd src/api
 ```
 
-3. Instale as dependências:
-
+2. Instale as dependências:
 ```bash
 npm install
 ```
 
-4. Inicie o servidor do Expo:
+3. Configuração de Variáveis de Ambiente:
+Crie um arquivo `.env` na pasta `src/api` baseado no arquivo `.env.example`.
+```bash
+cp .env.example .env
+```
+Abra o arquivo `.env` recém-criado e defina os valores das chaves de segurança. Exemplo:
+- `JWT_EXPIRE_PERIOD='24h'` (Tempo de validade da sessão)
+- `JWT_REFRESH_SECRET='123456789'` (Chave secreta usada para renovar o token)
 
+4. Banco de Dados:
+Gere os artefatos do Prisma e execute as migrações para configurar o banco de dados SQLite:
+```bash
+npm run prisma:generate
+npm run prisma:migrate
+```
+
+5. Inicie a API:
+```bash
+npm run api
+```
+
+### 3. Configurando e rodando o Frontend (`src/day-counter`)
+
+Com a API rodando, abra uma **nova aba no terminal** e configure o aplicativo.
+
+1. A partir da raiz do projeto, acesse a pasta do frontend:
+```bash
+cd src/day-counter
+```
+
+2. Instale as dependências:
+```bash
+npm install
+```
+
+3. Configuração de Variáveis de Ambiente:
+Crie um arquivo `.env` na pasta `src/day-counter` baseado no arquivo `.env.example`.
+```bash
+cp .env.example .env
+```
+Abra o `.env` e configure a variável `EXPO_PUBLIC_API_URL` apontando para a sua API local (conforme onde o app será testado):
+- **Emulador Android (Padrão):** `EXPO_PUBLIC_API_URL=http://10.0.2.2:3000`
+- **Dispositivo Físico (via Wi-Fi):** `EXPO_PUBLIC_API_URL=http://SEU_IP_LOCAL:3000`
+- **iOS Simulator ou Web:** `EXPO_PUBLIC_API_URL=http://localhost:3000`
+
+4. Inicie o servidor do Expo:
+Para abrir o aplicativo e testá-lo usando o aplicativo **Expo Go** no seu celular físico (ou emuladores), execute:
 ```bash
 npx expo start
 ```
+Após rodar o comando, será gerado um QR Code no terminal. Escaneie este código utilizando o app **Expo Go** no seu smartphone (ou pressione a tecla correspondente no terminal para abrir no emulador).
 
-Para executar o projeto diretamente no emulador do Android Studio, utilize o comando:
+*Comandos alternativos para compilar nativamente: `npm run android` e `npm run ios`.*
 
-```bash
-npm run android
-```
+---
 
-## Colaboradores
+## 👥 Colaboradores / Padrões de Contribuição
+
+O projeto conta com os seguintes colaboradores:
 
 - Carlos Eduardo Roseno Paiva (https://github.com/carlosrosen)
 - Dannyel Fontenele Ribeiro (https://github.com/DanFonR)
