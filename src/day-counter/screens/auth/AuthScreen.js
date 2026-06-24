@@ -8,7 +8,7 @@ import {
 import { useState, useContext } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { AuthContext } from "../../contexts/AuthContext";
-import { AuthInput, EyeButton } from "../../components/AuthInput";
+import { AuthInput, EyeButton } from "../../components/auth/AuthInput";
 import { validarEmail } from "../../utils/validarEmail";
 
 const colors = {

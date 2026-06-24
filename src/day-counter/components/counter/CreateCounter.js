@@ -2,6 +2,7 @@ import { useState } from "react";
 import {
   Text,
   View,
+  StyleSheet,
   TextInput,
   TouchableOpacity,
   Pressable,
@@ -11,26 +12,26 @@ import { Picker } from "@react-native-picker/picker";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import EmojiPicker from "rn-emoji-keyboard";
-import { cardService } from "../../services/card.service";
+import { cardService } from "../../services/cardService";
 import { Calendar } from "lucide-react-native";
 
-import { styles } from '../create_counter/createCounter'
-
-import { converterParaDataLocal } from "../../utils/converterParaDataLocal";
-
-export const EditCounter = (props) => {
-  const [icon, setIcon] = useState(props.icon);
-  const [title, setTitle] = useState(props.title);
-  const [description, setDescription] = useState(props.description);
-  const typeCounter = props.typeCounter;
-  const [startDate, setStartDate] = useState(converterParaDataLocal(props.startDate));
-  const [endDate, setEndDate] = useState(converterParaDataLocal(props.endDate));
-  const [notifyInterval, setNotifyInterval] = useState(props.notifyInterval);
-  const [color, setColor] = useState(`hsl(${props.hue}, 80%, 64%)`);
+export const InsertForm = ({ showForm, onSuccess }) => {
+  const [icon, setIcon] = useState("");
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [typeCounter, setTypeCounter] = useState("p");
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(
+    new Date(new Date().setDate(new Date().getDate() + 1))
+  );
+  const [notifyInterval, setNotifyInterval] = useState("s");
+  const [color, setColor] = useState("hsl(0, 80%, 64%)");
   const [loading, setLoading] = useState(false);
   const [isEmojiPickerOpen, setIsEmojiPickerOpen] = useState(false);
+
   const [showStartDatePicker, setShowStartDatePicker] = useState(false);
   const [showEndDatePicker, setShowEndDatePicker] = useState(false);
+
   const [errorMessage, setErrorMessage] = useState("");
   const [errorFields, setErrorFields] = useState([]);
 
@@ -50,7 +51,7 @@ export const EditCounter = (props) => {
   ];
 
   return (
-    <Modal visible={props.showEditCounter} transparent={true} animationType="fade" statusBarTranslucent={true}>
+    <Modal visible={true} transparent={true} animationType="fade" statusBarTranslucent={true}>
       <View style={styles.overlay}>
         <EmojiPicker
           onEmojiSelected={(emojiObject) => {
@@ -75,8 +76,8 @@ export const EditCounter = (props) => {
         >
           <View style={styles.modalContent}>
             <View style={styles.headerRow}>
-              <Text style={styles.headerTitle}>Editar contador</Text>
-              <TouchableOpacity style={styles.closeButton} onPress={() => props.setShowEditCounter(false)}>
+              <Text style={styles.headerTitle}>Novo contador</Text>
+              <TouchableOpacity style={styles.closeButton} onPress={() => showForm(false)}>
                 <Text style={styles.closeIcon}>{">>"}</Text>
               </TouchableOpacity>
             </View>
@@ -107,26 +108,28 @@ export const EditCounter = (props) => {
             <View style={styles.fieldSection}>
               <Text style={styles.fieldLabel}>Tipo de contagem</Text>
               <View style={styles.segmentedControl}>
-                <View
+                <TouchableOpacity
                   style={[
                     styles.segmentButton,
                     typeCounter === "p" && { backgroundColor: "#FFF", borderColor: color, borderWidth: 1 }
                   ]}
+                  onPress={() => setTypeCounter("p")}
                 >
                   <Text style={[styles.segmentText, typeCounter === "p" && { color: color }]}>
                     Progressiva
                   </Text>
-                </View>
-                <View
+                </TouchableOpacity>
+                <TouchableOpacity
                   style={[
                     styles.segmentButton,
                     typeCounter === "r" && { backgroundColor: "#FFF", borderColor: color, borderWidth: 1 }
                   ]}
+                  onPress={() => setTypeCounter("r")}
                 >
                   <Text style={[styles.segmentText, typeCounter === "r" && { color: color }]}>
                     Regressiva
                   </Text>
-                </View>
+                </TouchableOpacity>
               </View>
             </View>
 
@@ -279,7 +282,7 @@ export const EditCounter = (props) => {
                     extractedHue = Number.parseInt(match[1]);
                   }
 
-                  const updateCount = {
+                  const newCount = {
                     title: title,
                     icon: icon,
                     type: typeCounter,
@@ -290,14 +293,14 @@ export const EditCounter = (props) => {
                   };
 
                   if (typeCounter === "r") {
-                    updateCount.end_date = formatYMD(endDate);
+                    newCount.end_date = formatYMD(endDate);
                   }
 
-                  await cardService.updateCard(props.id, updateCount);
-                  props.setShowEditCounter(false);
-                  if (props.onSuccess) props.onSuccess();
+                  await cardService.createCard(newCount);
+                  showForm(false);
+                  if (onSuccess) onSuccess();
                 } catch (error) {
-                  handleError("Erro ao editar contador");
+                  handleError("Erro ao criar contador.");
                   console.error(error);
                 } finally {
                   setLoading(false);
@@ -305,7 +308,7 @@ export const EditCounter = (props) => {
               }}
             >
               <Text style={styles.mainButtonText}>
-                {loading ? "Salvando..." : "Salvar alterações"}
+                {loading ? "Criando..." : "Criar contador"}
               </Text>
             </TouchableOpacity>
           </View>
@@ -314,3 +317,156 @@ export const EditCounter = (props) => {
     </Modal>
   );
 };
+
+export const styles = StyleSheet.create({
+  overlay: {
+    backgroundColor: "#00000080",
+    flex: 1,
+    justifyContent: "center",
+  },
+  modalContent: {
+    backgroundColor: "#FFF",
+    width: "90%",
+    borderRadius: 24,
+    padding: 20,
+    gap: 12,
+  },
+  headerRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 4,
+  },
+  headerTitle: {
+    fontSize: 22,
+    fontWeight: "500",
+  },
+  closeButton: {
+    backgroundColor: "#9333EA",
+    borderRadius: 8,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  closeIcon: {
+    fontSize: 18,
+    color: "#FFF",
+  },
+  iconTitleRow: {
+    flexDirection: "row",
+    gap: 12,
+  },
+  emojiButton: {
+    backgroundColor: "#F3F3F3",
+    borderRadius: 12,
+    width: 60,
+    height: 50,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  emojiText: {
+    fontSize: 26,
+  },
+  titleInput: {
+    flex: 1,
+    backgroundColor: "#F3F3F3",
+    borderRadius: 12,
+    paddingHorizontal: 16,
+    fontSize: 16,
+    height: 50,
+  },
+  fieldSection: {
+    gap: 6,
+  },
+  fieldLabel: {
+    fontSize: 14,
+    color: "#666",
+  },
+  segmentedControl: {
+    flexDirection: "row",
+    backgroundColor: "#F3F3F3",
+    borderRadius: 12,
+    padding: 4,
+    height: 46,
+  },
+  segmentButton: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: "transparent",
+  },
+  segmentText: {
+    fontSize: 15,
+    color: "#888",
+  },
+  datesRow: {
+    flexDirection: "row",
+    gap: 12,
+  },
+  dateField: {
+    flex: 1,
+    gap: 6,
+  },
+  dateInput: {
+    backgroundColor: "#F3F3F3",
+    borderRadius: 12,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingHorizontal: 16,
+    height: 46,
+  },
+  dateText: {
+    fontSize: 14,
+    color: "#555",
+  },
+  pickerContainer: {
+    backgroundColor: "#F3F3F3",
+    borderRadius: 12,
+    height: 46,
+    justifyContent: "center",
+  },
+  pickerStyle: {
+    color: "#333",
+  },
+  colorsRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingVertical: 8,
+  },
+  colorCircleWrapper: {
+    width: 38,
+    height: 38,
+    borderRadius: 19,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  colorCircle: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+  },
+  textArea: {
+    backgroundColor: "#F3F3F3",
+    borderRadius: 12,
+    padding: 16,
+    fontSize: 15,
+    minHeight: 80,
+  },
+  mainButton: {
+    borderRadius: 12,
+    height: 50,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 8,
+  },
+  mainButtonText: {
+    color: "#FFF",
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+});

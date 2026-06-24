@@ -1,7 +1,7 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import CounterScreen from "../screens/counter/CounterScreen";
-import ProfileScreen from "../screens/userProfile/ProfileScreen"
-import { MenuSelector } from "../components/layout/layoutComponent";
+import ProfileScreen from "../screens/profile/ProfileScreen"
+import { MenuSelector } from "../components/layout/Layout";
 import { Clock, User } from "lucide-react-native";
 
 const Tab = createBottomTabNavigator();
