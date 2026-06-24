@@ -17,13 +17,17 @@ import { InsertForm } from "../../components/counter/CreateCounter";
 import { useState, useCallback } from "react";
 import { useFocusEffect } from "@react-navigation/native";
 import { CounterCards } from "../../components/counter/CounterCards";
+import { CounterFilter } from "../../components/counter/CounterFilter";
+import { CounterSort } from "../../components/counter/CounterSort";
 import { cardService } from "../../services/cardService";
+import { calcularDiferencaDias } from "../../utils/calcularDiferencaDias";
 
-const CounterScreen = (props) => {
-  const { activeTab, setActiveTab } = props;
+const CounterScreen = () => {
   const [showCreateCount, setShowCreateCount] = useState(false);
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [filter, setFilter] = useState("all");
+  const [sortOrder, setSortOrder] = useState("default");
 
   const fetchCards = async () => {
     try {
@@ -54,6 +58,25 @@ const CounterScreen = (props) => {
       fetchCards();
     }, [])
   );
+
+  const filteredData = data.filter(item => {
+    if (filter === "all") return true;
+    return item.tipo === filter;
+  });
+
+  const sortedData = [...filteredData].sort((a, b) => {
+    if (sortOrder === "default") return 0;
+    
+    const diasA = calcularDiferencaDias(a.data_alvo, a.data_inicial, a.tipo);
+    const diasB = calcularDiferencaDias(b.data_alvo, b.data_inicial, b.tipo);
+    
+    if (sortOrder === "closest") {
+      return diasA - diasB;
+    } else { 
+      return diasB - diasA;
+    }
+  });
+
   return (
     <SafeAreaView
       style={layoutStyle.container}
@@ -63,13 +86,23 @@ const CounterScreen = (props) => {
 
       <AppHeader title="Contagem de Dias" />
 
+      <CounterFilter 
+        currentFilter={filter} 
+        onSelectFilter={setFilter} 
+      />
+
+      <CounterSort
+        currentSort={sortOrder}
+        onSelectSort={setSortOrder}
+      />
+
       <View style={{ flex: 1 }}>
         {showCreateCount ? (
           <InsertForm showForm={setShowCreateCount} onSuccess={fetchCards} />
         ) : null}
         <FlatList
           contentContainerStyle={{ padding: 16, gap:16 }}
-          data={data}
+          data={sortedData}
           refreshControl={
             <RefreshControl refreshing={loading} onRefresh={fetchCards} />
           }
