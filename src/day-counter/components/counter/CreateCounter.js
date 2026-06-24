@@ -24,7 +24,7 @@ export const InsertForm = ({ showForm, onSuccess }) => {
   const [endDate, setEndDate] = useState(
     new Date(new Date().setDate(new Date().getDate() + 1))
   );
-  const [notifyInterval, setNotifyInterval] = useState("s");
+  const [notifyInterval, setNotifyInterval] = useState("n");
   const [color, setColor] = useState("hsl(0, 80%, 64%)");
   const [loading, setLoading] = useState(false);
   const [isEmojiPickerOpen, setIsEmojiPickerOpen] = useState(false);
@@ -212,6 +212,7 @@ export const InsertForm = ({ showForm, onSuccess }) => {
                   selectedValue={notifyInterval}
                   onValueChange={(val) => setNotifyInterval(val)}
                 >
+                  <Picker.Item label="Nenhuma" value="n" />
                   <Picker.Item label="Diariamente" value="d" />
                   <Picker.Item label="Semanalmente" value="s" />
                   <Picker.Item label="Mensalmente" value="m" />
