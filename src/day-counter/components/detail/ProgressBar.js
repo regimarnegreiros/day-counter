@@ -82,17 +82,17 @@ const styles = StyleSheet.create({
   },
   progressTextCard: {
     color: "#000",
-    fontSize: 16,
+    fontSize: 14,
   },
   progressBarBackgroud: {
     backgroundColor: "#FFF",
-    borderRadius: 20,
-    height: 20,
+    borderRadius: 16,
+    height: 16,
     width: "100%",
     overflow: "hidden",
   },
   progressBar: {
-    borderRadius: 20,
-    minHeight: 20,
+    borderRadius: 16,
+    minHeight: 16,
   },
 });

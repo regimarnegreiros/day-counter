@@ -17,13 +17,14 @@ import { InsertForm } from "../../components/counter/CreateCounter";
 import { useState, useCallback } from "react";
 import { useFocusEffect } from "@react-navigation/native";
 import { CounterCards } from "../../components/counter/CounterCards";
+import { CounterFilter } from "../../components/counter/CounterFilter";
 import { cardService } from "../../services/cardService";
 
-const CounterScreen = (props) => {
-  const { activeTab, setActiveTab } = props;
+const CounterScreen = () => {
   const [showCreateCount, setShowCreateCount] = useState(false);
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [filter, setFilter] = useState("all");
 
   const fetchCards = async () => {
     try {
@@ -54,6 +55,12 @@ const CounterScreen = (props) => {
       fetchCards();
     }, [])
   );
+
+  const filteredData = data.filter(item => {
+    if (filter === "all") return true;
+    return item.tipo === filter;
+  });
+
   return (
     <SafeAreaView
       style={layoutStyle.container}
@@ -63,13 +70,15 @@ const CounterScreen = (props) => {
 
       <AppHeader title="Contagem de Dias" />
 
+      <CounterFilter currentFilter={filter} onSelectFilter={setFilter} />
+
       <View style={{ flex: 1 }}>
         {showCreateCount ? (
           <InsertForm showForm={setShowCreateCount} onSuccess={fetchCards} />
         ) : null}
         <FlatList
           contentContainerStyle={{ padding: 16, gap:16 }}
-          data={data}
+          data={filteredData}
           refreshControl={
             <RefreshControl refreshing={loading} onRefresh={fetchCards} />
           }

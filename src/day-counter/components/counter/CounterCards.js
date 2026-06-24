@@ -81,48 +81,48 @@ const styles = StyleSheet.create({
   cardContainer: {
     width: "100%",
     borderRadius: 16,
-    paddingHorizontal: 20,
-    paddingTop: 12,
-    paddingBottom: 24,
+    paddingHorizontal: 16,
+    paddingTop: 10,
+    paddingBottom: 16,
   },
   header: {
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: 5,
+    marginBottom: 4,
   },
   icon: {
-    fontSize: 48,
-    marginRight: 16,
+    fontSize: 40,
+    marginRight: 12,
   },
   headerText: {
     flex: 1,
   },
   detailButton: {
-    fontSize: 30,
+    fontSize: 24,
   },
   titleText: {
-    fontSize: 24,
+    fontSize: 20,
     fontWeight: "bold",
     color: "#000",
-    marginBottom: 4,
+    marginBottom: 2,
   },
   eventdate: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 6,
+    gap: 4,
   },
   dateText: {
-    fontSize: 16,
+    fontSize: 14,
     color: "#1C1C1E",
   },
   badgeBase: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 8,
-    paddingVertical: 6,
-    paddingHorizontal: 16,
-    borderRadius: 24,
-    marginTop: 10,
+    gap: 6,
+    paddingVertical: 4,
+    paddingHorizontal: 12,
+    borderRadius: 16,
+    marginTop: 6,
     backgroundColor: "#ffa9b1", // Fundo laranja/amarelo
   },
   regressiveBadge: {
@@ -132,7 +132,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   badgeText: {
-    fontSize: 16,
+    fontSize: 14,
     color: "#000000",
     fontWeight: "400",
   },
