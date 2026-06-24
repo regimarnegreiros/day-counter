@@ -54,7 +54,7 @@ export default class JWT {
         });
         return result2.payload;
       }
-      throw new Error()
+      throw new Error('Expired Token')
     }
   }
 
