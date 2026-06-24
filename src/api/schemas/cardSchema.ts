@@ -36,7 +36,7 @@ export const createCardSchema = z.object({
 
   hue: z.number().int().min(0).max(360),
 
-  notify_interval: z.enum(["d", "s", "m", "a"], {
+  notify_interval: z.enum(["d", "s", "m", "a", "n"], {
     error: "Intervalo de notificação inválido",
   }),
 });

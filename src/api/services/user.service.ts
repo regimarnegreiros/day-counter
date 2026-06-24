@@ -62,7 +62,7 @@ export default class UserService {
   }
 
   static async getUser(id: string) {
-    if (!validator.isUUID(id,7)) throw new Error("ID inválido");
+    if (!validator.isUUID(id, 7)) throw new Error("ID inválido");
 
     return await UserRepository.getUserByEmailOrId(id);
   }
@@ -72,31 +72,41 @@ export default class UserService {
     id: string,
     data: Omit<Partial<User>, "cards" | "userID">,
   ) {
-    
     if (!validator.isUUID(id)) throw new Error("ID inválido");
-    
+
     if (data.email !== undefined) {
       if (!validator.isEmail(data.email))
         throw new Error("Formato de e-mail inválido");
-      
+
       const existingUser = await UserRepository.getUserByEmailOrId(data.email);
       if (existingUser && existingUser.userID !== id)
         throw new Error("E-mail já está em uso");
     }
-    
+
     if (data.name !== undefined && data.name.length < 3)
       throw new Error("O nome deve ter pelo menos 3 caracteres");
-    
-    data.notification = Boolean(data.notification)
+
+    data.notification = Boolean(data.notification);
     const dataCopy = { ...data };
-    
+
     if (data.password !== undefined) {
       if (data.password.length < 6)
         throw new Error("A senha deve ter pelo menos 6 caracteres");
 
       dataCopy.password = await hash(data.password);
     }
-    
+
     return await UserRepository.updateUserById(id, dataCopy);
+  }
+  static async updatePassword(
+    userId: string,
+    password: string,
+    newPassword: string,
+  ) {
+    if (!validator.isUUID(userId)) throw new Error("ID inválido");
+    const user = await UserRepository.getUserByEmailOrId(userId);
+    if (!user) throw new Error("Usuário não encontrado");
+    if (!await verifyHash(user.password,  password)) throw new Error("A senha não coincide com a senha do usuário");
+    await UserRepository.changePassword(user.userID, newPassword);
   }
 }

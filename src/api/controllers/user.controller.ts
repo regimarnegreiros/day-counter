@@ -121,4 +121,16 @@ export default class UserController {
       return res.status(HTTPCodes.badRequest).json({ message: err.message });
     }
   }
+
+  static async changePassword(req:Request,res:Response){
+    const user = req.body['userInfo']
+    const {password, new_password} = req.body;
+    try{
+      await UserService.updatePassword(user.userID,password,new_password);
+      res.json({message: "Senha alterada com sucesso!"})
+    }catch(err: any){
+      console.error(err);
+      res.status(400).json({error: err.message});
+    }
+  }
 }
