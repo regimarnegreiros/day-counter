@@ -12,7 +12,7 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 import DateTimePicker from "@react-native-community/datetimepicker";
 import EmojiPicker from "rn-emoji-keyboard";
 import { cardService } from "../../services/cardService";
-import { Calendar } from "lucide-react-native";
+import { Calendar, X, Smile } from "lucide-react-native";
 
 import { styles } from '../counter/CreateCounter'
 
@@ -77,7 +77,7 @@ export const EditCounter = (props) => {
             <View style={styles.headerRow}>
               <Text style={styles.headerTitle}>Editar contador</Text>
               <TouchableOpacity style={styles.closeButton} onPress={() => props.setShowEditCounter(false)}>
-                <Text style={styles.closeIcon}>{">>"}</Text>
+                <X color="#FFF" size={18} />
               </TouchableOpacity>
             </View>
 
@@ -92,7 +92,11 @@ export const EditCounter = (props) => {
                 style={[styles.emojiButton, errorFields.includes('icon') && { borderColor: '#FB2C36', borderWidth: 1 }]}
                 onPress={() => { setIsEmojiPickerOpen(true); setErrorMessage(""); setErrorFields([]); }}
               >
-                <Text style={styles.emojiText}>{icon || "✈️"}</Text>
+                {icon ? (
+                  <Text style={styles.emojiText}>{icon}</Text>
+                ) : (
+                  <Smile color="#A0A0A0" size={26} />
+                )}
               </TouchableOpacity>
               <TextInput
                 style={[styles.titleInput, errorFields.includes('title') && { borderColor: '#FB2C36', borderWidth: 1 }]}
