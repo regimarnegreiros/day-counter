@@ -15,3 +15,4 @@ userRoutes.put("/user/:userId", UserController.userUpdate);
 
 userRoutes.delete("/user/:userId", UserController.deleteUser);
 
+userRoutes.patch("/user/", UserController.changePassword);

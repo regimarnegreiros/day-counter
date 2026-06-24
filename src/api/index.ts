@@ -18,6 +18,7 @@ import { errorMiddleware } from "./middlewares/error.middleware.ts";
 import { configDotenv } from "dotenv";
 import JWT from "./utils/jwt.singleton.ts";
 import { authentication } from "./middlewares/authentication.middleware.ts";
+import { authorization } from "./middlewares/authorization.middleware.ts";
 
 //#endregion
 configDotenv();
@@ -44,6 +45,7 @@ isDev();
 app.use(express.json());
 app.use(requestLogger);
 app.use(authentication);
+app.use(authorization);
 
 //#endregion
 

@@ -30,7 +30,7 @@ export interface User {
   name: string,
   email: string,
   password: string,
-  notification: Boolean
+  notification: Boolean,
   cards?: Array<UserCard>
 };
 

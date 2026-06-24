@@ -3,13 +3,14 @@ import { HTTPCodes, isPublicRoute } from "../utils/utils.ts";
 import JWT from "../utils/jwt.singleton.ts";
 import UserService from "../services/user.service.ts";
 import { type JWTPayload } from "jose";
+import CardRepository from "../repositories/card.repository.ts";
 
 export async function authentication(
   req: Request,
   res: Response,
   next: NextFunction,
 ) {
-  if(isPublicRoute(req.url))return next();
+  if (isPublicRoute(req.url)) return next();
   const auth_header = req.headers["authorization"];
   if (!auth_header)
     return res
@@ -26,38 +27,40 @@ export async function authentication(
   try {
     payload_try = await JWT.verify(jwt_token);
   } catch (err: any) {
+    console.error(err);
     if (err.message === "signature verification failed")
       return res
         .status(HTTPCodes.unauthorized)
         .json({ message: "invalid token" });
-    else
+    else if (err.message === "Expired Token")
+      return res
+        .status(HTTPCodes.unauthorized)
+        .json({ message: "Expired Token" });
+    else {
       return res
         .status(HTTPCodes.internalError)
-        .json({ message: "something went wrong with your validaton" });
+        .json({ message: "Something went wrong with authentication" });
+    }
   }
   const payload = payload_try;
   const userId = payload["userID"];
   if (typeof userId !== "string") {
-    return res
-      .status(HTTPCodes.notFound)
-      .json({ message: "user not found" });
+    return res.status(HTTPCodes.notFound).json({ message: "user not found" });
   }
   let user_try;
   try {
     user_try = await UserService.getUser(userId);
   } catch (err: any) {
-    return res.status(HTTPCodes.notFound).json({message: 'user not found'})
+    return res.status(HTTPCodes.notFound).json({ message: "user not found" });
   }
   const user = user_try;
   if (!user) {
-    return res
-      .status(HTTPCodes.notFound)
-      .json({ message: "user not found" });
+    return res.status(HTTPCodes.notFound).json({ message: "user not found" });
   }
-  if(!req.body){
-    req.body = {userInfo:user}
-  }else{
-    req.body['userInfo'] = user;
+  if (!req.body) {
+    req.body = { userInfo: user };
+  } else {
+    req.body["userInfo"] = user;
   }
   next();
 }

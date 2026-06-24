@@ -2,6 +2,7 @@ import { prisma } from "../database/database.ts";
 import { type User, type SafeUser, type UserCard } from "../utils/utils.ts";
 import validator from "validator";
 import { v7 as UUIDv7 } from "uuid";
+import { hash } from "../hash.ts";
 
 export default class UserRepository {
     private constructor() {}
@@ -134,6 +135,22 @@ export default class UserRepository {
         } catch (err) {
             console.error(err);
             return undefined;
+        }
+    }
+
+    static async changePassword(userID: string, password: string){
+        try{
+            await prisma.users.update({
+                where: {
+                    id:userID
+                },
+                data:{
+                    password: await hash(password)
+                }
+            })
+        }catch(err){
+            console.error(err);
+            throw new Error('Erro inesperado ao alterar a senha')
         }
     }
 }
