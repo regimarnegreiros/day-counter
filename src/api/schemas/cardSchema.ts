@@ -4,7 +4,7 @@ import { tr } from "zod/locales";
 
 const emojiR = emojiRegex();
 
-export const createCardSchema = z.object({
+const baseCardSchema = z.object({
   icon: z.string().refine((value: string) => {
     const matches = value.match(emojiR);
     return matches?.length === 1 && matches[0] === value;
@@ -41,7 +41,31 @@ export const createCardSchema = z.object({
   }),
 });
 
-export const updateCardSchema = createCardSchema
+export const createCardSchema = baseCardSchema
+  .refine(
+    (data) => {
+      if (!data.end_date) return true;
+      return new Date(data.end_date) >= new Date(data.start_date);
+    },
+    {
+      path: ["end_date"],
+      error: "A data final não pode ser anterior a data inicial",
+    }
+  )
+  .refine(
+    (data) => {
+      if (data.type === "r") {
+        return data.end_date !== null && data.end_date !== undefined;
+      }
+      return true;
+    },
+    {
+      path: ["end_date"],
+      error: "Contadores Regressivos devem possuir data final",
+    }
+  );
+
+export const updateCardSchema = baseCardSchema
   .partial({
     end_date: true,
     description: true,
@@ -54,5 +78,17 @@ export const updateCardSchema = createCardSchema
     {
       path: ["end_date"],
       error: "A data final não pode ser anterior a data inicial",
+    }
+  )
+  .refine(
+    (data) => {
+      if (data.type === "r") {
+        return data.end_date !== null && data.end_date !== undefined;
+      }
+      return true;
     },
+    {
+      path: ["end_date"],
+      error: "Contadores Regressivos devem possuir data final",
+    }
   );
