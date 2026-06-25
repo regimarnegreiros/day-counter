@@ -31,6 +31,15 @@ O projeto está dividido em duas partes principais dentro da pasta `src/`:
 - **Autenticação e segurança**: JWT, Argon2
 - **Validação de dados**: Zod
 
+## Segurança e validação no Backend
+Para garantir a proteção dos dados e a integridade do sistema, no backend foi implementado as seguintes práticas:
+
+**Autenticação e Autorização (JWT):** Utiliza middlewares para validar a identidade do usuário e garantir que ele tenha as permissões corretas para acessar rotas e modificar recursos.
+
+**Hash de senhas (Argon2):** Protege as credenciais dos usuários aplicando um hash seguro e moderno antes do armazenamento no banco de dados, evitando salvar senhas em texto puro.
+
+**Validação de dados (Zod):** Assegura que todos os dados recebidos pela API sigam estritamente os formatos e regras de negócio esperados, prevenindo erros de execução e injeções maliciosas.
+
 ## Pré-requisitos
 
 Antes de executar o projeto, é necessário ter instalado:
