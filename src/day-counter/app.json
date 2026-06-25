@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Contador de Dias",
-    "slug": "day-counter",
+    "slug": "contador-de-dias",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
