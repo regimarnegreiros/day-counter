@@ -18,18 +18,20 @@ O Contador de Dias é uma aplicação mobile desenvolvido para o acompanhamento 
 
 - Interface focada na experiência do usuário mobile
 
-## 🗂 Visão Geral do Projeto
+## Visão geral do projeto
 
 O projeto está dividido em duas partes principais dentro da pasta `src/`:
 - **`src/day-counter`**: Aplicativo mobile desenvolvido em React Native utilizando o Expo.
 - **`src/api`**: Servidor Backend desenvolvido em Node.js com TypeScript, Express, Prisma e banco de dados SQLite.
 
-## 🚀 Tecnologias utilizadas:
+## Tecnologias utilizadas:
 
 - **Frontend:** React Native, JavaScript, Expo
 - **Backend:** Node.js, TypeScript, Express, Prisma, SQLite
+- **Autenticação e segurança**: JWT, Argon2
+- **Validação de dados**: Zod
 
-## 📋 Pré-requisitos
+## Pré-requisitos
 
 Antes de executar o projeto, é necessário ter instalado:
 
@@ -39,7 +41,7 @@ Antes de executar o projeto, é necessário ter instalado:
 
 ---
 
-## 🛠 Instalação e execução
+## Instalação e execução
 
 ### 1. Clonando o repositório
 
@@ -68,8 +70,8 @@ Crie um arquivo `.env` na pasta `src/api` baseado no arquivo `.env.example`.
 cp .env.example .env
 ```
 Abra o arquivo `.env` recém-criado e defina os valores das chaves de segurança. Exemplo:
-- `JWT_EXPIRE_PERIOD='24h'` (Tempo de validade da sessão)
-- `JWT_REFRESH_SECRET='123456789'` (Chave secreta usada para renovar o token)
+- `JWT_EXPIRE_PERIOD='24h'` (Tempo de validade do Access Token)
+- `JWT_REFRESH_SECRET='30'` (Quantidade de dias recomendada para rotação da chave secreta)
 
 4. Banco de Dados:
 Gere os artefatos do Prisma e execute as migrações para configurar o banco de dados SQLite:
@@ -118,8 +120,7 @@ Após rodar o comando, será gerado um QR Code no terminal. Escaneie este códig
 
 ---
 
-## 👥 Colaboradores / Padrões de Contribuição
-
+## Colaboradores 
 O projeto conta com os seguintes colaboradores:
 
 - Carlos Eduardo Roseno Paiva (https://github.com/carlosrosen)
