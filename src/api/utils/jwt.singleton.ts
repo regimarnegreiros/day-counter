@@ -41,20 +41,26 @@ export default class JWT {
         audience: "app.day-counter",
       });
       return result.payload;
-    } catch (err:any) {
-      if (!process.env.JWT_EXPIRE_PERIOD)
-        throw new Error("JWT expire period not found");
-      if (
-        (new Date().getTime() - JWT.last_refresh.getTime()) / 86_400_000 > // 1000 * 24 * 60 * 60
-        Number.parseInt(process.env.JWT_EXPIRE_PERIOD)
-      ) {
-        const result2 = await jwtVerify(jwt, JWT.old_secret, {
-          issuer: "api.day-counter",
-          audience: "app.day-counter",
-        });
-        return result2.payload;
+    } catch (err: any) {
+      if (err.code === "ERR_JWT_EXPIRED") {
+        throw new Error("Expired Token");
       }
-      throw new Error('Expired Token')
+
+      if (JWT.old_secret) {
+        try {
+          const result2 = await jwtVerify(jwt, JWT.old_secret, {
+            issuer: "api.day-counter",
+            audience: "app.day-counter",
+          });
+          return result2.payload;
+        } catch (oldErr: any) {
+          if (oldErr.code === "ERR_JWT_EXPIRED") {
+            throw new Error("Expired Token");
+          }
+        }
+      }
+
+      throw new Error("Signature Verification Failed");
     }
   }
 

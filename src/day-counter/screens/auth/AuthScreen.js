@@ -56,6 +56,10 @@ function EntryScreen({ screen, onNavigate }) {
       newErr.name = "Nome é obrigatório.";
       valid = false;
     }
+    if (!isSignin && name.trim().length < 3){
+      newErr.name = "Nome deve ter pelo menos 3 caracteres"
+      valid = false;
+    }
     if (!validarEmail(email)) {
       newErr.email = "E-mail inválido.";
       valid = false;
@@ -89,6 +93,16 @@ function EntryScreen({ screen, onNavigate }) {
   return (
     <View style={styles.card}>
       <View style={styles.cardContent}>
+        {globalErr ? (
+          <Text
+            style={[
+              styles.errMsg,
+              { marginLeft: 0, alignSelf: "center", marginBottom: 10 },
+            ]}
+          >
+            {globalErr}
+          </Text>
+        ) : null}
         {!isSignin && (
           <AuthInput
             label="Nome"
@@ -143,16 +157,6 @@ function EntryScreen({ screen, onNavigate }) {
             }
           />
         )}
-        {globalErr ? (
-          <Text
-            style={[
-              styles.errMsg,
-              { marginLeft: 0, alignSelf: "center", marginBottom: 10 },
-            ]}
-          >
-            {globalErr}
-          </Text>
-        ) : null}
 
         <TouchableOpacity
           style={styles.primaryButton}
@@ -270,7 +274,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.mainViolet,
   },
   errMsg: {
-    fontSize: 11,
+    fontSize: 14,
     color: colors.errorRed,
     marginTop: 4,
     marginLeft: 14,

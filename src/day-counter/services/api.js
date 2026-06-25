@@ -10,6 +10,18 @@ export const api = axios.create({
   },
 });
 
+  let logoutCallback = null;
+  
+  export async function setLogoutCallback(callback){
+    logoutCallback = callback;
+  };
+
+  export async function executeLogout(){
+    if(logoutCallback){
+      await logoutCallback()
+    }
+  }
+
 api.interceptors.request.use(
   async (config) => {
     const token = await AsyncStorage.getItem('@auth_token');

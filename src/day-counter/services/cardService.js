@@ -1,11 +1,13 @@
-import { api } from './api';
+import { api, executeLogout } from "./api";
+import { authErrors } from "../utils/authErrors";
 
 export const cardService = {
   async getCards() {
     try {
-      const response = await api.get('/api/user/cards');
+      const response = await api.get("/api/user/cards");
       return response.data;
     } catch (error) {
+      if (authErrors.includes(error.response?.data?.message)) executeLogout();
       throw error.response?.data || error;
     }
   },
@@ -15,15 +17,17 @@ export const cardService = {
       const response = await api.get(`/api/user/card/${id}`);
       return response.data;
     } catch (error) {
+      if (authErrors.includes(error.response?.data?.message)) executeLogout();
       throw error.response?.data || error;
     }
   },
 
   async createCard(data) {
     try {
-      const response = await api.post('/api/user/card', data);
+      const response = await api.post("/api/user/card", data);
       return response.data;
     } catch (error) {
+      if (authErrors.includes(error.response?.data?.message)) executeLogout();
       throw error.response?.data || error;
     }
   },
@@ -33,6 +37,7 @@ export const cardService = {
       const response = await api.put(`/api/user/card/${id}`, data);
       return response.data;
     } catch (error) {
+      if (authErrors.includes(error.response?.data?.message)) executeLogout();
       throw error.response?.data || error;
     }
   },
@@ -42,7 +47,8 @@ export const cardService = {
       const response = await api.delete(`/api/user/card/${id}`);
       return response.data;
     } catch (error) {
+      if (authErrors.includes(error.response?.data?.message)) executeLogout();
       throw error.response?.data || error;
     }
-  }
+  },
 };

@@ -3,7 +3,6 @@ import { HTTPCodes, isPublicRoute } from "../utils/utils.ts";
 import JWT from "../utils/jwt.singleton.ts";
 import UserService from "../services/user.service.ts";
 import { type JWTPayload } from "jose";
-import CardRepository from "../repositories/card.repository.ts";
 
 export async function authentication(
   req: Request,
@@ -20,7 +19,7 @@ export async function authentication(
   if (split_header.length != 2 || split_header[0] != "Bearer") {
     return res
       .status(HTTPCodes.unauthorized)
-      .json({ message: "invalid token" });
+      .json({ message: "Invalid Token" });
   }
   const jwt_token = split_header[1];
   let payload_try: JWTPayload;
@@ -28,19 +27,15 @@ export async function authentication(
     payload_try = await JWT.verify(jwt_token);
   } catch (err: any) {
     console.error(err);
-    if (err.message === "signature verification failed")
-      return res
-        .status(HTTPCodes.unauthorized)
-        .json({ message: "invalid token" });
-    else if (err.message === "Expired Token")
-      return res
-        .status(HTTPCodes.unauthorized)
-        .json({ message: "Expired Token" });
-    else {
+    if (
+      err.message === "Signature Verification Failed" ||
+      err.message === "Expired Token"
+    )
+      return res.status(HTTPCodes.unauthorized).json({ message: err.message });
+    else
       return res
         .status(HTTPCodes.internalError)
-        .json({ message: "Something went wrong with authentication" });
-    }
+        .json({ message: "Signature Verification Failed" });
   }
   const payload = payload_try;
   const userId = payload["userID"];
