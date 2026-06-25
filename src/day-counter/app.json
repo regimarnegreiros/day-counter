@@ -1,13 +1,13 @@
 {
   "expo": {
-    "name": "Day counter",
+    "name": "Contador de Dias",
     "slug": "day-counter",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash-icon.png",
+      "image": "./assets/icon.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
