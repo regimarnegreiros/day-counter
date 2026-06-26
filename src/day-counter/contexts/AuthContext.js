@@ -1,6 +1,7 @@
-import React, { createContext, useState, useEffect } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { authService } from '../services/authService';
+import React, { createContext, useState, useEffect, useCallback } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { setLogoutCallback } from "../services/api";
+import { authService } from "../services/authService";
 
 export const AuthContext = createContext({});
 
@@ -10,8 +11,8 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     async function loadStorageData() {
-      const storedUser = await AsyncStorage.getItem('@user_data');
-      const storedToken = await AsyncStorage.getItem('@auth_token');
+      const storedUser = await AsyncStorage.getItem("@user_data");
+      const storedToken = await AsyncStorage.getItem("@auth_token");
       if (storedUser && storedToken) {
         setUser(JSON.parse(storedUser));
       }
@@ -23,7 +24,7 @@ export const AuthProvider = ({ children }) => {
   const updateUserData = async (newUserData) => {
     setUser((prev) => {
       const updatedUser = { ...prev, ...newUserData };
-      AsyncStorage.setItem('@user_data', JSON.stringify(updatedUser));
+      AsyncStorage.setItem("@user_data", JSON.stringify(updatedUser));
       return updatedUser;
     });
   };
@@ -34,17 +35,38 @@ export const AuthProvider = ({ children }) => {
   };
 
   const register = async (name, email, password, confirmPassword) => {
-    const data = await authService.register(name, email, password, confirmPassword);
+    const data = await authService.register(
+      name,
+      email,
+      password,
+      confirmPassword,
+    );
     setUser(data.user);
   };
-
-  const logout = async () => {
+  const logout = useCallback(async () => {
     await authService.logout();
     setUser(null);
-  };
+  }, []);
+
+  useEffect(() => {
+    setLogoutCallback(logout);
+    return () => {
+      setLogoutCallback(null);
+    };
+  }, [logout]);
 
   return (
-    <AuthContext.Provider value={{ signed: !!user, user, loading, login, register, logout, updateUserData }}>
+    <AuthContext.Provider
+      value={{
+        signed: !!user,
+        user,
+        loading,
+        login,
+        register,
+        logout,
+        updateUserData,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

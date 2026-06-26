@@ -47,7 +47,7 @@ const CounterScreen = () => {
       }));
       setData(mappedData);
     } catch (e) {
-      console.log("Erro ao buscar cards:", e);
+      console.log("Erro ao buscar cards:", e.message ?? e.error);
     } finally {
       setLoading(false);
     }
