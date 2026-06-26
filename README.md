@@ -123,9 +123,10 @@ Para abrir o aplicativo e testá-lo usando o aplicativo **Expo Go** no seu celul
 ```bash
 npx expo start
 ```
-Após rodar o comando, será gerado um QR Code no terminal. Escaneie este código utilizando o app **Expo Go** no seu smartphone (ou pressione a tecla correspondente no terminal para abrir no emulador).
-
-*Comandos alternativos para compilar nativamente: `npm run android` e `npm run ios`.*
+Após rodar o comando, será gerado um QR Code no terminal. Você pode:
+- Escanear o QR Code com o aplicativo **Expo Go** no seu celular.
+- Pressionar **`a`** no terminal para abrir em um emulador Android.
+- Pressionar **`i`** no terminal para abrir no simulador do iOS.
 
 ---
 
