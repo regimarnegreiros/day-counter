@@ -1,27 +1,36 @@
 import { View, StyleSheet, Text } from "react-native";
+import { formatarData } from "../../utils/formatarData";
 
 export default function DatailsCard(props) {
   const data_inicial = new Date(props.data_inicial);
   const data_alvo = new Date(props.data_alvo);
-  const dateFormat = new Intl.DateTimeFormat('pt-BR', {year:'numeric',month:'2-digit',day:'2-digit'})
+  const notify_convertions = {
+    'n': 'Nenhuma',
+    'd': 'Diário',
+    's': 'Semanal',
+    'm': 'Mensal',
+    'a': 'Anual'
+  }
   return (
     <View style={styles.detailsContainer}>
       <View style={styles.section}>
         <Text style={styles.labelText}>TITULO</Text>
         <Text style={styles.valueText}>{props.titulo}</Text>
       </View>
-      <View style={styles.section}>
-        <Text style={styles.labelText}>DESCRIÇÃO</Text>
-        <Text style={styles.valueText}>{props.descricao}</Text>
-      </View>
+      {!!props.descricao && (
+        <View style={styles.section}>
+          <Text style={styles.labelText}>DESCRIÇÃO</Text>
+          <Text style={styles.valueText}>{props.descricao}</Text>
+        </View>
+      )}
       <View style={styles.divider} />
       <View style={styles.row}>
         <View>
           <Text style={styles.labelText}>
-            {props.tipo === "r" ? "DATA ALVO" : "DATA INCIAL"}
+            {props.tipo === "r" ? "DATA ALVO" : "DATA INICIAL"}
           </Text>
           <Text style={styles.valueText}>
-            {props.tipo === "r" ? dateFormat.format(data_alvo) : dateFormat.format(data_inicial)}
+            {props.tipo === "r" ? formatarData(data_alvo) : formatarData(data_inicial)}
           </Text>
         </View>
         <View>
@@ -36,12 +45,12 @@ export default function DatailsCard(props) {
         {props.tipo === "r" && (
           <View>
             <Text style={styles.labelText}>DATA INICIAL</Text>
-            <Text style={styles.valueText}>{dateFormat.format(data_inicial)}</Text>
+            <Text style={styles.valueText}>{formatarData(data_inicial)}</Text>
           </View>
         )}
         <View>
           <Text style={styles.labelText}>NOTIFICAÇÃO</Text>
-          <Text style={styles.valueText}>{props.notificacao}</Text>
+          <Text style={styles.valueText}>{notify_convertions[props.notificacao]}</Text>
         </View>
       </View>
     </View>
@@ -50,7 +59,6 @@ export default function DatailsCard(props) {
 
 const styles = StyleSheet.create({
   detailsContainer: {
-    flex: 1,
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
     backgroundColor: "#FFF",
@@ -58,16 +66,16 @@ const styles = StyleSheet.create({
     paddingBottom: 30,
   },
   section: {
-    flex: 1,
+    paddingVertical: 10,
     justifyContent: "center",
     paddingHorizontal: 20,
   },
   row: {
-    flex: 1,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
     paddingHorizontal: 20,
+    paddingVertical: 10,
   },
   labelText: {
     color: "#888",

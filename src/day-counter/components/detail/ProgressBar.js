@@ -1,13 +1,12 @@
 import { View, Text, StyleSheet } from "react-native";
+import { converterParaDataLocal } from "../../utils/converterParaDataLocal";
 
 export default function ProgressBar(props) {
   const progresso = (data_alvo, data_inicial) => {
     const hoje = new Date();
-    const alvoFormatado = new Date(data_alvo);
-    const criacaoFormatado = new Date(data_inicial);
+    const alvoFormatado = converterParaDataLocal(data_alvo);
+    const criacaoFormatado = converterParaDataLocal(data_inicial);
     hoje.setHours(0, 0, 0, 0);
-    alvoFormatado.setHours(0, 0, 0, 0);
-    criacaoFormatado.setHours(0, 0, 0, 0);
     if (hoje.getTime() >= alvoFormatado.getTime()) return 100;
     if (hoje.getTime() <= criacaoFormatado.getTime()) return 0;
     const milissegundosTotal =
@@ -83,17 +82,17 @@ const styles = StyleSheet.create({
   },
   progressTextCard: {
     color: "#000",
-    fontSize: 16,
+    fontSize: 14,
   },
   progressBarBackgroud: {
     backgroundColor: "#FFF",
-    borderRadius: 20,
-    height: 20,
+    borderRadius: 16,
+    height: 16,
     width: "100%",
     overflow: "hidden",
   },
   progressBar: {
-    borderRadius: 20,
-    minHeight: 20,
+    borderRadius: 16,
+    minHeight: 16,
   },
 });
